@@ -1,6 +1,6 @@
 import Head from "next/head"
 import React from "react"
-import { headDefault } from "../../../utils/constants"
+import { headDefault } from "../../../constants"
 import FooterDefaultLayout from "../Base/FooterDefaultLayout"
 import HeaderDefaultLayout from "../Base/HeaderDefaultLayout"
 import MainDefaultLayout from "../Base/MainDefaultLayout"
@@ -25,7 +25,7 @@ const DefaultLayout = (props: LayoutProps) => {
       <Head>
         <title>{title || defaultTitle}</title>
         <meta charSet="utf-8" />
-        <link rel="shortcut icon" href="/logo.svg" />
+        {/* <link rel="shortcut icon" href="/logo.svg" /> */}
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:title" content={title || defaultTitle} key="title" />
         <meta

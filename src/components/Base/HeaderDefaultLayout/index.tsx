@@ -73,7 +73,7 @@ const HeaderDefaultLayout = () => {
     <>
       <nav
         className={clsx(
-          "absolute  -translate-x-1/2 left-1/2 h-20 w-full flex items-center justify-between max-w-screen-main bg-fuchsia-800 text-white",
+          "absolute -translate-x-1/2 left-1/2 h-20 w-full flex items-center justify-between max-w-screen-main bg-fuchsia-800 text-white",
           "md:px-[120px]",
           "xs:px-[60px]",
           "pl-5 pr-6"
