@@ -13,7 +13,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 // Set up client
 export const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors: [
     new MetaMaskConnector({
       chains,
@@ -25,8 +25,8 @@ export const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-        // projectId: "...",
-        qrcode: true
+        projectId: "...",
+        showQrModal: true
       }
     }),
     new InjectedConnector({
