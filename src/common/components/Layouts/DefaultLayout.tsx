@@ -1,9 +1,8 @@
+import FooterDefaultLayout from "@components/Base/FooterDefaultLayout"
+import HeaderDefaultLayout from "@components/Base/HeaderDefaultLayout"
+import MainDefaultLayout from "@components/Base/MainDefaultLayout"
+import { headDefault } from "@constants/index"
 import Head from "next/head"
-import React from "react"
-import { headDefault } from "../../../constants"
-import FooterDefaultLayout from "../Base/FooterDefaultLayout"
-import HeaderDefaultLayout from "../Base/HeaderDefaultLayout"
-import MainDefaultLayout from "../Base/MainDefaultLayout"
 
 type LayoutProps = {
   children?: any

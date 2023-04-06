@@ -15,6 +15,10 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
+      "@components/*": ["./src/common/components/*"],
+      "@constants/*": ["./src/common/constants/*"],
+      "@hooks/*": ["./src/common/hooks/*"],
+      "@styles/*": ["./src/common/styles/*"],
       "@/*": ["./src/*"]
     }
   },

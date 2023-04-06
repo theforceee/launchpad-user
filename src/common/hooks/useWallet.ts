@@ -1,7 +1,7 @@
+import { Wallet } from "@constants/networks"
 import WalletConnectProvider from "@walletconnect/web3-provider"
 import { ethers } from "ethers"
 import { Dispatch, SetStateAction, useState } from "react"
-import { Wallet } from "../../constants/networks"
 
 type useWalletReturnTypes = [
   prodiver: ethers.providers.Web3Provider | null,

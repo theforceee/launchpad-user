@@ -1,7 +1,7 @@
+import { Wallet } from "@constants/networks"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useAccount, useDisconnect, useEnsName, useNetwork } from "wagmi"
-import { Wallet } from "../../../../constants/networks"
 import ConnectWalletDialog from "./ConnectWalletDialog"
 import SwitchNetworkDialog from "./SwitchNetworkDialog"
 

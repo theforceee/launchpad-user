@@ -1,8 +1,8 @@
+import { Wallet } from "@/common/constants/networks"
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment } from "react"
 import { useConnect } from "wagmi"
 import { InjectedConnector } from "wagmi/connectors/injected"
-import { Wallet } from "../../../../constants/networks"
 
 type ConnectWalletDialog = {
   show: boolean
