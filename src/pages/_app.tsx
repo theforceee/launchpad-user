@@ -1,4 +1,5 @@
 import "@/styles/globals.css"
+import { ThemeProvider } from "next-themes"
 import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { WagmiConfig } from "wagmi"
@@ -11,7 +12,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <Component {...pageProps} />
+      <ThemeProvider attribute="class">
+        <Component {...pageProps} />
+      </ThemeProvider>
     </WagmiConfig>
   )
 }

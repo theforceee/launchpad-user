@@ -1,5 +1,7 @@
+import { Switch } from "@headlessui/react"
 import clsx from "clsx"
 import Link from "next/link"
+import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
 import { HTMLAttributeAnchorTarget, useState } from "react"
 
@@ -31,10 +33,15 @@ const routes: Array<RouteTypes> = [
 
 const HeaderDefaultLayout = () => {
   const { asPath } = useRouter()
+  const { theme, setTheme } = useTheme()
   const [open, setOpen] = useState<boolean>(false)
 
   const handleOpenHeader = () => {
     setOpen((prevState) => !prevState)
+  }
+
+  const handleToogleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
   }
 
   const renderHeaderMobile = () => {
@@ -93,6 +100,23 @@ const HeaderDefaultLayout = () => {
               {item.label}
             </Link>
           ))}
+        </div>
+        <div className="ml-auto">
+          <Switch
+            checked={theme === "dark"}
+            onChange={handleToogleTheme}
+            className={clsx(
+              "relative inline-flex h-6 w-11 items-center rounded-full",
+              theme === "dark" ? "bg-blue-600" : "bg-gray-200"
+            )}
+          >
+            <span
+              className={clsx(
+                "inline-block h-4 w-4 transform rounded-full bg-white transition",
+                theme === "dark" ? "translate-x-6" : "translate-x-1"
+              )}
+            />
+          </Switch>
         </div>
         <div
           className={clsx("block cursor-pointer", "md:hidden")}

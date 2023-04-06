@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useAccount, useDisconnect, useEnsName, useNetwork } from "wagmi"
 import { Wallet } from "../../../../constants/networks"
@@ -22,7 +23,12 @@ const LandingPage = () => {
   }
 
   return (
-    <div className="py-20 bg-gray-300 mt-10">
+    <div
+      className={clsx(
+        "py-20 mt-10 bg-gray-300 text-black",
+        "dark:bg-main dark:text-white"
+      )}
+    >
       <div className="mx-auto max-w-screen-main flex gap-5">
         {isConnected ? (
           <div>
