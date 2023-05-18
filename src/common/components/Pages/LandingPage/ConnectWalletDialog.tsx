@@ -51,7 +51,7 @@ const ConnectWalletDialog = (props: ConnectWalletDialog) => {
                 >
                   Connect Wallet
                 </Dialog.Title>
-                <div className="flex mt-2 gap-3">
+                <div className="flex flex-wrap mt-2 gap-3">
                   {connectors.map((connector) => (
                     <button
                       // disabled={!connector.ready}

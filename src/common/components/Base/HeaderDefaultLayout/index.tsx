@@ -1,9 +1,10 @@
 import { Switch } from "@headlessui/react"
 import clsx from "clsx"
-import Link from "next/link"
 import { useTheme } from "next-themes"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { HTMLAttributeAnchorTarget, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 type RouteTypes = {
   label: string
@@ -17,8 +18,8 @@ const routes: Array<RouteTypes> = [
     uri: "/"
   },
   {
-    label: "Route 1",
-    uri: "/c"
+    label: "User Page",
+    uri: "/user"
   },
   {
     label: "Route 2",
@@ -32,7 +33,8 @@ const routes: Array<RouteTypes> = [
 ]
 
 const HeaderDefaultLayout = () => {
-  const { asPath } = useRouter()
+  const { t, i18n } = useTranslation()
+  const router = useRouter()
   const { theme, setTheme } = useTheme()
   const [open, setOpen] = useState<boolean>(false)
 
@@ -42,6 +44,11 @@ const HeaderDefaultLayout = () => {
 
   const handleToogleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
+  }
+
+  const handleLanguageChange = (language: string | undefined) => {
+    i18n.changeLanguage(language)
+    router.push(router.pathname, router.asPath, { locale: language })
   }
 
   const renderHeaderMobile = () => {
@@ -65,7 +72,7 @@ const HeaderDefaultLayout = () => {
               href={item.uri}
               target={item?.target ?? "_self"}
               className={clsx("hover:tracking-wider duration-500", {
-                "text-main": asPath === item.uri
+                "text-main": router.asPath === item.uri
               })}
             >
               {item.label}
@@ -94,29 +101,46 @@ const HeaderDefaultLayout = () => {
               href={item.uri}
               target={item?.target ?? "_self"}
               className={clsx("hover:tracking-wider duration-500", {
-                "text-main": asPath === item.uri
+                "text-main": router.asPath === item.uri
               })}
             >
               {item.label}
             </Link>
           ))}
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center">
           <Switch
             checked={theme === "dark"}
             onChange={handleToogleTheme}
             className={clsx(
               "relative inline-flex h-6 w-11 items-center rounded-full",
-              theme === "dark" ? "bg-blue-600" : "bg-gray-200"
+              "bg-gray-200",
+              "dark:bg-blue-600"
             )}
           >
             <span
               className={clsx(
                 "inline-block h-4 w-4 transform rounded-full bg-white transition",
-                theme === "dark" ? "translate-x-6" : "translate-x-1"
+                "translate-x-1",
+                "dark:translate-x-6"
               )}
             />
           </Switch>
+
+          <div className="flex gap-3 ml-10">
+            <button
+              className="text-yellow-500 font-semibold p-2"
+              onClick={() => handleLanguageChange("en")}
+            >
+              EN
+            </button>
+            <button
+              className="text-yellow-500 font-semibold p-2"
+              onClick={() => handleLanguageChange("vi")}
+            >
+              VI
+            </button>
+          </div>
         </div>
         <div
           className={clsx("block cursor-pointer", "md:hidden")}
