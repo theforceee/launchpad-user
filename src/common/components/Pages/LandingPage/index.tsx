@@ -4,10 +4,8 @@ import { useEffect, useState } from "react"
 import { useAccount, useDisconnect, useEnsName, useNetwork } from "wagmi"
 import ConnectWalletDialog from "./ConnectWalletDialog"
 import SwitchNetworkDialog from "./SwitchNetworkDialog"
-import { useTranslation } from "react-i18next"
 
 const LandingPage = () => {
-  const { t } = useTranslation()
   const { address, isConnected, connector } = useAccount()
   const { data: ensName } = useEnsName({ address })
   const { disconnect } = useDisconnect()
@@ -25,42 +23,37 @@ const LandingPage = () => {
   }
 
   return (
-    <div
-      className={clsx(
-        "py-20 mt-10 bg-gray-300 text-black",
-        "dark:bg-main dark:text-white"
-      )}
-    >
-      <div className="mx-auto max-w-screen-main flex gap-5">
+    <div className={clsx("mt-10 bg-gray-300 py-20 text-black")}>
+      <div className="mx-auto flex max-w-screen-main gap-5">
         {isConnected ? (
           <div>
             <div>{ensName ? `${ensName} (${address})` : address}</div>
             <div>Connected to: {connector?.name}</div>
             <div>Current Chain: {chain?.name}</div>
             <button
-              className="bg-green-700 text-white rounded-lg px-5 h-10"
+              className="h-10 rounded-lg bg-green-700 px-5 text-white"
               onClick={() => setOpenNetworkDialog(true)}
             >
-              {t("switch_network")}
+              Switch network
             </button>
             <button
               onClick={() => disconnect()}
-              className="bg-red-700 text-white rounded-lg px-5 h-10 ml-3"
+              className="ml-3 h-10 rounded-lg bg-red-700 px-5 text-white"
             >
-              {t("disconnect")}
+              Disconnect
             </button>
           </div>
         ) : (
           <button
-            className="px-4 py-3 bg-green-500 rounded-lg"
+            className="rounded-lg bg-green-500 px-4 py-3"
             onClick={() => setOpenConnectDialog(true)}
           >
-            {t("connect_wallet")}
+            Connect Wallet
           </button>
         )}
       </div>
 
-      <div className="mx-auto max-w-screen-main flex gap-5">
+      <div className="mx-auto flex max-w-screen-main gap-5">
         <a href="#" className="card education">
           <div className="overlay"></div>
           <div className="circle">

@@ -8,7 +8,6 @@ delete colors.blueGray;
 
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class",
   theme: {
     screens: {
       xxs: "400px",
