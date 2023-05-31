@@ -1,7 +1,23 @@
 import clsx from "clsx"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { HTMLAttributeAnchorTarget, useState } from "react"
+import { HTMLAttributeAnchorTarget, useEffect, useState } from "react"
+import { URLS } from "@constants/index"
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Button
+} from "@material-tailwind/react"
+
+import iconSearch from "@images/icon-search.svg"
+import logoFull from "@images/logo-full.png"
+import iconWallet from "@images/icon-wallet.png"
+import { useAccount, useDisconnect, useNetwork } from "wagmi"
+import { Wallet } from "@constants/networks"
+import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
+import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
 
 type RouteTypes = {
   label: string
@@ -9,29 +25,62 @@ type RouteTypes = {
   target?: HTMLAttributeAnchorTarget
 }
 
-const routes: Array<RouteTypes> = [
+const mainRoutes: Array<RouteTypes> = [
   {
-    label: "Home",
-    uri: "/"
+    label: "IDO",
+    uri: URLS.IDO
   },
   {
-    label: "User Page",
-    uri: "/user"
+    label: "INO",
+    uri: URLS.INO
   },
   {
-    label: "Route 2",
-    uri: "https://bscscan.com/",
-    target: "_blank"
+    label: "NFT",
+    uri: URLS.NFT
   },
   {
-    label: "Route 3",
-    uri: "/r"
+    label: "Stats",
+    uri: URLS.STATS
+  },
+  {
+    label: "FAQ",
+    uri: URLS.FAQ
+  }
+]
+
+const userRoutes: Array<RouteTypes> = [
+  {
+    label: "Profile",
+    uri: URLS.PROFILE
+  },
+  {
+    label: "Staking",
+    uri: URLS.STAKING
+  },
+  {
+    label: "Favorites",
+    uri: URLS.FAVORITES
   }
 ]
 
 const HeaderDefaultLayout = () => {
   const router = useRouter()
+  const { address, isConnected } = useAccount()
+  const { chain } = useNetwork()
+  const { disconnect } = useDisconnect()
+
   const [open, setOpen] = useState<boolean>(false)
+
+  const [openConnectDialog, setOpenConnectDialog] = useState<boolean>(false)
+  const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
+
+  useEffect(() => {
+    isConnected && setOpenConnectDialog(false)
+  }, [isConnected])
+
+  async function handleSelectWallet(wallet: Wallet) {
+    setOpenConnectDialog(false)
+  }
 
   const handleOpenHeader = () => {
     setOpen((prevState) => !prevState)
@@ -52,7 +101,7 @@ const HeaderDefaultLayout = () => {
           /> */}
         </div>
         <div className="text-lg mt-10 flex w-full flex-col justify-center gap-6 text-center font-semibold text-white">
-          {routes.map((item: RouteTypes, index: number) => (
+          {mainRoutes.map((item: RouteTypes, index: number) => (
             <Link
               key={index}
               href={item.uri}
@@ -73,37 +122,113 @@ const HeaderDefaultLayout = () => {
     <>
       <nav
         className={clsx(
-          "absolute left-1/2 flex h-20 w-full max-w-screen-main -translate-x-1/2 items-center justify-between bg-fuchsia-800 text-white",
-          "md:px-[120px]",
-          "xs:px-[60px]",
-          "pl-5 pr-6"
+          "absolute left-1/2 mt-3 flex h-[72px] w-full max-w-screen-main -translate-x-1/2 px-6"
+          // "md:px-[120px]",
+          // "xs:px-[60px]",
+          // "pl-5 pr-6"
         )}
       >
-        {/* <Link href="/">Logo</Link> */}
-        <div className={clsx("hidden gap-5", "md:flex")}>
-          {routes.map((item: RouteTypes, index: number) => (
-            <Link
-              key={index}
-              href={item.uri}
-              target={item?.target ?? "_self"}
-              className={clsx("duration-500 hover:tracking-wider", {
-                "text-main": router.asPath === item.uri
-              })}
-            >
-              {item.label}
+        <div className="flex w-full items-center justify-between rounded-xl bg-main/80 pl-10 text-white">
+          <div className="flex w-full flex-1 items-center pr-10">
+            <Link href={URLS.HOME}>
+              <Image alt="" src={logoFull} />
             </Link>
-          ))}
-        </div>
 
-        <div
-          className={clsx("block cursor-pointer", "md:hidden")}
-          onClick={handleOpenHeader}
-        >
-          {/* <Image src={iconMenu} alt="" width={25} /> */}
+            <div className="ml-12 flex h-12 w-full max-w-lg rounded-xl bg-white/20 px-[14px]">
+              <Image alt="" src={iconSearch} />
+              <input
+                type="text"
+                className="ml-2 w-full bg-transparent outline-none"
+                placeholder="Search"
+              />
+            </div>
+          </div>
+
+          <div className={clsx("hidden items-center gap-12", "md:flex")}>
+            {mainRoutes.map((item: RouteTypes, index: number) => (
+              <Link
+                key={index}
+                href={item.uri}
+                target={item?.target ?? "_self"}
+                className={clsx("hover: duration-200", {
+                  "text-blazeOrange": router.asPath === item.uri
+                })}
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            <Popover placement="bottom-end">
+              <PopoverHandler>
+                <div className="pr-10">
+                  <Image alt="" src={iconWallet} className="cursor-pointer" />
+                </div>
+              </PopoverHandler>
+              <PopoverContent className="mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white">
+                {isConnected ? (
+                  <>
+                    <div
+                      className="flex cursor-pointer items-center text-[#0091FF]"
+                      onClick={() => setOpenNetworkDialog(true)}
+                    >
+                      <div className="mr-2 h-2 w-2 rounded-full bg-green-400"></div>
+                      <span className="">{chain?.name}</span>
+                    </div>
+                    <div className="mt-2 text-blazeOrange">{address}</div>
+                    {userRoutes.map((item: RouteTypes, index: number) => (
+                      <a
+                        key={index}
+                        href={item.uri}
+                        target={item.target || "_self"}
+                        className="mt-5 border-none outline-none duration-200 hover:text-blazeOrange"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                    <div
+                      className="mt-5 cursor-pointer border-none duration-200 hover:text-blazeOrange"
+                      onClick={() => disconnect()}
+                    >
+                      Log Out
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      size="sm"
+                      color="deep-orange"
+                      className="flex items-center gap-3"
+                      onClick={() => setOpenConnectDialog(true)}
+                    >
+                      Connect Wallet
+                    </Button>
+                  </>
+                )}
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div
+            className={clsx("block cursor-pointer", "md:hidden")}
+            onClick={handleOpenHeader}
+          >
+            {/* <Image src={iconMenu} alt="" width={25} /> */}
+          </div>
         </div>
       </nav>
 
       {renderHeaderMobile()}
+
+      <ConnectWalletDialog
+        handleClose={() => setOpenConnectDialog(false)}
+        show={openConnectDialog}
+        onConnectWallet={handleSelectWallet}
+      />
+
+      <SwitchNetworkDialog
+        handleClose={() => setOpenNetworkDialog(false)}
+        show={openNetworkDialog}
+      />
     </>
   )
 }

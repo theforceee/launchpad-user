@@ -20,6 +20,16 @@ a {
   /* font-family: TTHoves; */
 }
 
+.section {
+  max-width: 1440px;
+  width: 100%;
+  padding: 0 60px;
+  margin: 0 auto;
+}
+.blazePage {
+  padding-top: 100px;
+}
+
 .education {
   --bg-color: #ffd861;
   --bg-color-light: #ffeeba;

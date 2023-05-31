@@ -23,8 +23,8 @@ const LandingPage = () => {
   }
 
   return (
-    <div className={clsx("mt-10 bg-gray-300 py-20 text-black")}>
-      <div className="mx-auto flex max-w-screen-main gap-5">
+    <div className={clsx("bg-gray-300 py-28 text-black")}>
+      <div className="section mx-auto flex gap-5">
         {isConnected ? (
           <div>
             <div>{ensName ? `${ensName} (${address})` : address}</div>
@@ -53,7 +53,7 @@ const LandingPage = () => {
         )}
       </div>
 
-      <div className="mx-auto flex max-w-screen-main gap-5">
+      <div className="section mx-auto flex gap-5">
         <a href="#" className="card education">
           <div className="overlay"></div>
           <div className="circle">

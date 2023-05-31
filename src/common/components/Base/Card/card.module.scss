@@ -1,0 +1,44 @@
+.hoverContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 436px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+
+  border-radius: 20px;
+}
+.hoverContent * {
+  transform: translateY(70%);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+.cardHover:hover {
+  .hoverContent {
+    opacity: 1;
+  }
+  .hoverContent * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.cardContent {
+  background: linear-gradient(180deg, #000024 48.44%, #19193a 85.42%);
+  box-shadow: 0px 20px 20px rgba(0, 0, 36, 0.02);
+  border-radius: 20px;
+}
+
+.btnViewProject {
+  background: linear-gradient(274.23deg, #504fbe 5.63%, #9887f2 100%);
+  border-radius: 8px;
+  width: 70%;
+  padding: 12px 0;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+}

@@ -1,12 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require("tailwindcss/colors");
+const withMT = require("@material-tailwind/react/utils/withMT");
 delete colors.lightBlue;
 delete colors.warmGray;
 delete colors.trueGray;
 delete colors.coolGray;
 delete colors.blueGray;
 
-module.exports = {
+module.exports = withMT({
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
@@ -21,7 +22,9 @@ module.exports = {
       main: "1440px",
     },
     colors: {
-      main: "#EB522F",
+      main: "#000024",
+      blazeOrange: "#FF9633",
+      blazePurple: "#504FBE",
       ...colors,
     },
     fontFamily: {
@@ -63,4 +66,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-};
+});

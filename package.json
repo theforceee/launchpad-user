@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
+    "@material-tailwind/react": "^2.0.1",
     "@types/node": "18.14.4",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
@@ -17,6 +18,7 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "@web3-react/core": "^6.1.9",
     "aos": "^2.3.4",
+    "bignumber.js": "^9.1.1",
     "clsx": "^1.2.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.35.0",

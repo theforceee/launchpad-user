@@ -18,7 +18,9 @@
       "@components/*": ["./src/common/components/*"],
       "@constants/*": ["./src/common/constants/*"],
       "@hooks/*": ["./src/common/hooks/*"],
+      "@utils/*": ["./src/common/utils/*"],
       "@styles/*": ["./src/common/styles/*"],
+      "@images/*": ["./src/assets/images/*"],
       "@/*": ["./src/*"]
     }
   },
