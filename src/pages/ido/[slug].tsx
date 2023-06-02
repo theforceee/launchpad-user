@@ -24,9 +24,7 @@ const IdoDetail: NextPage = ({ host }: any) => {
 
 type Props = { host: string | null }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => ({
+export const getStaticProps: GetServerSideProps<Props> = async (context) => ({
   props: { host: context.req.headers.host || null }
 })
 
