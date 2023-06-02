@@ -25,6 +25,7 @@ module.exports = withMT({
       main: "#000024",
       blazeOrange: "#FF9633",
       blazePurple: "#504FBE",
+      textGray: "#9999A7",
       ...colors,
     },
     fontFamily: {

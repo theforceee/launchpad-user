@@ -1,23 +1,23 @@
+import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
+import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
+import { URLS } from "@constants/index"
+import { Wallet } from "@constants/networks"
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverHandler
+} from "@material-tailwind/react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { HTMLAttributeAnchorTarget, useEffect, useState } from "react"
-import { URLS } from "@constants/index"
-import {
-  Popover,
-  PopoverHandler,
-  PopoverContent,
-  Button
-} from "@material-tailwind/react"
+import { useAccount, useDisconnect, useNetwork } from "wagmi"
 
 import iconSearch from "@images/icon-search.svg"
-import logoFull from "@images/logo-full.png"
 import iconWallet from "@images/icon-wallet.png"
-import { useAccount, useDisconnect, useNetwork } from "wagmi"
-import { Wallet } from "@constants/networks"
-import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
-import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
+import logoFull from "@images/logo-full.png"
 
 type RouteTypes = {
   label: string

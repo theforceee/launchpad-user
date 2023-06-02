@@ -8,6 +8,7 @@ import { formatCurrency } from "@utils/index"
 
 import fakeImage from "@images/fake-project-image.png"
 import fakeLogo from "@images/fake-project-logo.png"
+import iconUSDT from "@images/icon-usdt.png"
 import iconFavorite from "@images/icon-favorite.svg"
 import iconFavoriteChecked from "@images/icon-favorite-checked.svg"
 import iconNotification from "@images/icon-notification.svg"
@@ -42,12 +43,6 @@ const Card = (props: CardProps) => {
     return new BigNumber(privateRaise).plus(publicRaise).toNumber()
   }, [cardData?.pools])
 
-  const displayCurrency = (pools: Array<any> | undefined) => {
-    if (!pools) return "N/A"
-
-    return pools[0].accepted_currency ?? currencies.NATIVE
-  }
-
   const handleFavorite = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     slug: string
@@ -68,10 +63,7 @@ const Card = (props: CardProps) => {
   return (
     <div className={clsx(styles.cardHover, "relative flex")}>
       <div className={clsx(styles.hoverContent, "z-20 flex bg-[#333350]/90")}>
-        <a
-          href={`${URLS.IDO}/${cardData?.slug}`}
-          className={clsx(styles.btnViewProject)}
-        >
+        <a href={`${URLS.IDO}/${cardData?.slug}`} className="btnGradient">
           View Project
         </a>
         <div className="absolute top-3 right-3 flex space-x-1">
@@ -109,12 +101,17 @@ const Card = (props: CardProps) => {
             <div className="absolute left-1/2 -bottom-8 h-[60px] w-[60px] -translate-x-1/2">
               <Image src={fakeLogo} alt="" className="object-contain" />
             </div>
-            <Image src={fakeImage} alt="" className="w-full object-contain" />
+            <Image
+              src={fakeImage}
+              alt=""
+              className="w-full object-contain"
+              priority
+            />
           </div>
           <div className="mt-12 text-24/32 font-bold text-white">
             {cardData?.name || `Project's name`}
           </div>
-          <div className="mt-1 text-16/24 text-[#9999A7]">
+          <div className="mt-1 text-16/24 text-textGray">
             {cardData?.token?.token_id || `$TOKEN`}
           </div>
           <div className="mt-3 mb-2 flex gap-1">
@@ -122,9 +119,12 @@ const Card = (props: CardProps) => {
               <span className="">RAISING</span>
               <span className="ml-1">{formatCurrency(totalRaise)}</span>
             </div>
-            <div className="rounded bg-[#333350] px-3 py-2">
-              <span className="text-[#36C992]">
-                {displayCurrency(cardData?.pools)}
+            <div className="flex items-center rounded bg-[#333350] px-3 py-2">
+              <div className="h-4 w-4">
+                <Image src={iconUSDT} alt="" className="shrink-0" />
+              </div>
+              <span className="ml-[6px] text-[#36C992]">
+                {cardData?.accepted_currency || "N/A"}
               </span>
             </div>
           </div>

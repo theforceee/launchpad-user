@@ -30,6 +30,18 @@ a {
   padding-top: 100px;
 }
 
+.btnGradient {
+  background: linear-gradient(274.23deg, #504fbe 5.63%, #9887f2 100%);
+  border-radius: 8px;
+  width: 70%;
+  padding: 12px 0;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+}
+
 .education {
   --bg-color: #ffd861;
   --bg-color-light: #ffeeba;
