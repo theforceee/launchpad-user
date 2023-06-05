@@ -4,23 +4,17 @@ import iconStar from "@images/icon-star-white.svg"
 import iconTelegram from "@images/icon-telegram.svg"
 import iconTwitter from "@images/icon-twitter.svg"
 import iconUSDT from "@images/icon-usdt.png"
+import moment from "moment"
+import { Step, Stepper, Tab, Tabs, TabsHeader } from "@material-tailwind/react"
 import { formatCurrency } from "@utils/index"
 import BigNumber from "bignumber.js"
 import clsx from "clsx"
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 import BuyTokenForm from "./BuyTokenForm"
+import ClaimEmissions from "./ClaimEmissions"
 import styles from "./idoDetail.module.scss"
-import {
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  Stepper,
-  Step,
-  Button,
-  TabsHeader
-} from "@material-tailwind/react"
+import { EmissionTypes } from "./EmissionTable"
 
 const TABS = {
   PROJECT_INFO: "1",
@@ -88,9 +82,25 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
     (typeof PROJECT_TABS)[keyof typeof PROJECT_TABS]
   >(PROJECT_TABS.ABOUT)
 
+  const [emissions, setEmissions] = useState<Array<EmissionTypes>>([])
+
   useEffect(() => {
     console.log("IdoDetailPage", poolDetail, loading)
-    console.log("PROJECT_TABS", Object.values(PROJECT_TABS))
+    if (!poolDetail) return
+
+    const tokenReleases = poolDetail?.token?.tokenReleases
+    if (!tokenReleases) return
+
+    const newEmissions: Array<EmissionTypes> = tokenReleases.map(
+      ({ release_percent, release_time }: any) => ({
+        claimTime: release_time
+          ? moment.unix(release_time).format("DD/MM/YY HH:mm [UTC]")
+          : "TBA",
+        tokenAmount: release_percent,
+        status: "Due"
+      })
+    )
+    setEmissions(newEmissions)
   }, [poolDetail, loading])
 
   const totalRaise = useMemo(() => {
@@ -230,22 +240,26 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
                 </Tabs>
               </div>
 
-              <div className="mt-auto flex space-x-1">
-                {Object.values(PROJECT_TABS).map((item: any, index: number) => (
-                  <div
-                    className={clsx(
-                      "flex cursor-pointer rounded-lg px-5 py-2 font-semibold capitalize duration-300 ease-linear",
-                      projectTab === item
-                        ? "bg-blazePurple text-white"
-                        : "text-textGray"
-                    )}
-                    key={index}
-                    onClick={() => setProjectTab(item)}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
+              {activeTab === TABS.PROJECT_INFO && (
+                <div className="mt-auto flex space-x-1">
+                  {Object.values(PROJECT_TABS).map(
+                    (item: any, index: number) => (
+                      <div
+                        className={clsx(
+                          "flex cursor-pointer rounded-lg px-5 py-2 font-semibold capitalize duration-300 ease-linear",
+                          projectTab === item
+                            ? "bg-blazePurple text-white"
+                            : "text-textGray"
+                        )}
+                        key={index}
+                        onClick={() => setProjectTab(item)}
+                      >
+                        {item}
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
             </div>
 
             {activeTab === TABS.PROJECT_INFO && (
@@ -274,7 +288,16 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
             )}
 
             {activeTab === TABS.TOKEN_CLAIM && (
-              <div className=""> Claim emissions ....</div>
+              <div className="mt-5">
+                {emissions.length === 0 ? (
+                  <span>
+                    Token Claim Date & Time will be announced soon. Please stay
+                    tuned for updates.
+                  </span>
+                ) : (
+                  <ClaimEmissions emissions={emissions} />
+                )}
+              </div>
             )}
           </div>
         </div>

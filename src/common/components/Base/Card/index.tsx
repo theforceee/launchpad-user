@@ -63,7 +63,10 @@ const Card = (props: CardProps) => {
   return (
     <div className={clsx(styles.cardHover, "relative flex")}>
       <div className={clsx(styles.hoverContent, "z-20 flex bg-[#333350]/90")}>
-        <a href={`${URLS.IDO}/${cardData?.slug}`} className="btnGradient">
+        <a
+          href={`${URLS.IDO}/${cardData?.slug}`}
+          className="btnGradient !w-8/12"
+        >
           View Project
         </a>
         <div className="absolute top-3 right-3 flex space-x-1">

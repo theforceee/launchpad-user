@@ -33,7 +33,7 @@ a {
 .btnGradient {
   background: linear-gradient(274.23deg, #504fbe 5.63%, #9887f2 100%);
   border-radius: 8px;
-  width: 70%;
+  width: 100%;
   padding: 12px 0;
   color: white;
   font-weight: 600;
