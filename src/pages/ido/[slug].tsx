@@ -1,11 +1,13 @@
 import DefaultLayout from "@components/Layouts/DefaultLayout"
 import IdoDetailPage from "@components/Pages/IdoDetailPage"
-import { API_BASE_URL } from "@constants/index"
-import useFetch, { fetcher } from "@hooks/useFetch"
+import useFetch from "@hooks/useFetch"
 import styles from "@styles/Home.module.css"
-import type { GetServerSideProps, GetStaticPaths, NextPage } from "next"
+import type { GetServerSideProps, NextPage } from "next"
+import { useRouter } from "next/router"
 
-const IdoDetail: NextPage = ({ slug }: any) => {
+const IdoDetail: NextPage = ({ host }: any) => {
+  const router = useRouter()
+  const { slug } = router.query
   const { data: resPoolDetail, loading } = useFetch<any>(
     `/pool/${slug}`,
     !!slug
@@ -20,26 +22,10 @@ const IdoDetail: NextPage = ({ slug }: any) => {
   )
 }
 
-type Props = { slug: string | string[] | undefined }
-export const getStaticProps: GetServerSideProps<Props> = async ({ params }) => {
-  return {
-    props: { slug: params?.slug }
-  }
-}
+type Props = { host: string | null }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const { data: resPool } = await fetcher(`${API_BASE_URL}/pool`)
-
-  const paths = resPool?.data.map((pool: any) => {
-    return {
-      params: { slug: pool?.slug }
-    }
-  })
-
-  return {
-    paths: paths,
-    fallback: true
-  }
-}
+export const getStaticProps: GetServerSideProps<Props> = async (context) => ({
+  props: { host: context.req.headers.host || null }
+})
 
 export default IdoDetail
