@@ -30,6 +30,20 @@ a {
   padding-top: 100px;
 }
 
+.btnBorderGradient {
+  border: 2px solid transparent;
+  background: linear-gradient(#000024, #000024) padding-box,
+    linear-gradient(180deg, #e394e1 0%, #9764f2 50%, #9ae8f3 100%) border-box;
+  border-radius: 8px;
+  padding: 8px 32px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .btnGradient {
   background: linear-gradient(274.23deg, #504fbe 5.63%, #9887f2 100%);
   border-radius: 8px;
@@ -40,6 +54,7 @@ a {
   font-size: 16px;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 }
 
 .education {

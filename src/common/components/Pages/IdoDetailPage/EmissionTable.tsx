@@ -47,8 +47,8 @@ const EmissionTable = ({ emissions }: EmissionTableProps) => {
             index: number
           ) => {
             return (
-              <tr key={index} className="mb-1 bg-[#151532]">
-                <td className="rounded-tl-lg rounded-bl-lg p-4 ">
+              <tr key={index} className="mb-1 bg-[#151532] text-14/18">
+                <td className="rounded-tl-lg rounded-bl-lg p-4">
                   <span className="">{displayNumOrder(index)}</span>
                 </td>
                 <td className="p-4">
