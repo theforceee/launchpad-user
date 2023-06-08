@@ -13,6 +13,7 @@ import iconFavorite from "@images/icon-favorite.svg"
 import iconFavoriteChecked from "@images/icon-favorite-checked.svg"
 import iconNotification from "@images/icon-notification.svg"
 import iconNotificationChecked from "@images/icon-notification-checked.svg"
+import { useCountDown } from "@hooks/useCountDown"
 
 type CardProps = {
   cardData: any
@@ -20,9 +21,12 @@ type CardProps = {
 
 const Card = (props: CardProps) => {
   const { cardData } = props
-
   const [favoriteChecked, setFavoriteChecked] = useState<boolean>(false)
   const [notiChecked, setNotiChecked] = useState<boolean>(false)
+
+  const { hours, minutes, seconds } = useCountDown(
+    new Date((cardData?.start_join_time || 0) * 1000)
+  )
 
   const totalRaise = useMemo(() => {
     if (!cardData?.pools) return 0
@@ -135,7 +139,7 @@ const Card = (props: CardProps) => {
 
         <div className="mt-auto flex items-center justify-center rounded-b-[20px] bg-[#504FBE] py-4 text-16/24 text-white">
           <span className="">Starts in</span>
-          <div className="ml-2 font-semibold">{`44h : 13m : 10s`}</div>
+          <div className="ml-2 font-semibold">{`${hours}h : ${minutes}m : ${seconds}s`}</div>
         </div>
       </div>
     </div>
