@@ -1,9 +1,3 @@
-import fakeLogo from "@images/fake-project-logo.png"
-import iconDiscord from "@images/icon-discord.svg"
-import iconStar from "@images/icon-star-white.svg"
-import iconTelegram from "@images/icon-telegram.svg"
-import iconTwitter from "@images/icon-twitter.svg"
-import iconUSDT from "@images/icon-usdt.png"
 import moment from "moment"
 import { Step, Stepper, Tab, Tabs, TabsHeader } from "@material-tailwind/react"
 import { formatCurrency } from "@utils/index"
@@ -15,6 +9,13 @@ import BuyTokenForm from "./BuyTokenForm"
 import ClaimEmissions from "./ClaimEmissions"
 import styles from "./idoDetail.module.scss"
 import { EmissionTypes } from "./EmissionTable"
+
+import fakeLogo from "@images/fake-project-logo.png"
+import iconDiscord from "@images/icon-discord.svg"
+import iconStar from "@images/icon-star-white.svg"
+import iconTelegram from "@images/icon-telegram.svg"
+import iconTwitter from "@images/icon-twitter.svg"
+import iconUSDT from "@images/icon-usdt.png"
 
 const TABS = {
   PROJECT_INFO: "1",

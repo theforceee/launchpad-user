@@ -14,6 +14,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { HTMLAttributeAnchorTarget, useEffect, useState } from "react"
 import { useAccount, useDisconnect, useNetwork } from "wagmi"
+import styles from "./header.module.scss"
 
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
@@ -128,7 +129,12 @@ const HeaderDefaultLayout = () => {
           // "pl-5 pr-6"
         )}
       >
-        <div className="flex w-full items-center justify-between rounded-xl bg-main/80 pl-10 text-white">
+        <div
+          className={clsx(
+            styles.header,
+            "flex w-full items-center justify-between rounded-xl bg-main/70 pl-10 text-white"
+          )}
+        >
           <div className="flex w-full flex-1 items-center pr-10">
             <Link href={URLS.HOME}>
               <Image alt="" src={logoFull} />
@@ -164,7 +170,7 @@ const HeaderDefaultLayout = () => {
                   <Image alt="" src={iconWallet} className="cursor-pointer" />
                 </div>
               </PopoverHandler>
-              <PopoverContent className="mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white">
+              <PopoverContent className="z-30 mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white">
                 {isConnected ? (
                   <>
                     <div
@@ -180,7 +186,12 @@ const HeaderDefaultLayout = () => {
                         key={index}
                         href={item.uri}
                         target={item.target || "_self"}
-                        className="mt-5 border-none outline-none duration-200 hover:text-blazeOrange"
+                        className={clsx(
+                          "mt-5 border-none outline-none duration-200 hover:text-blazeOrange",
+                          {
+                            "text-blazeOrange": router.pathname === item.uri
+                          }
+                        )}
                       >
                         {item.label}
                       </a>

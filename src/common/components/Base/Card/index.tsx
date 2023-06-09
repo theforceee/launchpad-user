@@ -1,19 +1,19 @@
+import { URLS } from "@constants/index"
+import { useCountDown } from "@hooks/useCountDown"
+import { formatCurrency } from "@utils/index"
+import BigNumber from "bignumber.js"
 import clsx from "clsx"
+import Image from "next/image"
 import React, { useMemo, useState } from "react"
 import styles from "./card.module.scss"
-import Image from "next/image"
-import { URLS, currencies } from "@constants/index"
-import BigNumber from "bignumber.js"
-import { formatCurrency } from "@utils/index"
 
 import fakeImage from "@images/fake-project-image.png"
 import fakeLogo from "@images/fake-project-logo.png"
-import iconUSDT from "@images/icon-usdt.png"
-import iconFavorite from "@images/icon-favorite.svg"
 import iconFavoriteChecked from "@images/icon-favorite-checked.svg"
-import iconNotification from "@images/icon-notification.svg"
+import iconFavorite from "@images/icon-favorite.svg"
 import iconNotificationChecked from "@images/icon-notification-checked.svg"
-import { useCountDown } from "@hooks/useCountDown"
+import iconNotification from "@images/icon-notification.svg"
+import iconUSDT from "@images/icon-usdt.png"
 
 type CardProps = {
   cardData: any

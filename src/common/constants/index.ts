@@ -21,7 +21,8 @@ export const URLS = {
 
 export const headDefault: HeadDefaultTypes = {
   description: "Description",
-  image: "https://d1j2c9jkfhu70p.cloudfront.net/Thumbnail_2_7bc61c9253.png",
+  // image: "https://d1j2c9jkfhu70p.cloudfront.net/Thumbnail_2_7bc61c9253.png",
+  image: "",
   title: "Launchpad",
   keywords: "key, word"
 }

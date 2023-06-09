@@ -22,7 +22,7 @@ module.exports = withMT({
       main: "1440px",
     },
     colors: {
-      main: "#000024",
+      main: "#000122",
       blazeOrange: "#FF9633",
       blazePurple: "#504FBE",
       textGray: "#9999A7",
