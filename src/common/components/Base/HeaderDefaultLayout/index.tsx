@@ -131,7 +131,7 @@ const HeaderDefaultLayout = () => {
       >
         <div
           className={clsx(
-            styles.header,
+            styles.headerShadow,
             "flex w-full items-center justify-between rounded-xl bg-main/70 pl-10 text-white"
           )}
         >
@@ -170,7 +170,12 @@ const HeaderDefaultLayout = () => {
                   <Image alt="" src={iconWallet} className="cursor-pointer" />
                 </div>
               </PopoverHandler>
-              <PopoverContent className="z-30 mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white">
+              <PopoverContent
+                className={clsx(
+                  styles.headerShadow,
+                  "z-30 mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white"
+                )}
+              >
                 {isConnected ? (
                   <>
                     <div

@@ -48,7 +48,9 @@ const IdoPage = () => {
               </div>
             ))}
           </div>
-          <div className="btnGradient !w-fit !px-8">Calendar view</div>
+          <div className="btnGradientPurple btnMedium !w-fit !px-8">
+            <span>Calendar view</span>
+          </div>
         </div>
         <div className={clsx(styles.list, "mt-5")}>
           {pools.map((item: any, index: number) => (

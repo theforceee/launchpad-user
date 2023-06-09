@@ -69,9 +69,9 @@ const Card = (props: CardProps) => {
       <div className={clsx(styles.hoverContent, "z-20 flex bg-[#333350]/90")}>
         <a
           href={`${URLS.IDO}/${cardData?.slug}`}
-          className="btnGradient !w-8/12"
+          className="btnGradientPurple btnMedium !w-8/12"
         >
-          View Project
+          <span>View Project</span>
         </a>
         <div className="absolute top-3 right-3 flex space-x-1">
           <div

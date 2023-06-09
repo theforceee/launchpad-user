@@ -68,14 +68,16 @@ const data: Array<UserTabTypes> = [
 ]
 
 const UserPage = () => {
-  const tabsRef = useRef<any>(null)
-  const [activeTab, setActiveTab] = useState<string>()
-
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<string>()
 
   useEffect(() => {
     const hash = router.asPath.split("#")[1]
-    if (!hash) router.push(HASHES.PROFILE).catch(() => console.log(""))
+    if (!hash) {
+      router.push(HASHES.PROFILE).catch(() => console.log(""))
+      setActiveTab(HASHES.PROFILE)
+      return
+    }
 
     setActiveTab("#" + hash)
   }, [router])
@@ -84,9 +86,9 @@ const UserPage = () => {
 
   return (
     <div className="blazePage section">
-      <div className="flex w-full text-white">
+      <div className="flex w-full pb-20 text-white">
         <div className={styles.userNav}>
-          <Tabs ref={tabsRef} value={activeTab}>
+          <Tabs value={activeTab}>
             <TabsHeader
               className="mx-auto h-[52px] !bg-[#151532]"
               indicatorProps={{
@@ -107,7 +109,7 @@ const UserPage = () => {
                 </Tab>
               ))}
             </TabsHeader>
-            <TabsBody className="mt-3 rounded-[20px] bg-[#151532]">
+            <TabsBody className="mx-auto mt-3 max-w-[1200px] rounded-[20px] bg-[#151532]">
               {data.map(({ hash, Element }) => (
                 <TabPanel key={hash} value={hash}>
                   <Element />

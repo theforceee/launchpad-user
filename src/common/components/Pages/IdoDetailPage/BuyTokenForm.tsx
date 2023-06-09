@@ -73,8 +73,11 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
           <span className="">{formatCurrency(10000000)}</span>
           <span className="">$token</span>
         </div>
-        <div className="btnGradient mt-3" onClick={handleApprove}>
-          Approve
+        <div
+          className="btnGradientPurple btnMedium mt-3 !max-w-full"
+          onClick={handleApprove}
+        >
+          <span>Approve</span>
         </div>
       </div>
 

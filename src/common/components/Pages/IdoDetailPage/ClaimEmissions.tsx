@@ -18,10 +18,10 @@ const ClaimEmissions = ({ emissions }: any) => {
           <EmissionTable emissions={emissions} />
         </div>
         <div
-          className="btnGradient mt-2 cursor-pointer"
+          className="btnGradientPurple btnMedium mt-2 !max-w-full cursor-pointer"
           onClick={handleClaimPrivate}
         >
-          CLAIM PRIVATE SALE TOKENS
+          <span>CLAIM PRIVATE SALE TOKENS</span>
         </div>
       </div>
 
@@ -31,10 +31,10 @@ const ClaimEmissions = ({ emissions }: any) => {
           <EmissionTable emissions={emissions} />
         </div>
         <div
-          className="btnGradient mt-2 cursor-pointer"
+          className="btnGradientPurple btnMedium mt-2 !max-w-full  cursor-pointer"
           onClick={handleClaimPublic}
         >
-          CLAIM PUBLIC SALE TOKENS
+          <span>CLAIM PUBLIC SALE TOKENS</span>
         </div>
       </div>
     </div>

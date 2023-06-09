@@ -62,10 +62,10 @@ const FooterDefaultLayout = () => {
               className="w-full bg-transparent pl-1 pr-2 outline-none"
             />
             <div
-              className="btnGradient !w-[120px] !rounded-[6px] !py-[10px]"
+              className="btnGradientPurple btnMedium !h-[38px] !w-[120px] !rounded-[6px]"
               onClick={handleSignUp}
             >
-              Sign up
+              <span>Sign up</span>
             </div>
           </div>
         </div>
@@ -85,8 +85,11 @@ const FooterDefaultLayout = () => {
                 </a>
               )
             )}
-            <a href="#" className="btnBorderGradient">
-              Help Center
+            <a
+              href="#"
+              className="btnBorderGradient btnSmall !h-[38px] !max-w-none px-8"
+            >
+              <span>Help Center</span>
             </a>
             <Image src={poweredBy} alt="" />
           </div>
