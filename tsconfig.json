@@ -21,6 +21,7 @@
       "@utils/*": ["./src/common/utils/*"],
       "@styles/*": ["./src/common/styles/*"],
       "@images/*": ["./src/assets/images/*"],
+      "@abi/*": ["./src/abi/*"],
       "@/*": ["./src/*"]
     }
   },

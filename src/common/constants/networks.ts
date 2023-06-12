@@ -13,3 +13,10 @@ export const SUPPORTED_WALLETS = [
 ]
 
 export type Wallet = (typeof SUPPORTED_WALLETS)[number]["id"]
+
+export enum ChainId {
+  MAINNET = 1,
+  GOERLI = 5,
+  BSC_TESTNET = 97,
+  BSC_MAINNET = 56
+}

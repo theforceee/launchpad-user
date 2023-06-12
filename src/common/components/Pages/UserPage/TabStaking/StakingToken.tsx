@@ -1,14 +1,17 @@
+import { BLAZE_TOKEN_CONTRACT, NETWORK_ID, STAKING_CONTRACT } from "@constants/index"
 import { useCountDown } from "@hooks/useCountDown"
-import { Tooltip } from "@material-tailwind/react"
-import { formatCurrency } from "@utils/index"
-import Image, { StaticImageData } from "next/image"
-import { ChangeEvent, useState } from "react"
-import { NumericFormat } from "react-number-format"
-
 import iconInfo from "@images/icon-info.png"
 import iconFiredrake from "@images/profile/tier-firedrake.png"
 import iconPhoenix from "@images/profile/tier-phoenix.png"
 import iconTrailblazer from "@images/profile/tier-trailblazer.png"
+import { Tooltip } from "@material-tailwind/react"
+import { formatCurrency } from "@utils/index"
+import BigNumber from "bignumber.js"
+import Image, { StaticImageData } from "next/image"
+import { ChangeEvent, useEffect, useState } from "react"
+import { NumericFormat } from "react-number-format"
+import { useAccount, useBalance, useContractWrite, usePrepareContractWrite } from "wagmi"
+import STAKING_ABI from "@abi/Staking.json"
 
 export const SEPARATOR = ","
 type TierTypes = {
@@ -34,13 +37,34 @@ const tiers: Array<TierTypes> = [
   }
 ]
 
-const fakeUserBalance = "17400"
 const fakeClaimDate = 1687308446349
 
 const StakingToken = () => {
   const [inputAmount, setInputAmount] = useState<string>("")
+  const { address } = useAccount()
+  const { data: userBalance } = useBalance({
+    address,
+    token: BLAZE_TOKEN_CONTRACT,
+    chainId: +NETWORK_ID,
+    onError(error) {
+      console.log("Error to fetch balance", error)
+    }
+  })
 
-  const { days, hours, minutes, seconds } = useCountDown(new Date(new Date(fakeClaimDate)), true)
+  const { config } = usePrepareContractWrite()
+
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    address: STAKING_CONTRACT,
+    abi: STAKING_ABI,
+    functionName: "StakedERC20",
+    mode: "prepared"
+  })
+
+  const { days, hours, minutes } = useCountDown(new Date(new Date(fakeClaimDate)), true)
+
+  useEffect(() => {
+    console.log("user balance", userBalance)
+  }, [userBalance])
 
   const handleChangeInputAmount = (event: ChangeEvent<HTMLInputElement> | undefined) => {
     const inputValue = event?.target.value || ""
@@ -48,8 +72,14 @@ const StakingToken = () => {
     setInputAmount(newValue)
   }
   const handleSelectMaxAmount = () => {
-    setInputAmount(fakeUserBalance)
+    setInputAmount(new BigNumber(userBalance?.formatted || "0").toString())
   }
+
+  const handleStake = () => {
+    console.log("inputAmount", inputAmount)
+    write?.()
+  }
+
   return (
     <div className="flex flex-col border-r border-[#33344D] px-6">
       <div className="flex items-center">
@@ -67,7 +97,9 @@ const StakingToken = () => {
 
       <div className="mt-5 text-12/16 font-semibold text-textGray">$BLAZE BALANCE</div>
       <div className="mt-2 flex items-center">
-        <span className="text-28/36 font-bold tracking-wider">{formatCurrency("17400")}</span>
+        <span className="text-28/36 font-bold tracking-wider">
+          {formatCurrency(userBalance?.formatted)}
+        </span>
         <a href="#" target="_blank" className="btnBorderOrange btnSmall ml-3 !border !px-4">
           <span>Buy $BLAZE</span>
         </a>
@@ -83,7 +115,6 @@ const StakingToken = () => {
               thousandSeparator={true}
               decimalScale={6}
               // isAllowed={checkAllowInput}
-              max={fakeUserBalance}
               min={0}
               maxLength={255}
               value={inputAmount}
@@ -98,7 +129,7 @@ const StakingToken = () => {
             </div>
           </div>
 
-          <div className="btnGradientPurple btnMedium ml-1 !w-[168px]">
+          <div className="btnGradientPurple btnMedium ml-1 !w-[168px]" onClick={handleStake}>
             <span>Stake</span>
           </div>
         </div>

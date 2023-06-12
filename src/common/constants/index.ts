@@ -1,4 +1,9 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API + "api/v2/user"
+export const SHERIFF_NFT_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_SHERIFF_NFT || ""
+export const PIONEER_NFT_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_PIONEER_NFT || ""
+export const BLAZE_TOKEN_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_BLAZE_TOKEN || ""
+export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAKING || ""
+export const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
 
 type HeadDefaultTypes = {
   image: string
