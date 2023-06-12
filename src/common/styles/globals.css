@@ -6,8 +6,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -77,6 +77,17 @@ a {
   cursor: pointer;
 }
 
+.btnBorderOrangeDark {
+  border: 2px solid transparent;
+  background: linear-gradient(#000122, #000122) padding-box,
+    linear-gradient(90deg, #d94c5d 0%, #f29b4b 100%) border-box;
+  border-radius: 8px;
+  color: #f29b4b;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .btnGradientPurple {
   background: linear-gradient(274.23deg, #504fbe 5.63%, #9887f2 100%);
   border-radius: 8px;
@@ -122,8 +133,7 @@ a {
 
 .card:hover {
   transform: translateY(-5px) scale(1.005) translateZ(0);
-  box-shadow: 0 24px 36px rgba(0, 0, 0, 0.11),
-    0 24px 46px var(--box-shadow-color);
+  box-shadow: 0 24px 36px rgba(0, 0, 0, 0.11), 0 24px 46px var(--box-shadow-color);
 }
 
 .card:hover .overlay {
@@ -145,8 +155,7 @@ a {
 
 .card:active {
   transform: scale(1) translateZ(0);
-  box-shadow: 0 15px 24px rgba(0, 0, 0, 0.11),
-    0 15px 24px var(--box-shadow-color);
+  box-shadow: 0 15px 24px rgba(0, 0, 0, 0.11), 0 15px 24px var(--box-shadow-color);
 }
 
 .card p {

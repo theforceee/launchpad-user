@@ -33,3 +33,8 @@ export const currencies = {
   USDC: "USDC",
   USDT: "USDT"
 }
+
+export const NETWORK_AVAILABLE = {
+  ETH: "ETH",
+  BSC: "BSC"
+}

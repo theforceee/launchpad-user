@@ -1,0 +1,9 @@
+.bgBorder {
+  border: 2px solid transparent;
+  background: linear-gradient(#000122, #000122) padding-box,
+    linear-gradient(90deg, #d94c5d 0%, #f29b4b 100%) border-box;
+  border-radius: 12px;
+  color: #f29b4b;
+  display: flex;
+  justify-content: center;
+}

@@ -1,8 +1,3 @@
-import iconFavorite from "@images/profile/icon-favorite.png"
-import iconKyc from "@images/profile/icon-kyc.png"
-import iconPool from "@images/profile/icon-pool.png"
-import iconProfile from "@images/profile/icon-profile.png"
-import iconStaking from "@images/profile/icon-staking.png"
 import {
   Tab,
   TabPanel,
@@ -12,13 +7,19 @@ import {
 } from "@material-tailwind/react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
-import { useEffect, useRef, useState } from "react"
-import TabProfile from "./TabProfile"
-import styles from "./user.module.scss"
-import TabKyc from "./TabKyc"
+import { useEffect, useState } from "react"
 import TabFavorite from "./TabFavorite"
+import TabKyc from "./TabKyc"
 import TabPools from "./TabPools"
+import TabProfile from "./TabProfile"
 import TabStaking from "./TabStaking"
+import styles from "./user.module.scss"
+
+import iconFavorite from "@images/profile/icon-favorite.png"
+import iconKyc from "@images/profile/icon-kyc.png"
+import iconPool from "@images/profile/icon-pool.png"
+import iconProfile from "@images/profile/icon-profile.png"
+import iconStaking from "@images/profile/icon-staking.png"
 
 type UserTabTypes = {
   label: string
