@@ -1,10 +1,4 @@
-import {
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  TabsHeader
-} from "@material-tailwind/react"
+import { Tab, TabPanel, Tabs, TabsBody, TabsHeader } from "@material-tailwind/react"
 import Image, { StaticImageData } from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -75,7 +69,7 @@ const UserPage = () => {
   useEffect(() => {
     const hash = router.asPath.split("#")[1]
     if (!hash) {
-      router.push(HASHES.PROFILE).catch(() => console.log(""))
+      router.push(HASHES.PROFILE).catch()
       setActiveTab(HASHES.PROFILE)
       return
     }

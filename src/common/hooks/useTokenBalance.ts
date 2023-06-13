@@ -1,34 +1,22 @@
-import { NETWORK_AVAILABLE } from "@constants/index"
-import { useState } from "react"
-import { getReadOnlyTokenContract } from "../services/web3"
+import { BLAZE_TOKEN_CONTRACT, NETWORK_ID } from "@constants/index"
+import { AppContext } from "@contexts/AppContext"
+import { useContext } from "react"
+import { useBalance } from "wagmi"
 
-const useTokenBalance = (
-  tokenAddress: string | undefined,
-  userAddress: string | null | undefined
-) => {
-  const [tokenBalanceLoading, setTokenBalanceLoading] = useState<boolean>(false)
+const useTokenBalance = (connectedAccount: `0x${string}` | undefined) => {
+  const { isWrongChain } = useContext(AppContext)
 
-  const retrieveTokenBalance = async () => {
-    if (!tokenAddress) return
-    const tokenContract = getReadOnlyTokenContract(NETWORK_AVAILABLE.ETH, tokenAddress)
-    if (!tokenContract) return 0
-    setTokenBalanceLoading(true)
-    try {
-      const balance = await tokenContract.balanceOf(userAddress)
-      setTokenBalanceLoading(false)
-      console.log("Token balance:", balance.toString())
-    } catch (error) {
-      setTokenBalanceLoading(false)
-      console.error("Error getting token balance:", error)
-      return 0
+  const { data: userBalance, isLoading } = useBalance({
+    address: connectedAccount,
+    token: BLAZE_TOKEN_CONTRACT,
+    chainId: +NETWORK_ID,
+    enabled: !!connectedAccount && isWrongChain,
+    onError(error) {
+      console.log("Error to fetch balance", error)
     }
-  }
+  })
 
-  return {
-    retrieveTokenBalance,
-    // retrieveTokenRawBalance,
-    tokenBalanceLoading
-  }
+  return { userBalance: userBalance?.formatted || "0", loadingBalance: isLoading }
 }
 
 export default useTokenBalance

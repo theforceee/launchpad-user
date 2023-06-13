@@ -1,48 +1,35 @@
-import { configureChains, createClient } from "wagmi"
-import { publicProvider } from "wagmi/providers/public"
+import { InjectedConnector } from "@wagmi/core"
+import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask"
+import { publicProvider } from "@wagmi/core/providers/public"
+import { configureChains, createConfig } from "wagmi"
 import { bsc, bscTestnet, goerli, mainnet } from "wagmi/chains"
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 
-import { InjectedConnector } from "wagmi/connectors/injected"
-import { MetaMaskConnector } from "wagmi/connectors/metaMask"
-import { WalletConnectLegacyConnector } from "wagmi/connectors/walletConnectLegacy"
-
-const { chains, provider, webSocketProvider } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, goerli, bsc, bscTestnet],
   [publicProvider()]
 )
 
 // Set up client
-export const wagmiClient = createClient({
+export const wagmiConfig = createConfig({
   autoConnect: false,
   connectors: [
-    new MetaMaskConnector({
-      chains,
-      options: {
-        // shimDisconnect: true,
-        // UNSTABLE_shimOnConnectSelectAccount: true
-      }
-    }),
-    // new WalletConnectConnector({
-    //   chains,
-    //   options: {
-    //     projectId: "...",
-    //     showQrModal: true
-    //   }
-    // }),
-    new WalletConnectLegacyConnector({
-      chains,
-      options: {
-        qrcode: true
-      }
-    }),
+    new MetaMaskConnector({ chains }),
     new InjectedConnector({
       chains,
       options: {
         name: "Injected",
         shimDisconnect: true
       }
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId: "...",
+        showQrModal: true
+      }
     })
   ],
-  provider,
-  webSocketProvider
+  publicClient,
+  webSocketPublicClient
 })

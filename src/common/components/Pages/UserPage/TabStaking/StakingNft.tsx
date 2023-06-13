@@ -1,12 +1,21 @@
-import Image from "next/image"
-import React from "react"
+import useTokenStaking from "@hooks/useTokenStaking"
+import iconInfo from "@images/icon-info.png"
 import { Tooltip } from "@material-tailwind/react"
+import clsx from "clsx"
+import Image from "next/image"
+import { useMemo } from "react"
+import { useAccount } from "wagmi"
 import styles from "./tabStaking.module.scss"
 
-import iconInfo from "@images/icon-info.png"
-import clsx from "clsx"
-
 const StakingNft = () => {
+  const { address: connectedAccount } = useAccount()
+  const { multiplier } = useTokenStaking(connectedAccount)
+
+  const stakedMultiplier = useMemo(
+    () => BigInt(multiplier?.numerator || "1").toString(),
+    [multiplier?.numerator]
+  )
+
   return (
     <div className="flex flex-col px-6">
       <div className="flex items-center">
@@ -146,7 +155,7 @@ const StakingNft = () => {
             </Tooltip>
           </div>
 
-          <div className="mt-2 text-28/36 font-bold text-blazeOrange">x1.025</div>
+          <div className="mt-2 text-28/36 font-bold text-blazeOrange">{`x${stakedMultiplier}`}</div>
         </div>
       </div>
     </div>
