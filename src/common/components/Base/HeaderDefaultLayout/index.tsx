@@ -2,12 +2,7 @@ import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDial
 import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
 import { URLS } from "@constants/index"
 import { Wallet } from "@constants/networks"
-import {
-  Button,
-  Popover,
-  PopoverContent,
-  PopoverHandler
-} from "@material-tailwind/react"
+import { Button, Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
@@ -52,15 +47,15 @@ const mainRoutes: Array<RouteTypes> = [
 const userRoutes: Array<RouteTypes> = [
   {
     label: "Profile",
-    uri: URLS.PROFILE
+    uri: URLS.PROFILE + "#profile"
   },
   {
     label: "Staking",
-    uri: URLS.STAKING
+    uri: URLS.PROFILE + "#staking"
   },
   {
     label: "Favorites",
-    uri: URLS.FAVORITES
+    uri: URLS.PROFILE + "#favorite"
   }
 ]
 
@@ -224,10 +219,7 @@ const HeaderDefaultLayout = () => {
             </Popover>
           </div>
 
-          <div
-            className={clsx("block cursor-pointer", "md:hidden")}
-            onClick={handleOpenHeader}
-          >
+          <div className={clsx("block cursor-pointer", "md:hidden")} onClick={handleOpenHeader}>
             {/* <Image src={iconMenu} alt="" width={25} /> */}
           </div>
         </div>
