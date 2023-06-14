@@ -10,7 +10,7 @@ import iconTrailblazer from "@images/profile/tier-trailblazer.png"
 import { Tooltip } from "@material-tailwind/react"
 import { convertBigIntToNumber, formatCurrency } from "@utils/index"
 import Image, { StaticImageData } from "next/image"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import { NumericFormat } from "react-number-format"
 import { useAccount } from "wagmi"
 import UnstakeDialog from "./UnstakeDialog"
@@ -65,6 +65,13 @@ const StakingToken = () => {
   useEffect(() => {
     console.log("StakingToken", userAllowance, tokenStaked, tokenPendingWithdraw)
   }, [tokenPendingWithdraw, tokenStaked, userAllowance])
+
+  const disabledClaimPending = useMemo(
+    () =>
+      !tokenPendingWithdraw ||
+      new Date().getTime() < +BigInt(tokenPendingWithdraw[1]).toString() * 1000,
+    [tokenPendingWithdraw]
+  )
 
   const handleChangeInputAmount = (event: ChangeEvent<HTMLInputElement> | undefined) => {
     const inputValue = event?.target.value || ""
@@ -199,9 +206,12 @@ const StakingToken = () => {
               <span className="mt-1 text-28/36 font-bold tracking-wider">
                 {formatCurrency(convertBigIntToNumber((tokenPendingWithdraw || [0])[0]))}
               </span>
-              <div className="btnGradientPurple btnSmall mt-3 w-full">
+              <button
+                disabled={disabledClaimPending}
+                className="btnGradientPurple btnSmall mt-3 w-full"
+              >
                 <span>Claim All</span>
-              </div>
+              </button>
               <span className="mt-2 text-12/16 text-textGray">
                 {`${days}d : ${hours}h : ${minutes}m`}
               </span>
