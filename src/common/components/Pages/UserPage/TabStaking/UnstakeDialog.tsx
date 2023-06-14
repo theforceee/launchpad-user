@@ -11,7 +11,7 @@ export type UnstakeDialogProps = {
   open: boolean
   handleClose: () => void
   unstakeToken: any
-  tokenStaked: string
+  tokenStaked: number
   loadingUnstake: boolean
 }
 type OptionTypes = {
