@@ -16,6 +16,7 @@ import iconStar from "@images/icon-star-white.svg"
 import iconTelegram from "@images/icon-telegram.svg"
 import iconTwitter from "@images/icon-twitter.svg"
 import iconUSDT from "@images/icon-usdt.png"
+import { PoolStatus, getPoolDetailStatus, poolStatus } from "@utils/getPoolDetailStatus"
 
 const TABS = {
   PROJECT_INFO: "1",
@@ -30,41 +31,41 @@ const PROJECT_TABS = {
 type StepTypes = {
   name: string
   subName?: string
-  value: number
+  value: poolStatus
 }
 const timelineSteps: Array<StepTypes> = [
   {
     name: "WHITELIST",
     subName: "",
-    value: 0
+    value: PoolStatus.WHITELIST
   },
   {
     name: "PRIVATE",
     subName: "(WL)",
-    value: 1
+    value: PoolStatus.PRIVATE_WL
   },
   {
     name: "PRIVATE",
     subName: "(FCFS)",
-    value: 2
+    value: PoolStatus.PRIVATE_FCFS
   },
   {
     name: "PUBLIC",
     subName: "(WL)",
-    value: 3
+    value: PoolStatus.PUBLIC_WL
   },
   {
     name: "PUBLIC",
     subName: "(FCFS)",
-    value: 4
+    value: PoolStatus.PUBLIC_FCFS
   },
   {
     name: "CLAIM",
-    value: 5
+    value: PoolStatus.CLAIM
   },
   {
     name: "CLOSED",
-    value: 6
+    value: PoolStatus.CLOSED
   }
 ]
 
@@ -75,28 +76,27 @@ type IdoDetailPageProps = {
 const IdoDetailPage = (props: IdoDetailPageProps) => {
   const { poolDetail, loading } = props
 
-  const [activeStep, setActiveStep] = useState<number>(4)
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[keyof typeof TABS]>(
-    TABS.PROJECT_INFO
+  const [activeStep, setActiveStep] = useState<poolStatus>(PoolStatus.BEFORE_WHITELIST)
+  const [activeTab, setActiveTab] = useState<(typeof TABS)[keyof typeof TABS]>(TABS.PROJECT_INFO)
+  const [projectTab, setProjectTab] = useState<(typeof PROJECT_TABS)[keyof typeof PROJECT_TABS]>(
+    PROJECT_TABS.ABOUT
   )
-  const [projectTab, setProjectTab] = useState<
-    (typeof PROJECT_TABS)[keyof typeof PROJECT_TABS]
-  >(PROJECT_TABS.ABOUT)
 
   const [emissions, setEmissions] = useState<Array<EmissionTypes>>([])
 
   useEffect(() => {
-    console.log("IdoDetailPage", poolDetail, loading)
     if (!poolDetail) return
+    // console.log("IdoDetailPage", poolDetail, loading)
+    const status = getPoolDetailStatus(poolDetail)
+    console.log("IdoDetailPage", status, poolDetail)
+    setActiveStep(status)
 
     const tokenReleases = poolDetail?.token?.tokenReleases
     if (!tokenReleases) return
 
     const newEmissions: Array<EmissionTypes> = tokenReleases.map(
       ({ release_percent, release_time }: any) => ({
-        claimTime: release_time
-          ? moment.unix(release_time).format("DD/MM/YY HH:mm [UTC]")
-          : "TBA",
+        claimTime: release_time ? moment.unix(release_time).format("DD/MM/YY HH:mm [UTC]") : "TBA",
         tokenAmount: release_percent,
         status: "Due"
       })
@@ -115,21 +115,14 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
         )
       : 0
     const publicRaise = publicPool
-      ? new BigNumber(publicPool.token_allocated ?? 0).multipliedBy(
-          publicPool.conversion_rate ?? 0
-        )
+      ? new BigNumber(publicPool.token_allocated ?? 0).multipliedBy(publicPool.conversion_rate ?? 0)
       : 0
 
     return new BigNumber(privateRaise).plus(publicRaise).toNumber()
   }, [poolDetail?.pools])
 
   return (
-    <div
-      className={clsx(
-        styles.banner,
-        "blazePage section flex flex-col text-white"
-      )}
-    >
+    <div className={clsx(styles.banner, "blazePage section flex flex-col text-white")}>
       <div className="flex pt-64">
         <div className="flex flex-1 flex-col pr-10">
           <div className="flex justify-between">
@@ -243,31 +236,25 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
 
               {activeTab === TABS.PROJECT_INFO && (
                 <div className="mt-auto flex space-x-1">
-                  {Object.values(PROJECT_TABS).map(
-                    (item: any, index: number) => (
-                      <div
-                        className={clsx(
-                          "flex cursor-pointer rounded-lg px-5 py-2 font-semibold capitalize duration-300 ease-linear",
-                          projectTab === item
-                            ? "bg-blazePurple text-white"
-                            : "text-textGray"
-                        )}
-                        key={index}
-                        onClick={() => setProjectTab(item)}
-                      >
-                        {item}
-                      </div>
-                    )
-                  )}
+                  {Object.values(PROJECT_TABS).map((item: any, index: number) => (
+                    <div
+                      className={clsx(
+                        "flex cursor-pointer rounded-lg px-5 py-2 font-semibold capitalize duration-300 ease-linear",
+                        projectTab === item ? "bg-blazePurple text-white" : "text-textGray"
+                      )}
+                      key={index}
+                      onClick={() => setProjectTab(item)}
+                    >
+                      {item}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
 
             {activeTab === TABS.PROJECT_INFO && (
               <div className="mt-5 flex w-full flex-col">
-                <span className="text-18/24 font-semibold uppercase">
-                  {projectTab}
-                </span>
+                <span className="text-18/24 font-semibold uppercase">{projectTab}</span>
                 {projectTab === PROJECT_TABS.ABOUT && (
                   <div
                     className="mt-3 text-16/24 text-[#CCCCD3]"
@@ -281,9 +268,7 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
                   ></div>
                 )}
                 {projectTab === PROJECT_TABS.TOKENOMICS && (
-                  <div className="mt-3 text-16/24 text-[#CCCCD3]">
-                    Tokenomicccc
-                  </div>
+                  <div className="mt-3 text-16/24 text-[#CCCCD3]">Tokenomicccc</div>
                 )}
               </div>
             )}
@@ -292,8 +277,7 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
               <div className="mt-5">
                 {emissions.length === 0 ? (
                   <span>
-                    Token Claim Date & Time will be announced soon. Please stay
-                    tuned for updates.
+                    Token Claim Date & Time will be announced soon. Please stay tuned for updates.
                   </span>
                 ) : (
                   <ClaimEmissions emissions={emissions} />
