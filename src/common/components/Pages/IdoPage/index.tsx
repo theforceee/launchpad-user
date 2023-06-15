@@ -56,9 +56,6 @@ const IdoPage = () => {
           {pools.map((item: any, index: number) => (
             <Card cardData={item} key={index} />
           ))}
-          {new Array(10).fill(1).map((item: any, index: number) => (
-            <Card cardData={item} key={index} />
-          ))}
         </div>
       </div>
     </div>

@@ -39,18 +39,13 @@ const Card = (props: CardProps) => {
         )
       : 0
     const publicRaise = publicPool
-      ? new BigNumber(publicPool.token_allocated ?? 0).multipliedBy(
-          publicPool.conversion_rate ?? 0
-        )
+      ? new BigNumber(publicPool.token_allocated ?? 0).multipliedBy(publicPool.conversion_rate ?? 0)
       : 0
 
     return new BigNumber(privateRaise).plus(publicRaise).toNumber()
   }, [cardData?.pools])
 
-  const handleFavorite = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    slug: string
-  ) => {
+  const handleFavorite = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, slug: string) => {
     event.preventDefault()
     setFavoriteChecked((prev) => !prev)
   }
@@ -67,10 +62,7 @@ const Card = (props: CardProps) => {
   return (
     <div className={clsx(styles.cardHover, "relative flex")}>
       <div className={clsx(styles.hoverContent, "z-20 flex bg-[#333350]/90")}>
-        <a
-          href={`${URLS.IDO}/${cardData?.slug}`}
-          className="btnGradientPurple btnMedium !w-8/12"
-        >
+        <a href={`${URLS.IDO}/${cardData?.slug}`} className="btnGradientPurple btnMedium !w-8/12">
           <span>View Project</span>
         </a>
         <div className="absolute top-3 right-3 flex space-x-1">
@@ -80,10 +72,7 @@ const Card = (props: CardProps) => {
               handleFavorite(event, cardData?.slug)
             }
           >
-            <Image
-              src={favoriteChecked ? iconFavoriteChecked : iconFavorite}
-              alt=""
-            />
+            <Image src={favoriteChecked ? iconFavoriteChecked : iconFavorite} alt="" />
           </div>
           <div
             className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-white"
@@ -91,10 +80,7 @@ const Card = (props: CardProps) => {
               handleNotification(event, cardData?.slug)
             }
           >
-            <Image
-              src={notiChecked ? iconNotificationChecked : iconNotification}
-              alt=""
-            />
+            <Image src={notiChecked ? iconNotificationChecked : iconNotification} alt="" />
           </div>
         </div>
       </div>
@@ -108,14 +94,9 @@ const Card = (props: CardProps) => {
             <div className="absolute left-1/2 -bottom-8 h-[60px] w-[60px] -translate-x-1/2">
               <Image src={fakeLogo} alt="" className="object-contain" />
             </div>
-            <Image
-              src={fakeImage}
-              alt=""
-              className="w-full object-contain"
-              priority
-            />
+            <Image src={fakeImage} alt="" className="w-full object-contain" priority />
           </div>
-          <div className="mt-12 text-24/32 font-bold text-white">
+          <div className="mt-12 max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap text-24/32 font-bold text-white">
             {cardData?.name || `Project's name`}
           </div>
           <div className="mt-1 text-16/24 text-textGray">
