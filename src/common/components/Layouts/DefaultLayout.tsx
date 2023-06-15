@@ -24,7 +24,7 @@ const DefaultLayout = (props: LayoutProps) => {
       <Head>
         <title>{title || defaultTitle}</title>
         <meta charSet="utf-8" />
-        {/* <link rel="shortcut icon" href="/logo.svg" /> */}
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta property="og:title" content={title || defaultTitle} key="title" />
         <meta
@@ -36,10 +36,7 @@ const DefaultLayout = (props: LayoutProps) => {
         <meta name="keywords" content={defaultKeywords}></meta>
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title || defaultTitle} />
-        <meta
-          name="twitter:description"
-          content={description || defaultDescription}
-        />
+        <meta name="twitter:description" content={description || defaultDescription} />
         <meta name="twitter:image" content={image || defaultImage} />
       </Head>
 
