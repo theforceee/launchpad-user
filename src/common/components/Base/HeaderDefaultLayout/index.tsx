@@ -14,6 +14,7 @@ import styles from "./header.module.scss"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
 import logoFull from "@images/logo-full.png"
+import { displayWalletAddress, formatCurrency } from "@utils/index"
 
 type RouteTypes = {
   label: string
@@ -114,6 +115,91 @@ const HeaderDefaultLayout = () => {
     )
   }
 
+  const renderUserMenu = () => {
+    return (
+      <Popover placement="bottom-end">
+        <PopoverHandler>
+          <div className="pr-10">
+            <Image alt="" src={iconWallet} className="cursor-pointer" />
+          </div>
+        </PopoverHandler>
+        <PopoverContent
+          className={clsx(
+            styles.headerShadow,
+            "z-30 mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white"
+          )}
+        >
+          {isConnected ? (
+            <>
+              <div
+                className="flex cursor-pointer items-center text-[#0091FF]"
+                onClick={() => setOpenNetworkDialog(true)}
+              >
+                <div className="mr-2 h-2 w-2 rounded-full bg-green-400"></div>
+                <span className="">{chain?.name + " Network Connected"}</span>
+              </div>
+
+              <div className="relative mb-1 mt-4 grid grid-cols-2 rounded-xl bg-white/10 py-3 px-5 text-12/16">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-[20px] bg-[#000122] py-1 px-3 font-semibold">
+                  BALANCES
+                </div>
+                <div className="flex flex-col border-r border-white/30 py-1 pr-3">
+                  <div className="ml-auto flex">
+                    <span className="text-white/80">1.44</span>
+                    <span className="w-10 text-right font-semibold">ETH</span>
+                  </div>
+                  <div className="ml-auto mt-1 flex">
+                    <span className="text-white/80">{formatCurrency("156233")}</span>
+                    <span className="w-10 text-right font-semibold">USDT</span>
+                  </div>
+                </div>
+                <div className="flex py-1 pl-3">
+                  <span className="w-10 text-white/80">1,872</span>
+                  <span className="font-semibold">BLAZE</span>
+                </div>
+              </div>
+
+              {userRoutes.map((item: RouteTypes, index: number) => (
+                <a
+                  key={index}
+                  href={item.uri}
+                  target={item.target || "_self"}
+                  className={clsx(
+                    "mt-4 border-none outline-none duration-200 hover:text-blazeOrange",
+                    {
+                      "text-blazeOrange": router.pathname === item.uri
+                    }
+                  )}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <div
+                className="mt-5 cursor-pointer border-none duration-200 hover:text-blazeOrange"
+                onClick={() => disconnect()}
+              >
+                Log Out
+              </div>
+
+              <div className="mt-4 text-[#3A92F7]">{displayWalletAddress(address)}</div>
+            </>
+          ) : (
+            <>
+              <Button
+                size="sm"
+                color="deep-orange"
+                className="flex items-center gap-3"
+                onClick={() => setOpenConnectDialog(true)}
+              >
+                Connect Wallet
+              </Button>
+            </>
+          )}
+        </PopoverContent>
+      </Popover>
+    )
+  }
+
   return (
     <>
       <nav
@@ -159,64 +245,7 @@ const HeaderDefaultLayout = () => {
               </Link>
             ))}
 
-            <Popover placement="bottom-end">
-              <PopoverHandler>
-                <div className="pr-10">
-                  <Image alt="" src={iconWallet} className="cursor-pointer" />
-                </div>
-              </PopoverHandler>
-              <PopoverContent
-                className={clsx(
-                  styles.headerShadow,
-                  "z-30 mt-3 flex flex-col items-center rounded-[14px] border-none bg-main/80 py-5 px-6 text-14/18 text-white"
-                )}
-              >
-                {isConnected ? (
-                  <>
-                    <div
-                      className="flex cursor-pointer items-center text-[#0091FF]"
-                      onClick={() => setOpenNetworkDialog(true)}
-                    >
-                      <div className="mr-2 h-2 w-2 rounded-full bg-green-400"></div>
-                      <span className="">{chain?.name}</span>
-                    </div>
-                    <div className="mt-2 text-blazeOrange">{address}</div>
-                    {userRoutes.map((item: RouteTypes, index: number) => (
-                      <a
-                        key={index}
-                        href={item.uri}
-                        target={item.target || "_self"}
-                        className={clsx(
-                          "mt-5 border-none outline-none duration-200 hover:text-blazeOrange",
-                          {
-                            "text-blazeOrange": router.pathname === item.uri
-                          }
-                        )}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                    <div
-                      className="mt-5 cursor-pointer border-none duration-200 hover:text-blazeOrange"
-                      onClick={() => disconnect()}
-                    >
-                      Log Out
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      size="sm"
-                      color="deep-orange"
-                      className="flex items-center gap-3"
-                      onClick={() => setOpenConnectDialog(true)}
-                    >
-                      Connect Wallet
-                    </Button>
-                  </>
-                )}
-              </PopoverContent>
-            </Popover>
+            {renderUserMenu()}
           </div>
 
           <div className={clsx("block cursor-pointer", "md:hidden")} onClick={handleOpenHeader}>

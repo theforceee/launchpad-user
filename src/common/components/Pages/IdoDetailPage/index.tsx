@@ -123,7 +123,7 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
 
   return (
     <div className={clsx(styles.banner, "blazePage section flex flex-col text-white")}>
-      <div className="flex pt-64">
+      <div className="flex py-64">
         <div className="flex flex-1 flex-col pr-10">
           <div className="flex justify-between">
             <div className="flex pb-1">
