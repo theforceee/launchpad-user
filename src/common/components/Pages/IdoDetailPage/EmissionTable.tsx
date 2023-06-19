@@ -31,36 +31,28 @@ const EmissionTable = ({ emissions }: EmissionTableProps) => {
       <thead>
         <tr>
           {TABLE_HEAD.map((head) => (
-            <th
-              key={head}
-              className="bg-transparent px-4 text-12/16 font-semibold text-textGray"
-            >
+            <th key={head} className="bg-transparent px-4 text-12/16 font-semibold text-textGray">
               {head}
             </th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {emissions?.map(
-          (
-            { claimTime, tokenAmount, status }: EmissionTypes,
-            index: number
-          ) => {
-            return (
-              <tr key={index} className="mb-1 bg-[#151532] text-14/18">
-                <td className="rounded-tl-lg rounded-bl-lg p-4">
-                  <span className="">{displayNumOrder(index)}</span>
-                </td>
-                <td className="p-4">
-                  <span className="">{claimTime}</span>
-                </td>
-                <td className="rounded-tr-lg rounded-br-lg p-4">
-                  <span className="">{formatCurrency(tokenAmount)}</span>
-                </td>
-              </tr>
-            )
-          }
-        )}
+        {emissions?.map(({ claimTime, tokenAmount, status }: EmissionTypes, index: number) => {
+          return (
+            <tr key={index} className="mb-1 bg-[#151532] text-14/18">
+              <td className="rounded-tl-lg rounded-bl-lg p-4">
+                <span className="">{displayNumOrder(index)}</span>
+              </td>
+              <td className="p-4">
+                <span className="">{claimTime}</span>
+              </td>
+              <td className="rounded-tr-lg rounded-br-lg p-4">
+                <span className="">{formatCurrency(tokenAmount)}</span>
+              </td>
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )

@@ -6,10 +6,7 @@ import styles from "@styles/Home.module.css"
 import type { GetServerSideProps, GetStaticPaths, NextPage } from "next"
 
 const IdoDetail: NextPage = ({ slug }: any) => {
-  const { data: resPoolDetail, loading } = useFetch<any>(
-    `/pool/${slug}`,
-    !!slug
-  )
+  const { data: resPoolDetail, loading } = useFetch<any>(`/pool/${slug}`, !!slug)
 
   return (
     <div className={styles.container}>

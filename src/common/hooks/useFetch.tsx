@@ -6,8 +6,7 @@ type useFetchReturnType<T> = {
   error: string
   data: T | undefined
 }
-export const fetcher = (url: string, ...args: any) =>
-  fetch(url, ...args).then((res) => res.json())
+export const fetcher = (url: string, ...args: any) => fetch(url, ...args).then((res) => res.json())
 
 const useFetch = <T,>(
   uriProps?: string | undefined,

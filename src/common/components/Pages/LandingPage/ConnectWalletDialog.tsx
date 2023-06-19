@@ -13,10 +13,9 @@ type ConnectWalletDialog = {
 const ConnectWalletDialog = (props: ConnectWalletDialog) => {
   const { show, handleClose, onConnectWallet } = props
 
-  const { connect, connectors, isLoading, pendingConnector, error } =
-    useConnect({
-      connector: new InjectedConnector()
-    })
+  const { connect, connectors, isLoading, pendingConnector, error } = useConnect({
+    connector: new InjectedConnector()
+  })
 
   return (
     <Transition appear show={show} as={Fragment}>
@@ -45,24 +44,19 @@ const ConnectWalletDialog = (props: ConnectWalletDialog) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                   Connect Wallet
                 </Dialog.Title>
-                <div className="flex flex-wrap mt-2 gap-3">
+                <div className="mt-2 flex flex-wrap gap-3">
                   {connectors.map((connector) => (
                     <button
                       // disabled={!connector.ready}
                       key={connector.id}
                       onClick={() => connect({ connector })}
-                      className="bg-blue-700 text-white rounded-lg cursor-pointer h-10 px-5"
+                      className="h-10 cursor-pointer rounded-lg bg-blue-700 px-5 text-white"
                     >
                       {connector.name}
-                      {isLoading &&
-                        connector.id === pendingConnector?.id &&
-                        " (connecting)"}
+                      {isLoading && connector.id === pendingConnector?.id && " (connecting)"}
                     </button>
                   ))}
                 </div>
@@ -71,7 +65,7 @@ const ConnectWalletDialog = (props: ConnectWalletDialog) => {
                 <div className="mt-4">
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="text-sm inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     onClick={handleClose}
                   >
                     Got it, thanks!
