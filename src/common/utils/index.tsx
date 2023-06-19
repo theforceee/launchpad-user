@@ -12,7 +12,7 @@ export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
 }
 
 export async function checkMetaMaskIsUnlocked() {
-  const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
 
   try {
     const accounts = await provider.listAccounts()

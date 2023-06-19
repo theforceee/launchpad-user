@@ -6,6 +6,8 @@ export const BLAZE_TOKEN_DECIMALS: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_
 export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAKING || ""
 export const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
 
+export const KEY_CACHE = "user"
+
 type HeadDefaultTypes = {
   image: string
   title: string
