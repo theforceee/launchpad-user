@@ -2,7 +2,6 @@ import { get, post } from "@/common/request"
 import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
 import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
 import { KEY_CACHE, URLS } from "@constants/index"
-import { Wallet } from "@constants/networks"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
 import logoFull from "@images/logo-full.png"
@@ -17,6 +16,7 @@ import { toast } from "react-toastify"
 import { SiweMessage } from "siwe"
 import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
 import styles from "./header.module.scss"
+import { openModal } from "@uikit/modal"
 
 type RouteTypes = {
   label: string
@@ -82,7 +82,6 @@ const HeaderDefaultLayout = () => {
 
   const [open, setOpen] = useState<boolean>(false)
 
-  const [openConnectDialog, setOpenConnectDialog] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
 
   useEffect(() => {
@@ -91,12 +90,8 @@ const HeaderDefaultLayout = () => {
     console.log("token", token)
   }, [])
 
-  useEffect(() => {
-    isConnected && setOpenConnectDialog(false)
-  }, [isConnected])
-
-  async function handleSelectWallet(wallet: Wallet) {
-    setOpenConnectDialog(false)
+  const openConnectWallet = () => {
+    openModal(ConnectWalletDialog)
   }
 
   const handleOpenHeader = () => {
@@ -258,7 +253,7 @@ const HeaderDefaultLayout = () => {
                 size="sm"
                 color="deep-orange"
                 className="flex items-center gap-3"
-                onClick={() => setOpenConnectDialog(true)}
+                onClick={openConnectWallet}
               >
                 Connect Wallet
               </Button>
@@ -324,12 +319,6 @@ const HeaderDefaultLayout = () => {
       </nav>
 
       {renderHeaderMobile()}
-
-      <ConnectWalletDialog
-        handleClose={() => setOpenConnectDialog(false)}
-        show={openConnectDialog}
-        onConnectWallet={handleSelectWallet}
-      />
 
       <SwitchNetworkDialog
         handleClose={() => setOpenNetworkDialog(false)}
