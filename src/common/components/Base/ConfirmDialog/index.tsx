@@ -1,20 +1,36 @@
 import { useState } from "react"
 import { Modal, ModalProps } from "../Modal"
 
-const ConfirmDialog = ({ modalRef, data }: ModalProps) => {
-  const { dialogContent, onConfirm } = data ?? {}
+export type ConfirmDialogData = {
+  title?: React.ReactNode
+  content?: React.ReactNode
+  onConfirm: () => Promise<unknown> | unknown
+}
+
+const ConfirmDialog = ({ modalRef, data }: ModalProps<ConfirmDialogData>) => {
+  const { title, content, onConfirm } = data ?? {}
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleConfirm = async () => {
-    setIsLoading(true)
-    await onConfirm?.()
-    setIsLoading(false)
-    modalRef.close()
+    try {
+      setIsLoading(true)
+      console.log("onConfirm", onConfirm)
+      await onConfirm?.()
+      modalRef.close()
+    } finally {
+      setIsLoading(false)
+      setIsLoading(false)
+      modalRef.close()
+      setIsLoading(false)
+      modalRef.close()
+    }
   }
+
   return (
     <Modal>
       <Modal.Body>
-        <div className="mt-2 flex flex-wrap gap-3">{dialogContent ?? "Are you sure?"}</div>
+        <div className="mt-2 flex flex-wrap gap-3">{title ?? "Are you sure?"}</div>
+        {content && <div className="mt-2 flex flex-wrap gap-3">{content}</div>}
 
         <div className="mt-4">
           <button

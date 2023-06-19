@@ -1,7 +1,6 @@
 import { get, post } from "@/common/request"
-import ConfirmDialog from "@components/Base/ConfirmDialog"
 import Countdown from "@components/Base/Countdown"
-import { openModal } from "@components/Base/Modal"
+import { confirm } from "@components/Base/Modal"
 import { URLS } from "@constants/index"
 import { AppContext } from "@contexts/AppContext"
 import iconLock from "@images/icon-lock.png"
@@ -44,26 +43,20 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
   const handleApprove = () => {
     console.log("handleApprove")
   }
+  const handleApplyWhitelist = () =>
+    confirm({
+      title: "handleApplyWhitelist",
+      onConfirm: async () => {
+        const resApply = await post(`pool/${poolDetail?.slug}/apply`, { account: connectedAccount })
 
-  const applyWhitelist = async () => {
-    const resApply = await post(`pool/${poolDetail?.slug}/apply`, { account: connectedAccount })
-
-    if (!resApply || resApply.status !== 200) {
-      toast.error("Fail to apply whitelist: " + resApply?.statusText)
-      return
-    }
-    toast.success("Success to apply whitelist")
-    setRefetch((pre) => !pre)
-  }
-
-  const handleApplyWhitelist = async () => {
-    openModal(ConfirmDialog, {
-      data: {
-        dialogContent: "handleApplyWhitelist",
-        onConfirm: applyWhitelist
+        if (!resApply || resApply.status !== 200) {
+          toast.error("Fail to apply whitelist: " + resApply?.statusText)
+          return
+        }
+        toast.success("Success to apply whitelist")
+        setRefetch((pre) => !pre)
       }
     })
-  }
 
   const renderCoating = () => {
     if (![PoolStatus.BEFORE_WHITELIST, PoolStatus.WHITELIST, PoolStatus.TBA].includes(poolStatus))

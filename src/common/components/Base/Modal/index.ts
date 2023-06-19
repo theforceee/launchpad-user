@@ -1,4 +1,5 @@
 export { openModal } from "./openModal"
+export { confirm } from "./confirm"
 export { ModalContainer } from "./ModalContainer"
 export { Modal } from "./Modal"
 export { useModal } from "./ModalContext"
