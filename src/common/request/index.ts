@@ -1,18 +1,19 @@
-import { KEY_CACHE } from "@constants/index"
+import { clearAccountToken, getAccountToken } from "@utils/index"
 
 interface RequestOptions {
   body?: Record<string, unknown>
-  isCSV?: boolean
+  account?: `0x${string}` | undefined
 }
 
 export const request = async (url: string, method: string, options?: RequestOptions) => {
-  const token = localStorage.getItem(KEY_CACHE)
   const headers = new Headers({
     Accept: "application/json",
     "Content-Type": "application/json"
   })
 
-  if (token) {
+  if (!!options?.account) {
+    console.log("OK")
+    const token = getAccountToken(options.account)
     headers.append("Authorization", `Bearer ${token}`)
   }
 
@@ -31,7 +32,7 @@ export const request = async (url: string, method: string, options?: RequestOpti
 
   // Unauthorized
   if (response.status === 401) {
-    localStorage.removeItem(KEY_CACHE)
+    clearAccountToken(options?.account)
     // sign again
   }
 

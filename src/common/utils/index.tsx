@@ -1,4 +1,4 @@
-import { BLAZE_TOKEN_DECIMALS } from "@constants/index"
+import { BLAZE_TOKEN_DECIMALS, KEY_CACHE } from "@constants/index"
 import { ethers } from "ethers"
 
 export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
@@ -44,4 +44,19 @@ export const convertNumberToBigInt = (
 ) => {
   if (!number) return 0
   return BigInt(number * 10 ** decimals).toString()
+}
+
+export const getAccountToken = (account: `0x${string}` | undefined) => {
+  if (!account) return ""
+  return localStorage.getItem(`${KEY_CACHE}:${account}`)
+}
+
+export const setAccountToken = (account: `0x${string}` | undefined, token: string) => {
+  if (!account) return
+  return localStorage.setItem(`${KEY_CACHE}:${account}`, token)
+}
+
+export const clearAccountToken = (account: `0x${string}` | undefined) => {
+  if (!account) return ""
+  return localStorage.removeItem(`${KEY_CACHE}:${account}`)
 }

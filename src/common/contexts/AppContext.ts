@@ -8,6 +8,7 @@ export type TokenDetailTypes = {
 
 export type AppContextType = {
   isWrongChain?: boolean
+  isUserSigned?: boolean
   tokenDetail?: TokenDetailTypes
 }
 

@@ -1,18 +1,19 @@
 import { get, post } from "@/common/request"
 import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
 import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
-import { KEY_CACHE, URLS } from "@constants/index"
+import { URLS } from "@constants/index"
 import { Wallet } from "@constants/networks"
+import { AppContext } from "@contexts/AppContext"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
 import logoFull from "@images/logo-full.png"
 import { Button, Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react"
-import { displayWalletAddress, formatCurrency } from "@utils/index"
+import { displayWalletAddress, formatCurrency, setAccountToken } from "@utils/index"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { HTMLAttributeAnchorTarget, useEffect, useState } from "react"
+import { HTMLAttributeAnchorTarget, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { SiweMessage } from "siwe"
 import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
@@ -66,30 +67,18 @@ const HeaderDefaultLayout = () => {
   const router = useRouter()
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
+  const { isUserSigned } = useContext(AppContext)
   const { disconnect } = useDisconnect()
   const { signMessageAsync } = useSignMessage({
-    onSuccess(data, variables) {
-      // Verify signature when sign message succeeds
-      // const address = verifyMessage(variables.message, data);
-      // recoveredAddress.current = address;
-    },
     onError(error) {
       toast.error("Fail to sign in: " + error.message)
     }
   })
-  const [isSigned, setIsSigned] = useState<boolean>(false)
+
   const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false)
-
-  const [open, setOpen] = useState<boolean>(false)
-
+  const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
   const [openConnectDialog, setOpenConnectDialog] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
-
-  useEffect(() => {
-    const token = window.localStorage.getItem(KEY_CACHE)
-    setIsSigned(!!token)
-    console.log("token", token)
-  }, [])
 
   useEffect(() => {
     isConnected && setOpenConnectDialog(false)
@@ -100,51 +89,54 @@ const HeaderDefaultLayout = () => {
   }
 
   const handleOpenHeader = () => {
-    setOpen((prevState) => !prevState)
+    setOpenHeaderMobile((prevState) => !prevState)
   }
 
   const handleSignIn = async () => {
     console.log("sign in")
     setLoadingSignIn(true)
-    const nonceRes = await get("nonce")
-    const nonce = nonceRes?.data?.nonce
+    try {
+      const nonceRes = await get("nonce")
+      const nonce = nonceRes?.data?.nonce
 
-    const message = new SiweMessage({
-      domain: window.location.host,
-      address,
-      statement: "Sign in with Ethereum to the app.",
-      uri: window.location.origin,
-      version: "1",
-      chainId: chain?.id,
-      nonce,
-      issuedAt: new Date().toISOString()
-    })
+      const message = new SiweMessage({
+        domain: window.location.host,
+        address,
+        statement: "Sign in with Ethereum to the app.",
+        uri: window.location.origin,
+        version: "1",
+        chainId: chain?.id,
+        nonce,
+        issuedAt: new Date().toISOString()
+      })
 
-    const signature = await signMessageAsync({
-      message: message.prepareMessage()
-    })
+      const signature = await signMessageAsync({
+        message: message.prepareMessage()
+      })
 
-    const loginRes = await post("login", {
-      body: {
-        message,
-        signature
+      const loginRes = await post("login", {
+        body: {
+          message,
+          signature
+        }
+      })
+      setLoadingSignIn(false)
+
+      if (!loginRes || loginRes.status !== 200) {
+        toast.error("Fail to login: " + loginRes.message)
+        return
       }
-    })
-    setLoadingSignIn(false)
 
-    if (!loginRes || loginRes.status !== 200) {
-      toast.error("Fail to login: " + loginRes.message)
-      return
+      const userToken = loginRes.data?.token?.token
+      setAccountToken(address, userToken)
+      window.location.reload()
+    } catch (error) {
+      console.log("Fail to login", error)
     }
-
-    const userToken = loginRes.data?.token?.token
-    // setUserLogin && setUserLogin({ address, token: userToken })
-    localStorage.setItem(KEY_CACHE, userToken)
-    window.location.reload()
   }
 
   const renderHeaderMobile = () => {
-    if (!open) return <></>
+    if (!openHeaderMobile) return <></>
 
     return (
       <div className="fixed top-0 left-0 z-50 flex h-screen w-full flex-col overflow-y-auto bg-[#04060C] p-5 pb-8">
@@ -191,7 +183,7 @@ const HeaderDefaultLayout = () => {
         >
           {isConnected ? (
             <>
-              {!isSigned && (
+              {!isUserSigned && (
                 <button
                   onClick={handleSignIn}
                   disabled={loadingSignIn}
