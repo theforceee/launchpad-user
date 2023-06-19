@@ -1,6 +1,6 @@
 import { ComponentType } from "react"
-import { modalSubject } from "./modal-subject"
-import { ModalOptions, ModalRef, ExtractModalData, ModalProps, AfterClosedCb } from "./types"
+import { modalSubject } from "./modalSubject"
+import { ModalOptions, ModalRef, ExtractModalData, ModalProps, AfterClosedCb } from "./typing"
 
 export function openModal<T extends ComponentType<ModalProps>>(
   Content: T,

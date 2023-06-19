@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react"
-import { useModal } from "./modal-context"
+import { useModal } from "./ModalContext"
 import clsx from "clsx"
 import { Transition } from "@headlessui/react"
-import { useModalTransition } from "./use-modal-transition"
+import { useModalTransition } from "./useModalTransition"
 
 type ModalProps = PropsWithChildren<{
   className?: string

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { ModalData } from "./types"
+import { ModalData } from "./typing"
 
 /**
  * DO NOT EDIT THIS VALUE, this value must higher than the enter duration to

@@ -1,7 +1,7 @@
 import AppProvider from "@/common/contexts/AppProvider"
 import { wagmiConfig } from "@constants/wagmiConfigs"
 import "@styles/globals.css"
-import { ModalContainer } from "@uikit/modal"
+import { ModalContainer } from "@components/Base/Modal"
 import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { ToastContainer } from "react-toastify"

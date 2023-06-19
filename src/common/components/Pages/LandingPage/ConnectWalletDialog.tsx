@@ -1,5 +1,5 @@
 import { Wallet } from "@/common/constants/networks"
-import { Modal, ModalProps } from "@uikit/modal"
+import { Modal, ModalProps } from "@components/Base/Modal"
 import { useEffect } from "react"
 import { useConnect } from "wagmi"
 import { InjectedConnector } from "wagmi/connectors/injected"

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useAccount, useDisconnect, useEnsName, useNetwork } from "wagmi"
 import ConnectWalletDialog from "./ConnectWalletDialog"
 import SwitchNetworkDialog from "./SwitchNetworkDialog"
-import { openModal } from "@uikit/modal"
+import { openModal } from "@components/Base/Modal"
 
 const LandingPage = () => {
   const { address, isConnected, connector } = useAccount()

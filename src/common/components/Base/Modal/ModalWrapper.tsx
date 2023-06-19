@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
-import { ModalData } from "./types"
-import { ModalContext } from "./modal-context"
+import { ModalData } from "./typing"
+import { ModalContext } from "./ModalContext"
 import { Dialog } from "@headlessui/react"
 
 type ModalWrapperProps = PropsWithChildren<{

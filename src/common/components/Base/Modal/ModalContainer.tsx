@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { modalSubject } from "./modal-subject"
-import { ModalData } from "./types"
-import { ModalWrapper } from "./modal-wrapper"
+import { modalSubject } from "./modalSubject"
+import { ModalData } from "./typing"
+import { ModalWrapper } from "./ModalWrapper"
 
 export function ModalContainer() {
   const [modalList, setModalList] = useState<ModalData[]>([])

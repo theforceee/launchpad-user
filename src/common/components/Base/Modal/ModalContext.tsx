@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react"
-import { ModalData } from "./types"
+import { ModalData } from "./typing"
 
 export interface ModalContextValues {
   modal: ModalData

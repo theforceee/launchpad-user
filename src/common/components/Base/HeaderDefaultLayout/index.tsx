@@ -16,7 +16,7 @@ import { toast } from "react-toastify"
 import { SiweMessage } from "siwe"
 import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
 import styles from "./header.module.scss"
-import { openModal } from "@uikit/modal"
+import { openModal } from "@components/Base/Modal"
 
 type RouteTypes = {
   label: string
