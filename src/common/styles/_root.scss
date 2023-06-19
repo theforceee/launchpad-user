@@ -1,0 +1,63 @@
+:root {
+  // --ds-clr-gray
+  --ds-clr-gray-20: #F0F2F5;
+  --ds-clr-gray-30: #CCCCCC;
+  --ds-clr-gray-40: #999999;
+  --ds-clr-gray-50: #666666;
+  --ds-clr-gray-60: #333333;
+  // --ds-clr-purple
+  --ds-clr-purple-10: #F2F0FF;
+  --ds-clr-purple-20: #CCCCD3;
+  --ds-clr-purple-30: #9999A5;
+  --ds-clr-purple-40: #66667B;
+  --ds-clr-purple-50: #33344D;
+  --ds-clr-purple-60: #151532;
+  --ds-clr-purple-70: #000122;
+  --ds-clr-purple-80: #504FBE;
+  // --ds-clr-orange
+  --ds-clr-orange-20: #FCEBD9;
+  --ds-clr-orange-30: #F9D7B3;
+  --ds-clr-orange-40: #F6C18D;
+  --ds-clr-orange-50: #F4AE6A;
+  --ds-clr-orange-60: #F29B4B;
+  // --ds-clr-red
+  --ds-clr-red-20: #F5DADE;
+  --ds-clr-red-30: #EDB3BD;
+  --ds-clr-red-40: #E5919D;
+  --ds-clr-red-50: #E06C7C;
+  --ds-clr-red-60: #D94C5D;
+  // --ds-clr-blue
+  --ds-clr-blue-20: #D1E8FD;
+  --ds-clr-blue-30: #A4D3FB;
+  --ds-clr-blue-40: #79BCF9;
+  --ds-clr-blue-50: #53A5F8;
+  --ds-clr-blue-60: #3A92F7;
+  // --ds-clr-green
+  --ds-clr-green-20: #D5F8DD;
+  --ds-clr-green-30: #ADEFBE;
+  --ds-clr-green-40: #73E480;
+  --ds-clr-green-50: #73E480;
+  --ds-clr-green-60: #66DC63;
+  --ds-clr-green-70: #26AA55;
+  // --ds-gd
+  --ds-gd-purple-dark: #000122 48.44%, #19193A 85.42%;
+  --ds-gd-purple-dark-full: linear-gradient(180deg, var(--ds-gd-purple-dark));
+  --ds-gd-purple: #504FBE 5.63%, #9887F2 100%;
+  --ds-gd-purple-full: linear-gradient(274.23deg, var(--ds-gd-purple));
+  --ds-gd-green-blue: #66DC63 0%, #3A92F7 100%;
+  --ds-gd-green-blue-full: linear-gradient(274.23deg, var(--ds-gd-green-blue));
+  --ds-gd-red-blue: #D94C5D 0%, #3A92F7 100%;
+  --ds-gd-red-blue-full: linear-gradient(274.23deg, var(--ds-gd-red-blue));
+  --ds-gd-red-orange: #D94C5D 0%, #F29B4B 100%;
+  --ds-gd-red-orange-full: linear-gradient(274.23deg, var(--ds-gd-red-orange));
+}
+
+// add .dark class into html tag to change ds variables
+.dark:root {
+  // --ds-clr-orange
+  --ds-clr-orange-20: #F8E4D8;
+  --ds-clr-orange-30: #F2C6AF;
+  --ds-clr-orange-40: #EAAB88;
+  --ds-clr-orange-50: #E59161;
+  --ds-clr-orange-60: #E07440;
+}

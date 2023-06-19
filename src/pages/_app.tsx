@@ -1,6 +1,7 @@
 import AppProvider from "@/common/contexts/AppProvider"
 import { wagmiConfig } from "@constants/wagmiConfigs"
-import "@styles/globals.css"
+import "@styles/globals.scss"
+import { ModalContainer } from "@components/Base/Modal"
 import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { ToastContainer } from "react-toastify"
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <AppProvider>
         <Component {...pageProps} />
+        <ModalContainer />
       </AppProvider>
       <ToastContainer />
     </WagmiConfig>

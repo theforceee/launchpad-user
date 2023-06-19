@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
-const withMT = require("@material-tailwind/react/utils/withMT");
-delete colors.lightBlue;
-delete colors.warmGray;
-delete colors.trueGray;
-delete colors.coolGray;
-delete colors.blueGray;
+const colors = require("tailwindcss/colors")
+const withMT = require("@material-tailwind/react/utils/withMT")
+delete colors.lightBlue
+delete colors.warmGray
+delete colors.trueGray
+delete colors.coolGray
+delete colors.blueGray
 
 module.exports = withMT({
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
@@ -19,17 +19,16 @@ module.exports = withMT({
       lg: "1280px",
       xl: "1368px",
       "2xl": "1536px",
-      main: "1440px",
+      main: "1440px"
     },
     colors: {
       main: "#000122",
       blazeOrange: "#FF9633",
       blazePurple: "#504FBE",
       textGray: "#9999A7",
-      ...colors,
+      ...colors
     },
-    fontFamily: {
-    },
+    fontFamily: {},
     fontSize: {
       "10/14": ["10px", { lineHeight: "14px" }],
       "10/32": ["10px", { lineHeight: "32px" }],
@@ -63,9 +62,59 @@ module.exports = withMT({
       "56/60": ["56px", { lineHeight: "60px" }],
       "60/72": ["60px", { lineHeight: "72px" }],
       "64/48": ["64px", { lineHeight: "48px" }],
-      "80/80": ["80px", { lineHeight: "80px" }],
+      "80/80": ["80px", { lineHeight: "80px" }]
     },
-    extend: {},
+    extend: {
+      colors: {
+        // clr-gray
+        "clr-gray-20": "var(--ds-clr-gray-20)",
+        "clr-gray-30": "var(--ds-clr-gray-30)",
+        "clr-gray-40": "var(--ds-clr-gray-40)",
+        "clr-gray-50": "var(--ds-clr-gray-50)",
+        "clr-gray-60": "var(--ds-clr-gray-60)",
+        // clr-purple
+        "clr-purple-10": "var(--ds-clr-purple-10)",
+        "clr-purple-20": "var(--ds-clr-purple-20)",
+        "clr-purple-30": "var(--ds-clr-purple-30)",
+        "clr-purple-40": "var(--ds-clr-purple-40)",
+        "clr-purple-50": "var(--ds-clr-purple-50)",
+        "clr-purple-60": "var(--ds-clr-purple-60)",
+        "clr-purple-70": "var(--ds-clr-purple-70)",
+        "clr-purple-80": "var(--ds-clr-purple-80)",
+        // clr-orange
+        "clr-orange-20": "var(--ds-clr-orange-20)",
+        "clr-orange-30": "var(--ds-clr-orange-30)",
+        "clr-orange-40": "var(--ds-clr-orange-40)",
+        "clr-orange-50": "var(--ds-clr-orange-50)",
+        "clr-orange-60": "var(--ds-clr-orange-60)",
+        // clr-red
+        "clr-red-20": "var(--ds-clr-red-20)",
+        "clr-red-30": "var(--ds-clr-red-30)",
+        "clr-red-40": "var(--ds-clr-red-40)",
+        "clr-red-50": "var(--ds-clr-red-50)",
+        "clr-red-60": "var(--ds-clr-red-60)",
+        // clr-blue
+        "clr-blue-20": "var(--ds-clr-blue-20)",
+        "clr-blue-30": "var(--ds-clr-blue-30)",
+        "clr-blue-40": "var(--ds-clr-blue-40)",
+        "clr-blue-50": "var(--ds-clr-blue-50)",
+        "clr-blue-60": "var(--ds-clr-blue-60)",
+        // clr-green
+        "clr-green-20": "var(--ds-clr-green-20)",
+        "clr-green-30": "var(--ds-clr-green-30)",
+        "clr-green-40": "var(--ds-clr-green-40)",
+        "clr-green-50": "var(--ds-clr-green-50)",
+        "clr-green-60": "var(--ds-clr-green-60)",
+        "clr-green-70": "var(--ds-clr-green-70)",
+        "clr-green-70": "var(--ds-clr-green-70)",
+        // gd (gradient)
+        "gd-purple-dark": "var(--ds-gd-purple-dark-full)",
+        "gd-purple": "var(--ds-gd-purple-full)",
+        "gd-green-blue": "var(--ds-gd-green-blue-full)",
+        "gd-red-blue": "var(--ds-gd-red-blue-full)",
+        "gd-red-orange": "var(--ds-gd-red-orange-full)"
+      }
+    }
   },
-  plugins: [],
-});
+  plugins: []
+})

@@ -1,8 +1,8 @@
 import { get, post } from "@/common/request"
+import { openModal } from "@components/Base/Modal"
 import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
 import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
 import { URLS } from "@constants/index"
-import { Wallet } from "@constants/networks"
 import { AppContext } from "@contexts/AppContext"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
@@ -13,7 +13,7 @@ import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { HTMLAttributeAnchorTarget, useContext, useEffect, useState } from "react"
+import { HTMLAttributeAnchorTarget, useContext, useState } from "react"
 import { toast } from "react-toastify"
 import { SiweMessage } from "siwe"
 import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
@@ -77,15 +77,10 @@ const HeaderDefaultLayout = () => {
 
   const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false)
   const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
-  const [openConnectDialog, setOpenConnectDialog] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
 
-  useEffect(() => {
-    isConnected && setOpenConnectDialog(false)
-  }, [isConnected])
-
-  async function handleSelectWallet(wallet: Wallet) {
-    setOpenConnectDialog(false)
+  const openConnectWallet = () => {
+    openModal(ConnectWalletDialog)
   }
 
   const handleOpenHeader = () => {
@@ -250,7 +245,7 @@ const HeaderDefaultLayout = () => {
                 size="sm"
                 color="deep-orange"
                 className="flex items-center gap-3"
-                onClick={() => setOpenConnectDialog(true)}
+                onClick={openConnectWallet}
               >
                 Connect Wallet
               </Button>
@@ -316,12 +311,6 @@ const HeaderDefaultLayout = () => {
       </nav>
 
       {renderHeaderMobile()}
-
-      <ConnectWalletDialog
-        handleClose={() => setOpenConnectDialog(false)}
-        show={openConnectDialog}
-        onConnectWallet={handleSelectWallet}
-      />
 
       <SwitchNetworkDialog
         handleClose={() => setOpenNetworkDialog(false)}
