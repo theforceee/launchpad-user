@@ -126,6 +126,7 @@ const HeaderDefaultLayout = () => {
       window.location.reload()
     } catch (error) {
       console.log("Fail to login", error)
+      setLoadingSignIn(false)
     }
   }
 

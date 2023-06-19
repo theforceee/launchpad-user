@@ -8,7 +8,7 @@ import iconLock from "@images/icon-lock.png"
 import { PoolStatus, getDateFromUnix, getPoolDetailStatus } from "@utils/getPoolDetailStatus"
 import { formatCurrency } from "@utils/index"
 import Image from "next/image"
-import { useContext, useEffect, useMemo } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { NumericFormat } from "react-number-format"
 import { toast } from "react-toastify"
 import { useAccount } from "wagmi"
@@ -21,19 +21,21 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
   const { isConnected, address: connectedAccount } = useAccount()
   const { isWrongChain, isUserSigned } = useContext(AppContext)
   const userAlreadyKYC = true
+  const [isApplied, setIsApplied] = useState<boolean>(false)
+  const [refetch, setRefetch] = useState<boolean>(false)
 
   const poolStatus = useMemo(() => getPoolDetailStatus(poolDetail), [poolDetail])
 
   useEffect(() => {
     ;(async () => {
-      if (!connectedAccount) return
-
+      if (!connectedAccount || !poolDetail) return
       const resSub = await get(`pool/${poolDetail?.slug}/submission`, {
         account: connectedAccount
       })
-      console.log("submission", resSub)
+      if (!resSub || !resSub.data) return
+      setIsApplied(true)
     })()
-  }, [connectedAccount, poolDetail?.slug])
+  }, [connectedAccount, poolDetail, refetch])
 
   const handleSelectAmount = (mul: number) => {
     console.log("multiple by", mul)
@@ -45,13 +47,13 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
 
   const applyWhitelist = async () => {
     const resApply = await post(`pool/${poolDetail?.slug}/apply`, { account: connectedAccount })
-    console.log("applyWhitelist", resApply)
 
     if (!resApply || resApply.status !== 200) {
       toast.error("Fail to apply whitelist: " + resApply?.statusText)
       return
     }
     toast.success("Success to apply whitelist")
+    setRefetch((pre) => !pre)
   }
 
   const handleApplyWhitelist = async () => {
@@ -104,12 +106,18 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
                   KYC REQUIRED
                 </div>
               )}
-              <button
-                onClick={handleApplyWhitelist}
-                className="btnGradientPurple btnMedium mt-5 w-full"
-              >
-                <span>Apply Whitelist</span>
-              </button>
+              {isApplied && isUserSigned ? (
+                <div className="mt-5 flex rounded bg-[#00E1504D] py-2 px-10 text-[#73E480]">
+                  WHITELISTED
+                </div>
+              ) : (
+                <button
+                  onClick={handleApplyWhitelist}
+                  className="btnGradientPurple btnMedium mt-5 w-full"
+                >
+                  <span>Apply Whitelist</span>
+                </button>
+              )}
             </>
           )
         case PoolStatus.TBA:
