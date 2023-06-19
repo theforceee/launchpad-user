@@ -16,7 +16,7 @@ export const request = async (url: string, method: string, options?: RequestOpti
     headers.append("Authorization", `Bearer ${token}`)
   }
 
-  const response = await fetch(`/api/v2/user/${url}`, {
+  const response = await fetch(`/api/api/v2/user/${url}`, {
     method,
     headers,
     credentials: "include",
