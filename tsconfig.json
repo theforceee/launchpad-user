@@ -16,6 +16,7 @@
     "incremental": true,
     "paths": {
       "@components/*": ["./src/common/components/*"],
+      "@uikit/*": ["./src/uikit/*"],
       "@constants/*": ["./src/common/constants/*"],
       "@hooks/*": ["./src/common/hooks/*"],
       "@utils/*": ["./src/common/utils/*"],
