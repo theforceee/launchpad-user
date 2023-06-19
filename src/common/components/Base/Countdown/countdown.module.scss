@@ -1,0 +1,26 @@
+.background {
+  background: linear-gradient(
+    135.07deg,
+    #ff79ff 26.68%,
+    #793c74 44.7%,
+    #180f0e 64.51%
+  );
+  border-radius: 20px;
+  @media (min-width: theme("screens.2md")) {
+    background: linear-gradient(75.87deg, #ff79ff 1.67%, #180f0e 45.96%);
+    border-radius: 32px;
+  }
+}
+
+.banner {
+  background: url(/assets/images/countdown/bg-countdown-banner.png) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.textStroke {
+  color: white;
+  -webkit-text-fill-color: black;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
