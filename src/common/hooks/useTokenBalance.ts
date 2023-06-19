@@ -1,4 +1,5 @@
-import { BLAZE_TOKEN_CONTRACT, NETWORK_ID } from "@constants/index"
+import { BLAZE_TOKEN_CONTRACT } from "@constants/index"
+import { NETWORK_ID } from "@constants/networks"
 import { AppContext } from "@contexts/AppContext"
 import { useContext } from "react"
 import { useBalance } from "wagmi"

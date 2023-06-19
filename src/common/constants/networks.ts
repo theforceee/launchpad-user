@@ -1,5 +1,7 @@
 import { bsc, bscTestnet, goerli, mainnet } from "wagmi/chains"
 
+export const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
+
 export const SUPPORTED_CHAINS = [
   { id: bsc.id, name: bsc.name },
   { id: bscTestnet.id, name: bscTestnet.name },

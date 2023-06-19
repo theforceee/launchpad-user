@@ -88,7 +88,6 @@ const HeaderDefaultLayout = () => {
   }
 
   const handleSignIn = async () => {
-    console.log("sign in")
     setLoadingSignIn(true)
     try {
       const nonceRes = await get("nonce")

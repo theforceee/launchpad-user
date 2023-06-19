@@ -4,7 +4,6 @@ export const PIONEER_NFT_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_
 export const BLAZE_TOKEN_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_BLAZE_TOKEN || ""
 export const BLAZE_TOKEN_DECIMALS: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_BLAZE_DECIMALS || ""
 export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAKING || ""
-export const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
 
 export const KEY_CACHE = "user"
 

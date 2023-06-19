@@ -39,8 +39,6 @@ const tiers: Array<TierTypes> = [
   }
 ]
 
-const fakeClaimDate = 1687308446349
-
 const StakingToken = () => {
   const { address: connectedAccount } = useAccount()
   const { userAllowance } = useTokenAllowance(connectedAccount)

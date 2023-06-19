@@ -12,7 +12,6 @@ export const request = async (url: string, method: string, options?: RequestOpti
   })
 
   if (!!options?.account) {
-    console.log("OK")
     const token = getAccountToken(options.account)
     headers.append("Authorization", `Bearer ${token}`)
   }

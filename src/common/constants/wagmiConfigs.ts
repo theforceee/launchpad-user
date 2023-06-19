@@ -15,13 +15,6 @@ export const wagmiConfig = createConfig({
   autoConnect: false,
   connectors: [
     new MetaMaskConnector({ chains }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true
-      }
-    }),
     new WalletConnectConnector({
       chains,
       options: {

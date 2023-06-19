@@ -19,7 +19,7 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
     if (!isSuccess) return
 
     modalRef.close()
-  }, [isSuccess])
+  }, [isSuccess, modalRef])
 
   return (
     <Modal>
