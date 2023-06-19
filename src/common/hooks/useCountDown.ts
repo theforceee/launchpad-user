@@ -26,9 +26,7 @@ export const useCountDown = (startDate?: Date, showDay = false) => {
                 .toString()
                 .padStart(2, "0")
             : Math.floor(distance / day)
-          const currentHour = Math.floor(
-            (distance % day) / hour + (showDay ? 0 : +currentDay)
-          )
+          const currentHour = Math.floor((distance % day) / hour + (showDay ? 0 : +currentDay))
             .toString()
             .padStart(2, "0")
           const currentMinute = Math.floor((distance % hour) / minute)

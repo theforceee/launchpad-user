@@ -42,7 +42,7 @@ const isCameTime = (time: Date | undefined) => {
   return !!time && new Date().getTime() >= time?.getTime()
 }
 
-const getDateFromUnix = (unix: number | undefined) => {
+export const getDateFromUnix = (unix: number | undefined) => {
   return unix ? new Date(unix * 1000) : undefined
 }
 
@@ -54,7 +54,7 @@ export const getPoolDetailStatus = (poolDetail: any): poolStatus => {
   const firstClaimTime = getDateFromUnix(emissions[0]?.release_time)
   const lastClaimTime = getDateFromUnix(emissions[emissions.length - 1]?.release_time)
 
-  console.log("getPoolDetailStatus", firstClaimTime, lastClaimTime)
+  // console.log("getPoolDetailStatus", firstClaimTime, lastClaimTime)
 
   const publicPool = poolDetail.pools.find((item: any) => !item.is_private)
   const privatePool = poolDetail.pools.find((item: any) => !!item.is_private)
