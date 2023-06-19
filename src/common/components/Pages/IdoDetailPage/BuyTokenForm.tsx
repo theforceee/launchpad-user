@@ -1,15 +1,39 @@
-import { getPoolDetailStatus } from "@utils/getPoolDetailStatus"
+import { get, post } from "@/common/request"
+import ConfirmDialog from "@components/Base/ConfirmDialog"
+import Countdown from "@components/Base/Countdown"
+import { openModal } from "@components/Base/Modal"
+import { URLS } from "@constants/index"
+import { AppContext } from "@contexts/AppContext"
+import iconLock from "@images/icon-lock.png"
+import { PoolStatus, getDateFromUnix, getPoolDetailStatus } from "@utils/getPoolDetailStatus"
 import { formatCurrency } from "@utils/index"
-import { useMemo } from "react"
+import Image from "next/image"
+import { useContext, useEffect, useMemo } from "react"
 import { NumericFormat } from "react-number-format"
+import { toast } from "react-toastify"
+import { useAccount } from "wagmi"
 
 const selectAmountClass =
   "flex cursor-pointer items-center justify-center rounded-lg border border-[#333350] bg-[#151532] py-1"
 
 const BuyTokenForm = (props: { poolDetail: any }) => {
   const { poolDetail } = props
+  const { isConnected, address: connectedAccount } = useAccount()
+  const { isWrongChain, isUserSigned } = useContext(AppContext)
+  const userAlreadyKYC = true
 
   const poolStatus = useMemo(() => getPoolDetailStatus(poolDetail), [poolDetail])
+
+  useEffect(() => {
+    ;(async () => {
+      if (!connectedAccount) return
+
+      const resSub = await get(`pool/${poolDetail?.slug}/submission`, {
+        account: connectedAccount
+      })
+      console.log("submission", resSub)
+    })()
+  }, [connectedAccount, poolDetail?.slug])
 
   const handleSelectAmount = (mul: number) => {
     console.log("multiple by", mul)
@@ -19,23 +43,95 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
     console.log("handleApprove")
   }
 
+  const applyWhitelist = async () => {
+    const resApply = await post(`pool/${poolDetail?.slug}/apply`, { account: connectedAccount })
+    console.log("applyWhitelist", resApply)
+
+    if (!resApply || resApply.status !== 200) {
+      toast.error("Fail to apply whitelist: " + resApply?.statusText)
+      return
+    }
+    toast.success("Success to apply whitelist")
+  }
+
+  const handleApplyWhitelist = async () => {
+    openModal(ConfirmDialog, {
+      data: {
+        dialogContent: "handleApplyWhitelist",
+        onConfirm: applyWhitelist
+      }
+    })
+  }
+
   const renderCoating = () => {
+    if (![PoolStatus.BEFORE_WHITELIST, PoolStatus.WHITELIST, PoolStatus.TBA].includes(poolStatus))
+      return <></>
+    const startJoinTime = getDateFromUnix(poolDetail?.start_join_time)
+    const endJoinTime = getDateFromUnix(poolDetail?.end_join_time)
+
+    const renderMainContent = () => {
+      switch (poolStatus) {
+        case PoolStatus.BEFORE_WHITELIST:
+          return (
+            <>
+              <span className="font-semibold">WHITELIST STARTS IN</span>
+
+              <Countdown countdownDate={startJoinTime} />
+            </>
+          )
+        case PoolStatus.WHITELIST:
+          if (isConnected && isUserSigned && !userAlreadyKYC)
+            return (
+              <div className="flex flex-col items-center">
+                <span className="font-semibold">KYC REQUIRED</span>
+
+                <Image alt="" src={iconLock} className="mt-5 h-[60px] w-[60px]" />
+
+                <a href={URLS.PROFILE} className="btnBorderOrange btnMedium mt-7 px-14">
+                  <span>Go to Profile</span>
+                </a>
+              </div>
+            )
+
+          return (
+            <>
+              <span className="font-semibold">WHITELIST ENDS IN</span>
+
+              <Countdown countdownDate={endJoinTime} />
+
+              {poolDetail?.require_kyc && !userAlreadyKYC && (
+                <div className="mt-5 flex rounded bg-[#5a3b31] py-2 px-10 text-[#F29B4B]">
+                  KYC REQUIRED
+                </div>
+              )}
+              <button
+                onClick={handleApplyWhitelist}
+                className="btnGradientPurple btnMedium mt-5 w-full"
+              >
+                <span>Apply Whitelist</span>
+              </button>
+            </>
+          )
+        case PoolStatus.TBA:
+        default:
+          return <span className="font-semibold">WHITELIST IS NOT YET OPEN</span>
+      }
+    }
+
     return (
       <div className="absolute z-20 flex h-full w-full flex-col items-center justify-center rounded-[20px] bg-[#151532]/90 text-center">
-        <span className="font-semibold">WHITELIST STARTS IN</span>
-
-        <div className="mt-5 rounded bg-[#6666664D]/30 px-10 py-2 text-[#cccccc]">
-          WHITELIST CLOSED
-        </div>
+        {renderMainContent()}
       </div>
     )
   }
 
   return (
     <div className="relative flex h-96 w-[320px]">
+      {renderCoating()}
+
       <div className="flex w-full flex-col items-center justify-center rounded-[20px] bg-[#151532] px-5 py-6 text-white">
         <div className="text-center text-18/24 font-semibold tracking-wide">PURCHASE TOKENS</div>
-        <div className="flex flex-col rounded-xl bg-[#000024] p-5 pb-2">
+        <div className="mt-5 flex flex-col rounded-xl bg-[#000024] p-5 pb-2">
           <div className="flex w-full justify-between font-bold">
             <NumericFormat
               className="mr-3 w-full bg-transparent outline-none"
@@ -77,8 +173,6 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
           <span>Approve</span>
         </div>
       </div>
-
-      {renderCoating()}
     </div>
   )
 }
