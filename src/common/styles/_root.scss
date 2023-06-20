@@ -40,16 +40,7 @@
   --ds-clr-green-60: #66DC63;
   --ds-clr-green-70: #26AA55;
   // --ds-gd
-  --ds-gd-purple-dark: #000122 48.44%, #19193A 85.42%;
-  --ds-gd-purple-dark-full: linear-gradient(180deg, var(--ds-gd-purple-dark));
-  --ds-gd-purple: #504FBE 5.63%, #9887F2 100%;
-  --ds-gd-purple-full: linear-gradient(274.23deg, var(--ds-gd-purple));
-  --ds-gd-green-blue: #66DC63 0%, #3A92F7 100%;
-  --ds-gd-green-blue-full: linear-gradient(274.23deg, var(--ds-gd-green-blue));
-  --ds-gd-red-blue: #D94C5D 0%, #3A92F7 100%;
-  --ds-gd-red-blue-full: linear-gradient(274.23deg, var(--ds-gd-red-blue));
-  --ds-gd-red-orange: #D94C5D 0%, #F29B4B 100%;
-  --ds-gd-red-orange-full: linear-gradient(274.23deg, var(--ds-gd-red-orange));
+  // sample class for gradient: bg-gradient-to-r from-clr-red-60 to-clr-orange-60
 }
 
 // add .dark class into html tag to change ds variables

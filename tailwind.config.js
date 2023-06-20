@@ -106,13 +106,7 @@ module.exports = withMT({
         "clr-green-50": "var(--ds-clr-green-50)",
         "clr-green-60": "var(--ds-clr-green-60)",
         "clr-green-70": "var(--ds-clr-green-70)",
-        "clr-green-70": "var(--ds-clr-green-70)",
-        // gd (gradient)
-        "gd-purple-dark": "var(--ds-gd-purple-dark-full)",
-        "gd-purple": "var(--ds-gd-purple-full)",
-        "gd-green-blue": "var(--ds-gd-green-blue-full)",
-        "gd-red-blue": "var(--ds-gd-red-blue-full)",
-        "gd-red-orange": "var(--ds-gd-red-orange-full)"
+        "clr-green-70": "var(--ds-clr-green-70)"
       }
     }
   },
