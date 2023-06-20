@@ -7,6 +7,8 @@ export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAK
 
 export const KEY_CACHE = "user"
 
+export const WALLET_CONNECT_PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
+
 type HeadDefaultTypes = {
   image: string
   title: string
