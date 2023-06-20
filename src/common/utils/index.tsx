@@ -11,6 +11,21 @@ export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
   return newNumber.toFixed(Math.max(0, ~~lengthOfDecimal)).replace(new RegExp(re, "g"), "$&,")
 }
 
+export const getRankingSuffix = (index: number | undefined) => {
+  if (typeof index !== "number") return "N/A"
+
+  switch (index) {
+    case 1:
+      return "st"
+    case 2:
+      return "nd"
+    case 3:
+      return "rd"
+    default:
+      return "th"
+  }
+}
+
 export async function checkMetaMaskIsUnlocked() {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
 

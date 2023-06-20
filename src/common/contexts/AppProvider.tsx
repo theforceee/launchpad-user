@@ -1,8 +1,9 @@
-import { BLAZE_TOKEN_CONTRACT, NETWORK_ID } from "@constants/index"
+import { BLAZE_TOKEN_CONTRACT } from "@constants/index"
+import { NETWORK_ID } from "@constants/networks"
+import { getAccountToken } from "@utils/index"
 import { useEffect, useState } from "react"
 import { useAccount, useChainId, useToken } from "wagmi"
 import { AppContext, TokenDetailTypes } from "./AppContext"
-import { getAccountToken } from "@utils/index"
 
 const AppProvider = (props: any) => {
   const chainId = useChainId()

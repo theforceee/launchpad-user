@@ -8,12 +8,14 @@ import iconFiredrake from "@images/profile/tier-firedrake.png"
 import iconPhoenix from "@images/profile/tier-phoenix.png"
 import iconTrailblazer from "@images/profile/tier-trailblazer.png"
 import { Tooltip } from "@material-tailwind/react"
-import { convertBigIntToNumber, formatCurrency } from "@utils/index"
+import { convertBigIntToNumber, formatCurrency, getRankingSuffix } from "@utils/index"
 import Image, { StaticImageData } from "next/image"
 import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import { NumericFormat } from "react-number-format"
 import { useAccount } from "wagmi"
 import UnstakeDialog from "./UnstakeDialog"
+import { get } from "@/common/request"
+import clsx from "clsx"
 
 export const SEPARATOR = ","
 type TierTypes = {
@@ -23,7 +25,7 @@ type TierTypes = {
 }
 const tiers: Array<TierTypes> = [
   {
-    desc: "31-100%",
+    desc: "top 10%",
     icon: iconFiredrake,
     label: "Firedrake"
   },
@@ -33,7 +35,7 @@ const tiers: Array<TierTypes> = [
     label: "Phoenix"
   },
   {
-    desc: "top 10%",
+    desc: "31-100%",
     icon: iconTrailblazer,
     label: "Trailblazer"
   }
@@ -57,8 +59,19 @@ const StakingToken = () => {
     true
   )
 
+  const [userRanking, setUserRanking] = useState<number>()
   const [openUnstakeDialog, setOpenUnstakeDialog] = useState<boolean>(false)
   const [inputAmount, setInputAmount] = useState<string>("")
+
+  useEffect(() => {
+    ;(async () => {
+      if (!connectedAccount) return
+      const resStaked = await get("staked-info", { account: connectedAccount })
+      console.log("resStaked", resStaked)
+      if (!resStaked || !resStaked.data || resStaked.status !== 200) return
+      setUserRanking(resStaked.data.userPosition)
+    })()
+  }, [connectedAccount])
 
   useEffect(() => {
     console.log("StakingToken", userAllowance, tokenStaked, tokenPendingWithdraw)
@@ -178,7 +191,7 @@ const StakingToken = () => {
                 {formatCurrency(tokenStaked)}
               </span>
               <button
-                disabled={loadingUnstake}
+                disabled={loadingUnstake || !tokenStaked || tokenStaked <= 0}
                 onClick={() => setOpenUnstakeDialog(true)}
                 className="btnBorderOrangeDark btnSmall mt-3 w-full !border"
               >
@@ -234,8 +247,8 @@ const StakingToken = () => {
               </Tooltip>
             </div>
             <div className="flex items-end">
-              <span className="text-28/36 font-bold">17</span>
-              <span className="ml-1 text-18/24 font-semibold">Th</span>
+              <span className="text-28/36 font-bold">{userRanking || ""}</span>
+              <span className="ml-1 text-18/24 font-semibold">{getRankingSuffix(userRanking)}</span>
             </div>
           </div>
 
@@ -253,7 +266,14 @@ const StakingToken = () => {
                         key={index}
                       >
                         <Image alt="" src={icon} className="h-4 w-4" />
-                        <span className="ml-1 text-blazeOrange">{label}</span>
+                        <span
+                          className={clsx(
+                            "ml-1",
+                            index === 0 ? "text-[#D94C5D]" : "text-blazeOrange"
+                          )}
+                        >
+                          {label}
+                        </span>
                         <span className="ml-auto">{desc}</span>
                       </div>
                     ))}
