@@ -1,5 +1,5 @@
 import { BLAZE_TOKEN_CONTRACT } from "@constants/index"
-import { NETWORK_ID } from "@constants/networks"
+import { ETH_NETWORK_ID } from "@constants/networks"
 import { getAccountToken } from "@utils/index"
 import { useEffect, useState } from "react"
 import { useAccount, useChainId, useToken } from "wagmi"
@@ -31,7 +31,7 @@ const AppProvider = (props: any) => {
   }, [address])
 
   useEffect(() => {
-    setIsWrongChain(chainId !== +NETWORK_ID)
+    setIsWrongChain(chainId !== +ETH_NETWORK_ID)
   }, [chainId])
 
   useEffect(() => {}, [])

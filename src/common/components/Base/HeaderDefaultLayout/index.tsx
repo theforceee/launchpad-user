@@ -13,11 +13,12 @@ import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { HTMLAttributeAnchorTarget, useContext, useState } from "react"
+import { HTMLAttributeAnchorTarget, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { SiweMessage } from "siwe"
 import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
 import styles from "./header.module.scss"
+import useUserAssets from "@hooks/useUserAssets"
 
 type RouteTypes = {
   label: string
@@ -78,6 +79,12 @@ const HeaderDefaultLayout = () => {
   const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false)
   const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
+
+  const { blazeBalance, nativeBalance, usdtBalance } = useUserAssets()
+
+  useEffect(() => {
+    console.log("assets:", nativeBalance, blazeBalance, usdtBalance)
+  }, [blazeBalance, nativeBalance, usdtBalance])
 
   const openConnectWallet = () => {
     openModal(ConnectWalletDialog)
@@ -201,16 +208,22 @@ const HeaderDefaultLayout = () => {
                 </div>
                 <div className="flex flex-col border-r border-white/30 py-1 pr-3">
                   <div className="ml-auto flex">
-                    <span className="text-white/80">1.44</span>
+                    <span className="text-white/80">
+                      {nativeBalance ? Math.floor(+nativeBalance * 100) / 100 : "-"}
+                    </span>
                     <span className="w-10 text-right font-semibold">ETH</span>
                   </div>
                   <div className="ml-auto mt-1 flex">
-                    <span className="text-white/80">{formatCurrency("156233")}</span>
+                    <span className="text-white/80">
+                      {usdtBalance ? formatCurrency(usdtBalance, 2) : "-"}
+                    </span>
                     <span className="w-10 text-right font-semibold">USDT</span>
                   </div>
                 </div>
                 <div className="flex py-1 pl-3">
-                  <span className="w-10 text-white/80">1,872</span>
+                  <span className="w-10 text-white/80">
+                    {blazeBalance ? formatCurrency(blazeBalance, 2) : "-"}
+                  </span>
                   <span className="font-semibold">BLAZE</span>
                 </div>
               </div>
