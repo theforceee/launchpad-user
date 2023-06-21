@@ -190,13 +190,15 @@ const StakingToken = () => {
               <span className="mt-1 text-28/36 font-bold tracking-wider">
                 {formatCurrency(tokenStaked)}
               </span>
-              <button
-                disabled={loadingUnstake || !tokenStaked || tokenStaked <= 0}
-                onClick={() => setOpenUnstakeDialog(true)}
-                className="btnBorderOrangeDark btnSmall mt-3 w-full !border"
-              >
-                <span>Unstake</span>
-              </button>
+              <div>
+                <button
+                  disabled={loadingUnstake || !tokenStaked || tokenStaked <= 0}
+                  onClick={() => setOpenUnstakeDialog(true)}
+                  className="btnBorderOrangeDark btnSmall mt-3 w-full !border px-4"
+                >
+                  <span>Unstake</span>
+                </button>
+              </div>
               <span className="mt-2 text-12/16 text-textGray">30 days withdrawal cooldown</span>
             </div>
 
@@ -217,12 +219,14 @@ const StakingToken = () => {
               <span className="mt-1 text-28/36 font-bold tracking-wider">
                 {formatCurrency(convertBigIntToNumber((tokenPendingWithdraw || [0])[0]))}
               </span>
-              <button
-                disabled={disabledClaimPending}
-                className="btnGradientPurple btnSmall mt-3 w-full"
-              >
-                <span>Claim All</span>
-              </button>
+              <div>
+                <button
+                  disabled={disabledClaimPending}
+                  className="btnGradientPurple btnSmall mt-3 w-full px-4"
+                >
+                  <span>Claim All</span>
+                </button>
+              </div>
               <span className="mt-2 text-12/16 text-textGray">
                 {`${days}d : ${hours}h : ${minutes}m`}
               </span>
