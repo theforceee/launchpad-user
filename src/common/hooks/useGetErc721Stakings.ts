@@ -6,7 +6,7 @@ export function useGetErc721Stakings(
   connectedAccount: Address | undefined,
   nftContractAddr: Address
 ) {
-  const { data, isLoading } = useContractRead({
+  const { data, isLoading, refetch } = useContractRead({
     enabled: !!connectedAccount,
     address: STAKING_CONTRACT,
     abi: STAKING_ABI,
@@ -16,6 +16,7 @@ export function useGetErc721Stakings(
 
   return {
     isLoading,
-    nftIds: (data as bigint[])?.map((v) => `${v}`) || []
+    nftIds: (data as bigint[])?.map((v) => `${v}`) || [],
+    refetch
   }
 }

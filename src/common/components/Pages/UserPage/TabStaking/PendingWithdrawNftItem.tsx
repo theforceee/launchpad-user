@@ -38,7 +38,7 @@ export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
           alt={""}
           width={66}
           height={66}
-          className={clsx("h-[66px] w-[66px] rounded-lg p-[2px]", {})}
+          className="rounded-lg p-[2px]"
         />
 
         <div className="absolute top-0 right-0 bottom-0 left-0 bg-clr-purple-70 opacity-50" />
@@ -61,7 +61,7 @@ export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
               className="bg-clr-purple-50"
               content={
                 <div className="w-[192px] p-1 text-12/18 text-clr-purple-10">
-                  Waiting for claiming this NFT:
+                  Withdrawal cooldown:
                   <div>
                     {duration.days} day(s)&nbsp;
                     {duration.hours}:{duration.minutes}:{duration.seconds}

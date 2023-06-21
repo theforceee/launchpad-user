@@ -4,12 +4,12 @@ import Image from "next/image"
 import styles from "./tabStaking.module.scss"
 import { useState } from "react"
 import { Address, useAccount } from "wagmi"
-import { Autoplay, Pagination, Swiper as SwiperClass } from "swiper"
+import { Swiper as SwiperClass } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useGetPendingERC721Withdrawals } from "@hooks/useGetPendingERC721Withdrawals"
 import { StakableNftItem } from "./StakableNftItem"
 import { PendingWithdrawNftItem } from "./PendingWithdrawNftItem"
-import { NftData, isNftSelected } from "./CompatibleNFTs"
+import { NftData } from "./CompatibleNFTs"
 
 export function CompatibleNftsSlider({
   nftName,
@@ -35,6 +35,7 @@ export function CompatibleNftsSlider({
   const handlePrevSlide = () => {
     swiper?.slidePrev()
   }
+  const totalItems = nftsGroup.length + pendingERC721Withdrawals.length
 
   return (
     <div className="mt-5 flex flex-col">
@@ -57,7 +58,7 @@ export function CompatibleNftsSlider({
           className={clsx(
             "absolute top-[calc(50%-20px)] -right-[10px] z-10 flex h-[20px] w-[20px] items-center justify-center rounded-md bg-clr-purple-50 text-white duration-200 hover:bg-clr-purple-60",
             {
-              invisible: nftsGroup.length - activeIdx < 4 || nftsGroup.length < 4
+              invisible: totalItems - activeIdx < 4 || totalItems < 4
             }
           )}
           type="button"
@@ -73,11 +74,10 @@ export function CompatibleNftsSlider({
           }}
           spaceBetween={8}
           slidesPerView={3}
-          modules={[Autoplay, Pagination]}
           className={clsx("flex min-h-[87px] gap-[30px] overflow-hidden", styles.nftSLider)}
         >
           {nftsGroup.map((nft) => (
-            <SwiperSlide key={`${nft.tokenAddress}:${nft.tokenId}`}>
+            <SwiperSlide key={nft.tokenId}>
               <StakableNftItem
                 nft={nft}
                 handleSelectNft={handleSelectNft}
@@ -86,13 +86,19 @@ export function CompatibleNftsSlider({
             </SwiperSlide>
           ))}
 
-          {pendingERC721Withdrawals.map((pendingNft, idx) => (
-            <SwiperSlide key={idx}>
+          {pendingERC721Withdrawals.map((pendingNft) => (
+            <SwiperSlide key={pendingNft.tokenId}>
               <PendingWithdrawNftItem nft={pendingNft} />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
     </div>
+  )
+}
+
+function isNftSelected(selectedNfts: NftData[], nft: NftData) {
+  return selectedNfts.some(
+    (selectedNft) => selectedNft?.tokenId === nft.tokenId && selectedNft?.symbol === nft.symbol
   )
 }

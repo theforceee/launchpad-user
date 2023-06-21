@@ -16,7 +16,7 @@ export const useStakeMultipleERC721 = (connectedAccount: `0x${string}` | undefin
     functionName: "stakeMultipleERC721",
     account: connectedAccount,
     onError(error) {
-      console.log("ERROR stake:", error?.message)
+      console.log("ERROR useStakeMultipleERC721:", error?.message)
       toast.error(getErrorMessage(error, "Fail to Stake NFT"))
     }
   })

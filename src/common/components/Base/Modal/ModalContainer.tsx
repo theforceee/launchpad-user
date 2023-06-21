@@ -7,7 +7,7 @@ export function ModalContainer() {
   const [modalList, setModalList] = useState<ModalData[]>([])
 
   useEffect(() => {
-    modalSubject.subscribe((modalList) => {
+    return modalSubject.subscribe((modalList) => {
       setModalList(modalList)
     })
   }, [])

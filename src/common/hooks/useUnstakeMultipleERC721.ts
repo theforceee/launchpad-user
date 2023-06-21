@@ -5,7 +5,7 @@ import { useCallback, useEffect } from "react"
 import { toast } from "react-toastify"
 import { Address, useContractWrite, useWaitForTransaction } from "wagmi"
 
-export const useUnstakeErc721 = (connectedAccount: Address | undefined) => {
+export const useUnstakeMultipleERC721 = (connectedAccount: Address | undefined) => {
   const {
     data: dataStake,
     isLoading: loadingUnstake,
@@ -13,10 +13,10 @@ export const useUnstakeErc721 = (connectedAccount: Address | undefined) => {
   } = useContractWrite({
     address: STAKING_CONTRACT,
     abi: STAKING_ABI,
-    functionName: "unstakeERC721",
+    functionName: "unstakeMultipleERC721",
     account: connectedAccount,
     onError(error) {
-      console.log("ERROR stake:", error?.message)
+      console.log("ERROR useUnstakeMultipleERC721:", error?.message)
       toast.error(getErrorMessage(error, "Fail to Stake NFT"))
     }
   })
@@ -28,7 +28,7 @@ export const useUnstakeErc721 = (connectedAccount: Address | undefined) => {
 
   useEffect(() => {
     if (dataHash?.status === "success") {
-      toast.success("SUCCESS: NFT have been unstaked")
+      toast.success("SUCCESS: NFTs have been unstaked")
     }
 
     if (dataHash?.status === "reverted") {
@@ -37,18 +37,18 @@ export const useUnstakeErc721 = (connectedAccount: Address | undefined) => {
     }
   }, [dataHash])
 
-  const unstakeNft = useCallback(
-    async (nftAdress: string, tokenId: string) => {
+  const unstakeMultipleERC721 = useCallback(
+    async (nftAdress: string, tokenIds: string[]) => {
       writeUnstake({
-        args: [nftAdress, tokenId]
+        args: [nftAdress, tokenIds]
       })
     },
     [writeUnstake]
   )
 
   return {
-    unstakeNft,
-    unstakeNftStatus: dataHash?.status,
+    unstakeMultipleERC721,
+    unstakeMultipleERC721Status: dataHash?.status,
     loadingUnstake: loadingHash || loadingUnstake
   }
 }
