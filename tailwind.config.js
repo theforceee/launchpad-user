@@ -28,7 +28,9 @@ module.exports = withMT({
       textGray: "#9999A7",
       ...colors
     },
-    fontFamily: {},
+    fontFamily: {
+      poppins: ["Poppins"]
+    },
     fontSize: {
       "10/14": ["10px", { lineHeight: "14px" }],
       "10/32": ["10px", { lineHeight: "32px" }],
