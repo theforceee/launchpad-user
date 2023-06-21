@@ -5,11 +5,12 @@ import styles from "./tabStaking.module.scss"
 import { Tooltip } from "@material-tailwind/react"
 import { StakedNFTSlider } from "./StakedNFTSlider"
 import { PIONEER_NFT_CONTRACT, SHERIFF_NFT_CONTRACT } from "@constants/index"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { StakedNft } from "./CompatibleNFTs"
 import { useUnstakeMultipleERC721 } from "@hooks/useUnstakeMultipleERC721"
 import { useAccount } from "wagmi"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
+import { useGetMultiplier } from "@hooks/useGetMultiplier"
 
 export function StakedNfts() {
   const { stakingNftSubject } = useStakingNftContext()
@@ -17,6 +18,13 @@ export function StakedNfts() {
   const { unstakeMultipleERC721, loadingUnstake, unstakeMultipleERC721Status } =
     useUnstakeMultipleERC721(connectedAccount)
   const [chosenStakedNfts, setChosenStakedNfts] = useState<StakedNft[]>([])
+
+  const { multiplier } = useGetMultiplier(connectedAccount)
+
+  const stakedMultiplier = useMemo(
+    () => (multiplier?.numerator ? `x${BigInt(multiplier?.numerator)}` : "..."),
+    [multiplier?.numerator]
+  )
 
   useEffect(() => {
     if (unstakeMultipleERC721Status !== "success") return
@@ -50,21 +58,41 @@ export function StakedNfts() {
 
   return (
     <div className={clsx(styles.bgBorder, "flex flex-col rounded-xl bg-clr-purple-70 p-5")}>
-      <div className="flex items-center justify-center">
-        <span className="mr-2 font-poppins text-18/24 font-semibold tracking-wide text-white">
-          Staked NFTs
-        </span>
-        <Tooltip
-          className="bg-clr-purple-50"
-          content={
-            <div className="w-[192px] p-1 text-12/18 text-clr-purple-10">
-              Mighty Labs NFTs that you have currently staked within the Trailblaze NFT staking
-              contract
-            </div>
-          }
-        >
-          <Image src={iconInfo} alt="" className="h-4 w-4" />
-        </Tooltip>
+      <div className="relative flex items-center justify-between">
+        <div className="flex gap-1">
+          <span className="font-poppins text-14/18 font-semibold tracking-wide text-white">
+            Staked NFTs
+          </span>
+          <Tooltip
+            className="bg-clr-purple-50"
+            content={
+              <div className="w-[192px] p-1 text-12/18 text-clr-purple-10">
+                Mighty Labs NFTs that you have currently staked within the Trailblaze NFT staking
+                contract
+              </div>
+            }
+          >
+            <Image src={iconInfo} alt="" className="h-4 w-4" />
+          </Tooltip>
+        </div>
+
+        <div className="absolute -right-4 -top-4 flex flex-col gap-1 rounded-lg bg-clr-purple-60 p-2">
+          <div className="flex gap-1 font-poppins text-12/16 font-semibold uppercase">
+            <span>Multiplier</span>
+            <Tooltip
+              className="bg-clr-purple-50"
+              content={
+                <div className="flex w-[361px] flex-col p-1 text-12/18 text-clr-purple-10">
+                  <span className="text-14/18 font-semibold">Staking Mighty Labs NFTs</span>
+                  <span className="mt-1">Leader Board points multiply by staking certain NFTs</span>
+                </div>
+              }
+            >
+              <Image src={iconInfo} alt="" className="h-4 w-4" />
+            </Tooltip>
+          </div>
+          <div className="text-right font-poppins text-14/18 font-semibold">{stakedMultiplier}</div>
+        </div>
       </div>
 
       <StakedNFTSlider
