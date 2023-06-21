@@ -140,8 +140,8 @@ export function CompatibleNFTs() {
     <div
       className={clsx(styles.bgBorder, "flex flex-col rounded-xl bg-clr-purple-70 p-5 text-white")}
     >
-      <div className="flex items-center justify-center">
-        <span className="mr-2 font-poppins text-18/24 font-semibold tracking-wide">
+      <div className="flex items-center">
+        <span className="mr-2 font-poppins text-14/18 font-semibold tracking-wide">
           Compatible NFTs
         </span>
         <Tooltip
