@@ -658,6 +658,24 @@
   {
     "inputs": [
       {
+        "internalType": "contract IERC721",
+        "name": "_nft",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "stakeMultipleERC721",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -719,6 +737,24 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "contract IERC721",
+        "name": "_nft",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "unstakeMultipleERC721",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "withdrawERC20",
     "outputs": [],
@@ -739,6 +775,24 @@
       }
     ],
     "name": "withdrawERC721",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC721",
+        "name": "_nft",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "withdrawMultipleERC721",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

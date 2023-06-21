@@ -1,3 +1,5 @@
+import defaultNftLogo from "@images/default-nft-logo.png"
+
 export const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API + "api/v2/user"
 export const SHERIFF_NFT_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_SHERIFF_NFT || ""
 export const PIONEER_NFT_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_PIONEER_NFT || ""
@@ -8,6 +10,8 @@ export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAK
 export const KEY_CACHE = "user"
 
 export const WALLET_CONNECT_PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
+
+export const DEFAULT_NFT_LOGO = defaultNftLogo.src
 
 type HeadDefaultTypes = {
   image: string

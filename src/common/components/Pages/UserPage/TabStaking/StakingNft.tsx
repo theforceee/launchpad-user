@@ -6,6 +6,7 @@ import Image from "next/image"
 import { useMemo } from "react"
 import { useAccount } from "wagmi"
 import styles from "./tabStaking.module.scss"
+import { CompatibleNFTs } from "./CompatibleNFTs"
 
 const StakingNft = () => {
   const { address: connectedAccount } = useAccount()
@@ -24,7 +25,7 @@ const StakingNft = () => {
           Get Leader Board Point Multipliers for staking Mighty Labs NFTs
         </span>
       </div>
-      <ul className="mt-6 list-outside list-disc pl-5 text-14/20 text-[#CCCCD3]">
+      <ul className="mt-6 list-outside list-disc pl-5 text-14/20 text-clr-purple-20">
         <li className="">ranking determines tier and allocation of IDO tokens</li>
         <li className="">
           top 30% on Leader Board get IDO Private Sale access (top 2 tiers: Phoenix and Firedrake)
@@ -40,100 +41,7 @@ const StakingNft = () => {
         </a>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3">
-        <div className="flex flex-col rounded-xl bg-[#000122] p-5">
-          <div className="flex items-center justify-center">
-            <span className="mr-2 text-18/24 font-semibold tracking-wide">Compatible NFTs</span>
-            <Tooltip
-              className="bg-[#33344D]"
-              content={
-                <div className="w-[192px] p-1 text-12/18 text-[#F2F0FF]">
-                  Mighty Labs NFTs that are currently in your connected wallet but are not yet
-                  staked
-                  <br />
-                  <br />
-                  NFTs that have a number overlayed represent NFTs you have recently unstaked and
-                  the number displayed is the number of days left of the 30 day cooldown period at
-                  which time they can then be staked again or recieved to your wallet
-                </div>
-              }
-            >
-              <Image src={iconInfo} alt="" className="h-4 w-4" />
-            </Tooltip>
-          </div>
-
-          <div className="mt-5 flex flex-col">
-            <span className="text-12/16 font-semibold text-textGray">SHERIFF</span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-col">
-            <span className="text-12/16 font-semibold text-textGray">PIONEEER</span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-            </div>
-          </div>
-
-          <div className="mt-5 grid grid-cols-2 gap-2">
-            <div className="btnSmall btnGradientPurple">
-              <span>Stake</span>
-            </div>
-            <div className="btnSmall btnGradientOrange">
-              <span>Claim All</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={clsx(styles.bgBorder, "flex flex-col rounded-xl bg-[#000122] p-5")}>
-          <div className="flex items-center justify-center">
-            <span className="mr-2 text-18/24 font-semibold tracking-wide text-white">
-              Staked NFTs
-            </span>
-            <Tooltip
-              className="bg-[#33344D]"
-              content={
-                <div className="w-[192px] p-1 text-12/18 text-[#F2F0FF]">
-                  Mighty Labs NFTs that you have currently staked within the Trailblaze NFT staking
-                  contract
-                </div>
-              }
-            >
-              <Image src={iconInfo} alt="" className="h-4 w-4" />
-            </Tooltip>
-          </div>
-
-          <div className="mt-5 flex flex-col">
-            <span className="text-12/16 font-semibold text-textGray">SHERIFF</span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-col">
-            <span className="text-12/16 font-semibold text-textGray">PIONEEER</span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-              <div className="flex h-[66px] rounded-lg bg-[#66667B]"></div>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-col items-center">
-            <div className="btnBorderOrangeDark btnSmall w-full">
-              <span>Unstake</span>
-            </div>
-            <span className="mt-2 text-12/16 text-textGray">30 days withdrawal cooldown</span>
-          </div>
-        </div>
-      </div>
+      <CompatibleNFTs />
 
       <div className="mt-2 grid grid-cols-2 gap-2">
         <div className=""></div>
@@ -143,9 +51,9 @@ const StakingNft = () => {
               Staked NFTs
             </span>
             <Tooltip
-              className="bg-[#33344D]"
+              className="bg-clr-purple-50"
               content={
-                <div className="flex w-[361px] flex-col p-1 text-12/18 text-[#F2F0FF]">
+                <div className="flex w-[361px] flex-col p-1 text-12/18 text-clr-purple-10">
                   <span className="text-14/18 font-semibold">Staking Mighty Labs NFTs</span>
                   <span className="mt-1">Leader Board points multiply by staking certain NFTs</span>
                 </div>
