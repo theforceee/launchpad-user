@@ -38,6 +38,7 @@ const DefaultLayout = (props: LayoutProps) => {
         <meta name="twitter:title" content={title || defaultTitle} />
         <meta name="twitter:description" content={description || defaultDescription} />
         <meta name="twitter:image" content={image || defaultImage} />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       </Head>
 
       <HeaderDefaultLayout />
