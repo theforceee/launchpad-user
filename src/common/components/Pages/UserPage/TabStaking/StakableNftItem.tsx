@@ -4,6 +4,8 @@ import { useNftGetApproved } from "@hooks/useErc721GetApproved"
 import { DEFAULT_NFT_LOGO } from "@constants/index"
 import clsx from "clsx"
 import { NftData } from "./typing"
+import { useIntersection } from "@hooks/useIntersection"
+import { useRef } from "react"
 
 export function StakableNftItem({
   nft,
@@ -14,11 +16,18 @@ export function StakableNftItem({
   handleSelectNft: (nft: NftData) => void
   active: boolean
 }) {
+  const domRef = useRef<HTMLButtonElement>(null)
   const { address: connectedAccount } = useAccount()
-  const { isApproved } = useNftGetApproved(nft?.tokenAddress, nft?.tokenId, connectedAccount)
+  const isIntersected = useIntersection(domRef)
+  const { isApproved } = useNftGetApproved(
+    nft?.tokenAddress,
+    isIntersected ? nft?.tokenId : undefined,
+    connectedAccount
+  )
 
   return (
     <button
+      ref={domRef}
       key={`${nft.tokenAddress}:${nft.tokenId}`}
       onClick={() =>
         handleSelectNft({
