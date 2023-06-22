@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://mty-test.icetea-software.com/:path*'
+        destination: `${[process.env.NEXT_PUBLIC_BASE_API]}:path*`
       }
     ]
   }
