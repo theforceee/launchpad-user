@@ -1,18 +1,17 @@
-import Image from "next/image"
 import { DEFAULT_NFT_LOGO } from "@constants/index"
 import { PendingWithdrawNft } from "@hooks/useGetPendingERC721Withdrawals"
 import { useInterval } from "@hooks/useInterval"
 import { useWithdrawErc721 } from "@hooks/useWithdrawERC721"
+import { Tooltip } from "@material-tailwind/react"
 import { differenceInDays, intervalToDuration } from "date-fns"
+import Image from "next/image"
 import { useMemo } from "react"
 import { useAccount } from "wagmi"
-import { Tooltip } from "@material-tailwind/react"
-import clsx from "clsx"
 
 export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
   const endTime = useMemo(() => {
     return new Date(Number(nft.applicableAt) * 1000)
-  }, [])
+  }, [nft.applicableAt])
 
   const duration = useInterval(
     () =>

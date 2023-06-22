@@ -1,16 +1,16 @@
+import { PIONEER_NFT_CONTRACT, SHERIFF_NFT_CONTRACT } from "@constants/index"
+import { useGetMultiplier } from "@hooks/useGetMultiplier"
+import { useUnstakeMultipleERC721 } from "@hooks/useUnstakeMultipleERC721"
+import iconInfo from "@images/icon-info.png"
+import { Tooltip } from "@material-tailwind/react"
 import clsx from "clsx"
 import Image from "next/image"
-import iconInfo from "@images/icon-info.png"
-import styles from "./tabStaking.module.scss"
-import { Tooltip } from "@material-tailwind/react"
-import { StakedNFTSlider } from "./StakedNFTSlider"
-import { PIONEER_NFT_CONTRACT, SHERIFF_NFT_CONTRACT } from "@constants/index"
 import { useEffect, useMemo, useState } from "react"
-import { StakedNft } from "./CompatibleNFTs"
-import { useUnstakeMultipleERC721 } from "@hooks/useUnstakeMultipleERC721"
 import { useAccount } from "wagmi"
+import { StakedNft } from "./CompatibleNFTs"
+import { StakedNFTSlider } from "./StakedNFTSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
-import { useGetMultiplier } from "@hooks/useGetMultiplier"
+import styles from "./tabStaking.module.scss"
 
 export function StakedNfts() {
   const { stakingNftSubject } = useStakingNftContext()
@@ -31,7 +31,7 @@ export function StakedNfts() {
 
     setChosenStakedNfts([])
     stakingNftSubject.next(NftStakingEvent.NFT_UNSTAKED)
-  }, [unstakeMultipleERC721Status])
+  }, [stakingNftSubject, unstakeMultipleERC721Status])
 
   const handleUnstakeNft = () => {
     if (!chosenStakedNfts.length) return

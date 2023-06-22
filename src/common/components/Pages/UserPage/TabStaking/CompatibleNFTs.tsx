@@ -1,18 +1,17 @@
+import { get } from "@/common/request"
+import { PIONEER_NFT_CONTRACT, SHERIFF_NFT_CONTRACT } from "@constants/index"
+import { useErc721Approve } from "@hooks/useErc721Aprrove"
 import { useStakeMultipleERC721 } from "@hooks/useStakeMultipleERC721"
 import iconInfo from "@images/icon-info.png"
 import { Tooltip } from "@material-tailwind/react"
 import clsx from "clsx"
 import Image from "next/image"
-import styles from "./tabStaking.module.scss"
-import { PIONEER_NFT_CONTRACT, SHERIFF_NFT_CONTRACT } from "@constants/index"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { get } from "@/common/request"
-import { Address, useAccount } from "wagmi"
 import { toast } from "react-toastify"
-import { useErc721Approve } from "@hooks/useErc721Aprrove"
+import { Address, useAccount } from "wagmi"
 import { CompatibleNftsSlider } from "./CompatibleNftsSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
-import { StakedNfts } from "./StakedNfts"
+import styles from "./tabStaking.module.scss"
 
 export function CompatibleNFTs() {
   const { stakingNftSubject } = useStakingNftContext()
@@ -118,7 +117,7 @@ export function CompatibleNFTs() {
 
     setSelectedNfts([])
     stakingNftSubject.next(NftStakingEvent.NFT_STAKED)
-  }, [stakeMultipleERC721Status])
+  }, [selectedNfts, stakeMultipleERC721Status, stakingNftSubject])
 
   const handleStakeNft = () => {
     if (!selectedNfts.length) return
@@ -134,7 +133,7 @@ export function CompatibleNFTs() {
       if (event !== NftStakingEvent.NFT_UNSTAKED) return
       fetchNfts()
     })
-  }, [])
+  }, [fetchNfts, stakingNftSubject])
 
   return (
     <div

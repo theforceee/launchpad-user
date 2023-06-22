@@ -1,15 +1,15 @@
-import Image from "next/image"
-import { StakedNft } from "./CompatibleNFTs"
-import { Address, useAccount } from "wagmi"
-import { useGetErc721Stakings } from "@hooks/useGetErc721Stakings"
 import { DEFAULT_NFT_LOGO } from "@constants/index"
+import { useGetErc721Stakings } from "@hooks/useGetErc721Stakings"
+import iconNext from "@images/icon-next.svg"
 import clsx from "clsx"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 import { Swiper as SwiperClass } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { useEffect, useState } from "react"
-import iconNext from "@images/icon-next.svg"
-import styles from "./tabStaking.module.scss"
+import { Address, useAccount } from "wagmi"
+import { StakedNft } from "./CompatibleNFTs"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
+import styles from "./tabStaking.module.scss"
 
 export function StakedNFTSlider({
   name,
@@ -41,7 +41,7 @@ export function StakedNFTSlider({
 
       refetch()
     })
-  }, [])
+  }, [refetch, stakingNftSubject])
 
   return (
     <div className="mt-5 flex flex-col">

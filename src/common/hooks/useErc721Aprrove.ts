@@ -43,7 +43,7 @@ export const useErc721Approve = (
       console.log("nft approve error", dataHash)
       toast.error("FAIL: execution reverted")
     }
-  }, [dataHash])
+  }, [dataHash, options])
 
   const approve = useCallback(
     async (tokenId: string) => {

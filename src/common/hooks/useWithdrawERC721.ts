@@ -36,9 +36,12 @@ export const useWithdrawErc721 = (connectedAccount: Address | undefined) => {
     }
   }, [dataHash])
 
-  const widthdrawERC721 = useCallback((nftAddress: Address, tokenId: string) => {
-    write({ args: [nftAddress, tokenId] })
-  }, [])
+  const widthdrawERC721 = useCallback(
+    (nftAddress: Address, tokenId: string) => {
+      write({ args: [nftAddress, tokenId] })
+    },
+    [write]
+  )
 
   return {
     widthdrawERC721,

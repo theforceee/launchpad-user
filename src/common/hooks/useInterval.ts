@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export function useInterval<Cb extends () => any>(cb: Cb, time: number) {
   const [val, setVal] = useState<ReturnType<Cb>>(cb())
@@ -11,7 +11,7 @@ export function useInterval<Cb extends () => any>(cb: Cb, time: number) {
     return () => {
       clearInterval(timer)
     }
-  }, [])
+  }, [cb, time])
 
   return val
 }
