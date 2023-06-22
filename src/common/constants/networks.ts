@@ -1,15 +1,23 @@
 import { bsc, bscTestnet, goerli, mainnet } from "wagmi/chains"
+import ethImg from "@images/icon-eth.png"
+import bscImg from "@images/icon-bsc.png"
 
 export const ETH_NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
 export const BSC_NETWORK_ID = process.env.NEXT_PUBLIC_BSC_CHAIN_ID || ""
 export const USDT_ETH_ADDRESS = process.env.NEXT_PUBLIC_USDT_ETH_SMART_CONTRACT || ""
 export const USDT_BSC_ADDRESS = process.env.NEXT_PUBLIC_USDT_BSC_SMART_CONTRACT || ""
 
-export const SUPPORTED_CHAINS = [
-  { id: bsc.id, name: bsc.name },
-  { id: bscTestnet.id, name: bscTestnet.name },
-  { id: goerli.id, name: goerli.name },
-  { id: mainnet.id, name: mainnet.name }
+export type Chain = {
+  id: number
+  name: string
+  iconSrc: string
+}
+
+export const SUPPORTED_CHAINS: Chain[] = [
+  { id: bsc.id, name: "BSC", iconSrc: bscImg.src },
+  { id: bscTestnet.id, name: "BSC Testnet", iconSrc: bscImg.src },
+  { id: goerli.id, name: "Goerli", iconSrc: bscImg.src },
+  { id: mainnet.id, name: "Ethereum", iconSrc: ethImg.src }
 ]
 
 export const SUPPORTED_WALLETS = [

@@ -3,12 +3,18 @@ import { useModal } from "./ModalContext"
 import clsx from "clsx"
 import { Transition } from "@headlessui/react"
 import { useModalTransition } from "./useModalTransition"
+import Image from "next/image"
+import iconClose from "@images/icon-close.png"
 
 type ModalProps = PropsWithChildren<{
   className?: string
+  /**
+   * Default: true
+   */
+  hasCloseBtn?: boolean
 }>
 
-export function Modal({ children, className }: ModalProps) {
+export function Modal({ children, hasCloseBtn = true, className }: ModalProps) {
   const { modal } = useModal()
   const { show } = useModalTransition(modal)
 
@@ -26,7 +32,7 @@ export function Modal({ children, className }: ModalProps) {
         >
           <div
             className="absolute top-0 right-0 bottom-0 left-0 bg-black bg-opacity-25"
-            onClick={modal.modalRef.close}
+            onClick={() => modal.modalRef.close()}
           />
         </Transition.Child>
 
@@ -41,10 +47,19 @@ export function Modal({ children, className }: ModalProps) {
         >
           <div
             className={clsx(
-              "relative min-w-[300px] max-w-[90vw] rounded-[6px] bg-white p-[25px] shadow-sm",
+              "relative min-w-[300px] max-w-[90vw] rounded-[20px] bg-clr-purple-60 p-5 pt-10 shadow-sm md:p-[30px] md:pt-[40px]",
               className
             )}
           >
+            {hasCloseBtn && (
+              <button
+                type="button"
+                onClick={() => modal.modalRef.close()}
+                className="absolute top-4 right-4"
+              >
+                <Image src={iconClose} alt="" width={24} height={24} />
+              </button>
+            )}
             {children}
           </div>
         </Transition.Child>
@@ -55,32 +70,15 @@ export function Modal({ children, className }: ModalProps) {
 
 interface ModalTitleProps {
   className?: string
-  hasCloseBtn?: boolean
   children?: React.ReactNode
 }
 
-Modal.Header = function Header({ className, children, hasCloseBtn }: ModalTitleProps) {
-  const { modal } = useModal()
-
-  return (
-    <div className={clsx("relative flex items-center justify-between gap-4", className)}>
-      <div className="flex flex-1 flex-wrap">{children}</div>
-
-      {hasCloseBtn && (
-        <button
-          type="button"
-          onClick={modal.modalRef.close}
-          className="flex h-[30px] w-[30px] items-center justify-center rounded-md bg-gray-100 hover:bg-gray-200 focus:bg-gray-300"
-        >
-          x
-        </button>
-      )}
-    </div>
-  )
+Modal.Header = function Header({ className, children }: ModalTitleProps) {
+  return <div className={className}>{children}</div>
 }
 
-Modal.Body = function Body(props: PropsWithChildren) {
-  return <div>{props.children}</div>
+Modal.Body = function Body({ children, className }: PropsWithChildren<{ className?: string }>) {
+  return <div className={className}>{children}</div>
 }
 
 Modal.Footer = function Footer(props: PropsWithChildren) {
