@@ -29,7 +29,8 @@ module.exports = withMT({
       ...colors
     },
     fontFamily: {
-      poppins: ["Poppins"]
+      poppins: ["Poppins"],
+      inter: ["Inter"]
     },
     fontSize: {
       "10/14": ["10px", { lineHeight: "14px" }],
