@@ -80,11 +80,7 @@ const HeaderDefaultLayout = () => {
   const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
 
-  const { blazeBalance, nativeBalance, usdtBalance } = useUserAssets()
-
-  useEffect(() => {
-    console.log("assets:", nativeBalance, blazeBalance, usdtBalance)
-  }, [blazeBalance, nativeBalance, usdtBalance])
+  const { blazeBalance, nativeBalanceData, usdtBalance } = useUserAssets()
 
   const openConnectWallet = () => {
     openModal(ConnectWalletDialog)
@@ -209,9 +205,13 @@ const HeaderDefaultLayout = () => {
                 <div className="flex flex-col border-r border-white/30 py-1 pr-3">
                   <div className="ml-auto flex">
                     <span className="text-white/80">
-                      {nativeBalance ? Math.floor(+nativeBalance * 100) / 100 : "-"}
+                      {nativeBalanceData?.formatted
+                        ? Math.floor(+nativeBalanceData.formatted * 100) / 100
+                        : "-"}
                     </span>
-                    <span className="w-10 text-right font-semibold">ETH</span>
+                    <span className="w-10 text-right font-semibold">
+                      {nativeBalanceData?.symbol}
+                    </span>
                   </div>
                   <div className="ml-auto mt-1 flex">
                     <span className="text-white/80">

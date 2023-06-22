@@ -21,7 +21,7 @@ const useUserAssets = () => {
   })
 
   return {
-    nativeBalance: ethBalanceData?.formatted,
+    nativeBalanceData: ethBalanceData,
     usdtBalance: usdtBalanceData?.formatted,
     blazeBalance: blazeBalanceData?.formatted
   }
