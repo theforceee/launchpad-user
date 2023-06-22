@@ -3,6 +3,7 @@ import { createContext, useContext } from "react"
 
 export enum NftStakingEvent {
   NONE = "",
+  NFT_WITHDRAWED = "NFT_WITHDRAWED",
   NFT_STAKED = "NFT_STAKED",
   NFT_UNSTAKED = "NFT_UNSTAKED"
 }

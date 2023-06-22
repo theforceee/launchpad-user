@@ -12,19 +12,28 @@ import { Address, useAccount } from "wagmi"
 import { CompatibleNftsSlider } from "./CompatibleNftsSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
+import { PendingWithdrawNft } from "@hooks/useGetPendingERC721Withdrawals"
+import { useWithdrawMultipleErc721 } from "@hooks/useWithdrawMultipleERC721"
+import { NftData } from "./typing"
 
 export function CompatibleNFTs() {
   const { stakingNftSubject } = useStakingNftContext()
   const { address: connectedAccount } = useAccount()
-  const selectedNftsRef = useRef<NftData[]>([])
-  const [selectedNfts, setSelectedNfts] = useState<NftData[]>([])
-  selectedNftsRef.current = selectedNfts
   const [pioneerNfts, setPioneerNfts] = useState<NftData[]>([])
   const [sheriffNfts, setSheriffNfts] = useState<NftData[]>([])
+
+  const selectedNftsRef = useRef<NftData[]>([])
+  const [selectedNfts, setSelectedNfts] = useState<NftData[]>([])
   const isAllNftsApproved = selectedNfts.every((nft) => nft.isApproved)
+  selectedNftsRef.current = selectedNfts
+
+  const [selectedWithdrableNfts, setSelectedWithdrableNfts] = useState<PendingWithdrawNft[]>([])
 
   const { stakeMultipleERC721, loadingStake, stakeMultipleERC721Status } =
     useStakeMultipleERC721(connectedAccount)
+
+  const { withdrawMultipleERC721, isWithdrawing, withdrawMultipleERC721Status } =
+    useWithdrawMultipleErc721(connectedAccount)
 
   const { approve, isApproving } = useErc721Approve(
     selectedNfts[0]?.tokenAddress,
@@ -74,6 +83,21 @@ export function CompatibleNFTs() {
     })
   }
 
+  const handleSelectWithdrableNft = (newNft: PendingWithdrawNft) => {
+    setSelectedWithdrableNfts((nfts) => {
+      if (newNft.tokenAddress !== nfts[0]?.tokenAddress) {
+        return [newNft]
+      }
+
+      const isExists = nfts.some((chosenNft) => chosenNft.tokenId === newNft.tokenId)
+      if (!isExists) {
+        return [...nfts, newNft]
+      }
+
+      return nfts.filter((nft) => nft.tokenId !== newNft.tokenId)
+    })
+  }
+
   const fetchNfts = useCallback(async () => {
     const res = await get("nft")
     if (!res.data) return
@@ -101,6 +125,7 @@ export function CompatibleNFTs() {
       return
     }
 
+    const selectedNfts = selectedNftsRef.current
     const isSherifNft = selectedNftsRef.current[0]?.symbol === "SHERIFF"
 
     isSherifNft
@@ -117,7 +142,17 @@ export function CompatibleNFTs() {
 
     setSelectedNfts([])
     stakingNftSubject.next(NftStakingEvent.NFT_STAKED)
-  }, [selectedNfts, stakeMultipleERC721Status, stakingNftSubject])
+  }, [stakeMultipleERC721Status, stakingNftSubject])
+
+  useEffect(() => {
+    if (withdrawMultipleERC721Status !== "success") {
+      return
+    }
+
+    setSelectedWithdrableNfts([])
+    fetchNfts()
+    stakingNftSubject.next(NftStakingEvent.NFT_WITHDRAWED)
+  }, [withdrawMultipleERC721Status, stakingNftSubject])
 
   const handleStakeNft = () => {
     if (!selectedNfts.length) return
@@ -125,6 +160,15 @@ export function CompatibleNFTs() {
     stakeMultipleERC721(
       selectedNfts[0].tokenAddress,
       selectedNfts.map((nft) => nft.tokenId)
+    )
+  }
+
+  const handleClaimAll = () => {
+    if (!selectedWithdrableNfts.length) return
+
+    withdrawMultipleERC721(
+      selectedWithdrableNfts[0].tokenAddress,
+      selectedWithdrableNfts.map((nft) => nft.tokenId)
     )
   }
 
@@ -165,7 +209,9 @@ export function CompatibleNFTs() {
         nftAddress={PIONEER_NFT_CONTRACT}
         nftsGroup={pioneerNfts}
         selectedNfts={selectedNfts}
+        selectedWithdrableNfts={selectedWithdrableNfts}
         handleSelectNft={handleSelectNft}
+        handleSelectWithdrableNft={handleSelectWithdrableNft}
       />
 
       <CompatibleNftsSlider
@@ -173,7 +219,9 @@ export function CompatibleNFTs() {
         nftAddress={SHERIFF_NFT_CONTRACT}
         nftsGroup={sheriffNfts}
         selectedNfts={selectedNfts}
+        selectedWithdrableNfts={selectedWithdrableNfts}
         handleSelectNft={handleSelectNft}
+        handleSelectWithdrableNft={handleSelectWithdrableNft}
       />
 
       <div className="mt-5 grid grid-cols-2 gap-2">
@@ -197,35 +245,15 @@ export function CompatibleNFTs() {
           </button>
         )}
 
-        <button type="button" className="btnSmall btnGradientOrange">
+        <button
+          disabled={!selectedWithdrableNfts.length || isWithdrawing}
+          onClick={handleClaimAll}
+          type="button"
+          className="btnSmall btnGradientOrange"
+        >
           <span>Claim All</span>
         </button>
       </div>
     </div>
   )
-}
-
-export type StakedNft = {
-  tokenAddress: string
-  tokenId: string
-}
-
-export interface NftData {
-  chain: string
-  contractType: string
-  tokenAddress: Address
-  tokenId: string
-  name: string
-  symbol: string
-  amount: number
-  blockNumberMinted: string
-  blockNumber: string
-  ownerOf: string
-  tokenHash: string
-  lastTokenUriSync: string
-  possibleSpam: boolean
-  isApproved?: boolean
-  metadata?: {
-    image: string
-  }
 }

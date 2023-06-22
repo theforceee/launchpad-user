@@ -7,9 +7,9 @@ import { useEffect, useState } from "react"
 import { Swiper as SwiperClass } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Address, useAccount } from "wagmi"
-import { StakedNft } from "./CompatibleNFTs"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
+import { StakedNft } from "./typing"
 
 export function StakedNFTSlider({
   name,

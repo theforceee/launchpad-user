@@ -1,7 +1,7 @@
 import ERC721_ABI from "@abi/Erc721.json"
 import { STAKING_CONTRACT } from "@constants/index"
 import { getErrorMessage } from "@utils/getErrorMessage"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { toast } from "react-toastify"
 import { Address, useContractWrite, useWaitForTransaction } from "wagmi"
 
@@ -14,6 +14,9 @@ export const useErc721Approve = (
   connectedAccount: Address | undefined,
   options?: NftApproveOptions
 ) => {
+  const nftApproveOptionsRef = useRef(options)
+  nftApproveOptionsRef.current = options
+
   const {
     write,
     data: dataApprove,
@@ -35,7 +38,7 @@ export const useErc721Approve = (
 
   useEffect(() => {
     if (dataHash?.status === "success") {
-      options?.onApproveSuccess()
+      nftApproveOptionsRef.current?.onApproveSuccess()
       return
     }
 
@@ -43,7 +46,7 @@ export const useErc721Approve = (
       console.log("nft approve error", dataHash)
       toast.error("FAIL: execution reverted")
     }
-  }, [dataHash, options])
+  }, [dataHash])
 
   const approve = useCallback(
     async (tokenId: string) => {

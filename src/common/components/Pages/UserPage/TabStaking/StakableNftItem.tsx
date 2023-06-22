@@ -1,9 +1,9 @@
 import Image from "next/image"
 import { useAccount } from "wagmi"
-import { NftData } from "./CompatibleNFTs"
 import { useNftGetApproved } from "@hooks/useErc721GetApproved"
 import { DEFAULT_NFT_LOGO } from "@constants/index"
 import clsx from "clsx"
+import { NftData } from "./typing"
 
 export function StakableNftItem({
   nft,

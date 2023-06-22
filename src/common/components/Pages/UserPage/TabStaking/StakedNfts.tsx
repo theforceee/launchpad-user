@@ -7,10 +7,10 @@ import clsx from "clsx"
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 import { useAccount } from "wagmi"
-import { StakedNft } from "./CompatibleNFTs"
 import { StakedNFTSlider } from "./StakedNFTSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
+import { StakedNft } from "./typing"
 
 export function StakedNfts() {
   const { stakingNftSubject } = useStakingNftContext()

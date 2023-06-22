@@ -2,32 +2,47 @@ import iconNext from "@images/icon-next.svg"
 import clsx from "clsx"
 import Image from "next/image"
 import styles from "./tabStaking.module.scss"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Address, useAccount } from "wagmi"
 import { Swiper as SwiperClass } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { useGetPendingERC721Withdrawals } from "@hooks/useGetPendingERC721Withdrawals"
+import {
+  PendingWithdrawNft,
+  useGetPendingERC721Withdrawals
+} from "@hooks/useGetPendingERC721Withdrawals"
 import { StakableNftItem } from "./StakableNftItem"
 import { PendingWithdrawNftItem } from "./PendingWithdrawNftItem"
-import { NftData } from "./CompatibleNFTs"
+import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
+import { NftData } from "./typing"
 
 export function CompatibleNftsSlider({
   nftName,
   nftAddress,
   nftsGroup,
   handleSelectNft,
-  selectedNfts
+  handleSelectWithdrableNft,
+  selectedNfts,
+  selectedWithdrableNfts
 }: {
   nftName: string
   nftAddress: Address
   nftsGroup: NftData[]
   handleSelectNft: (nft: NftData) => void
+  handleSelectWithdrableNft: (nft: PendingWithdrawNft) => void
   selectedNfts: NftData[]
+  selectedWithdrableNfts: PendingWithdrawNft[]
 }) {
   const { address: connectedAccount } = useAccount()
-  const { pendingERC721Withdrawals } = useGetPendingERC721Withdrawals(connectedAccount, nftAddress)
+  const { pendingERC721Withdrawals, refetch } = useGetPendingERC721Withdrawals(
+    connectedAccount,
+    nftAddress
+  )
   const [swiper, setSwiper] = useState<SwiperClass | null>(null)
   const [activeIdx, setActiveIdx] = useState(0)
+  const { stakingNftSubject } = useStakingNftContext()
+
+  const totalItems = nftsGroup.length + pendingERC721Withdrawals.length
+
   const handleNextSlide = () => {
     swiper?.slideNext()
   }
@@ -35,7 +50,14 @@ export function CompatibleNftsSlider({
   const handlePrevSlide = () => {
     swiper?.slidePrev()
   }
-  const totalItems = nftsGroup.length + pendingERC721Withdrawals.length
+
+  useEffect(() => {
+    return stakingNftSubject.subscribe((evt) => {
+      if (evt !== NftStakingEvent.NFT_WITHDRAWED) return
+
+      refetch()
+    })
+  }, [])
 
   return (
     <div className="mt-5 flex flex-col">
@@ -88,7 +110,11 @@ export function CompatibleNftsSlider({
 
           {pendingERC721Withdrawals.map((pendingNft) => (
             <SwiperSlide key={pendingNft.tokenId}>
-              <PendingWithdrawNftItem nft={pendingNft} />
+              <PendingWithdrawNftItem
+                handleSelectWithdrableNft={handleSelectWithdrableNft}
+                nft={pendingNft}
+                active={isNftSelected(selectedWithdrableNfts, pendingNft)}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -97,8 +123,12 @@ export function CompatibleNftsSlider({
   )
 }
 
-function isNftSelected(selectedNfts: NftData[], nft: NftData) {
+function isNftSelected(
+  selectedNfts: { tokenId: string; tokenAddress: string }[],
+  nft: { tokenId: string; tokenAddress: string }
+) {
   return selectedNfts.some(
-    (selectedNft) => selectedNft?.tokenId === nft.tokenId && selectedNft?.symbol === nft.symbol
+    (selectedNft) =>
+      selectedNft?.tokenId === nft.tokenId && selectedNft?.tokenAddress === nft.tokenAddress
   )
 }

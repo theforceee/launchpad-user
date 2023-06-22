@@ -1,14 +1,23 @@
 import { DEFAULT_NFT_LOGO } from "@constants/index"
 import { PendingWithdrawNft } from "@hooks/useGetPendingERC721Withdrawals"
 import { useInterval } from "@hooks/useInterval"
-import { useWithdrawErc721 } from "@hooks/useWithdrawERC721"
+import { useWithdrawMultipleErc721 } from "@hooks/useWithdrawMultipleERC721"
 import { Tooltip } from "@material-tailwind/react"
-import { differenceInDays, intervalToDuration } from "date-fns"
+import clsx from "clsx"
+import { intervalToDuration } from "date-fns"
 import Image from "next/image"
 import { useMemo } from "react"
 import { useAccount } from "wagmi"
 
-export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
+export function PendingWithdrawNftItem({
+  nft,
+  handleSelectWithdrableNft,
+  active
+}: {
+  nft: PendingWithdrawNft
+  handleSelectWithdrableNft: (nft: PendingWithdrawNft) => void
+  active: boolean
+}) {
   const endTime = useMemo(() => {
     return new Date(Number(nft.applicableAt) * 1000)
   }, [nft.applicableAt])
@@ -21,40 +30,50 @@ export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
       }),
     1000
   )
+  const isWithdrawable = true //endTime.getTime() < new Date().getTime()
 
-  const dayLeft = differenceInDays(endTime, new Date())
   const { address: connectedAccount } = useAccount()
-  const { widthdrawERC721, isWithdrawing } = useWithdrawErc721(connectedAccount)
+  const { withdrawMultipleERC721, isWithdrawing } = useWithdrawMultipleErc721(connectedAccount)
   const handleWithdrawErc721 = () => {
-    widthdrawERC721(nft.nftAddress, nft.tokenId)
+    withdrawMultipleERC721(nft.tokenAddress, [nft.tokenId])
   }
 
   return (
-    <div className="relative flex flex-col">
+    <button
+      onClick={() => handleSelectWithdrableNft(nft)}
+      type="button"
+      disabled={!isWithdrawable || isWithdrawing}
+      className="relative flex flex-col"
+    >
       <div className="relative">
         <Image
           src={DEFAULT_NFT_LOGO}
           alt={""}
           width={66}
           height={66}
-          className="rounded-lg p-[2px]"
+          className={clsx("w-full rounded-lg p-[2px]", {
+            "bg-gradient-to-r from-clr-red-60 to-clr-orange-60": active
+          })}
         />
 
-        <div className="absolute top-0 right-0 bottom-0 left-0 bg-clr-purple-70 opacity-50" />
+        <div className="absolute top-0 right-0 bottom-0 left-0 m-[2px]  rounded-md bg-clr-purple-70 opacity-50" />
 
-        {dayLeft <= 0 && (
+        {!active && isWithdrawable && (
           <div className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">
-            <button
-              disabled={isWithdrawing}
-              onClick={handleWithdrawErc721}
+            <div
+              onClick={(e) => {
+                if (isWithdrawing) return
+                e.stopPropagation()
+                handleWithdrawErc721()
+              }}
               className="rounded-md bg-[#FF9633] bg-opacity-30 px-2 text-12/20 uppercase text-clr-orange-60 duration-200 hover:bg-opacity-40"
             >
               <span>Claim</span>
-            </button>
+            </div>
           </div>
         )}
 
-        {dayLeft > 0 && (
+        {!isWithdrawable && (
           <div className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center font-poppins text-18/24 font-semibold">
             <Tooltip
               className="bg-clr-purple-50"
@@ -75,6 +94,6 @@ export function PendingWithdrawNftItem({ nft }: { nft: PendingWithdrawNft }) {
       </div>
 
       <div className="text-12/20">#{nft.tokenId}</div>
-    </div>
+    </button>
   )
 }

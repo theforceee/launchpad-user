@@ -5,30 +5,31 @@ import { Address, useContractRead } from "wagmi"
 export type PendingWithdrawNft = {
   tokenId: string
   applicableAt: string
-  nftAddress: Address
+  tokenAddress: Address
 }
 
 export function useGetPendingERC721Withdrawals(
   connectedAccount: Address | undefined,
-  nftContractAddr: Address | undefined
+  tokenAddress: Address | undefined
 ) {
-  const { data, isLoading }: any = useContractRead({
-    enabled: !!connectedAccount || !!nftContractAddr,
+  const { data, isLoading, refetch }: any = useContractRead({
+    enabled: !!connectedAccount || !!tokenAddress,
     address: STAKING_CONTRACT,
     abi: STAKING_ABI,
     functionName: "getPendingERC721Withdrawals",
-    args: [connectedAccount, nftContractAddr]
+    args: [connectedAccount, tokenAddress]
   })
 
   const pendingERC721Withdrawals: PendingWithdrawNft[] =
     data?.map((item: any) => ({
       tokenId: item.tokenId.toString(),
       applicableAt: item.applicableAt.toString(),
-      nftAddress: nftContractAddr
+      tokenAddress: tokenAddress
     })) || []
 
   return {
     isLoading,
-    pendingERC721Withdrawals
+    pendingERC721Withdrawals,
+    refetch
   }
 }
