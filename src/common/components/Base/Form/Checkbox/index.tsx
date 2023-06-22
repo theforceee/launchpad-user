@@ -1,17 +1,25 @@
 import { TickIcon } from "@/assets/icons/tick-icon"
 import { useState } from "react"
+import clsx from "clsx"
 
 type CheckboxProps = {
   name: string
   value?: string
   onChange?: (val: any) => void
+  className?: string
 }
 
-export function Checkbox({ name, value, onChange }: CheckboxProps) {
+export function Checkbox({ name, value, className, onChange }: CheckboxProps) {
   const [checked, setChecked] = useState(false)
 
   return (
-    <div className="relative inline-block h-[14px] w-[14px] translate-y-[2px] overflow-hidden rounded-[2px] outline-1 outline-offset-2 focus-within:outline">
+    <div
+      className={clsx(
+        "relative inline-block h-[14px] w-[14px] translate-y-[2px] overflow-hidden rounded-[2px]",
+        "outline-1 outline-offset-2 focus-within:outline",
+        className
+      )}
+    >
       <input
         onChange={() => {
           setChecked((isChecked) => !isChecked)

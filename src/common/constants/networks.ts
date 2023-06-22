@@ -6,18 +6,20 @@ export const ETH_NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || ""
 export const BSC_NETWORK_ID = process.env.NEXT_PUBLIC_BSC_CHAIN_ID || ""
 export const USDT_ETH_ADDRESS = process.env.NEXT_PUBLIC_USDT_ETH_SMART_CONTRACT || ""
 export const USDT_BSC_ADDRESS = process.env.NEXT_PUBLIC_USDT_BSC_SMART_CONTRACT || ""
+export const IS_MAINNET = !!process.env.NEXT_PUBLIC_IS_MAINNET
 
 export type Chain = {
   id: number
   name: string
   iconSrc: string
+  isMainnet: boolean
 }
 
 export const SUPPORTED_CHAINS: Chain[] = [
-  { id: bsc.id, name: "BSC", iconSrc: bscImg.src },
-  { id: bscTestnet.id, name: "BSC Testnet", iconSrc: bscImg.src },
-  { id: goerli.id, name: "Goerli", iconSrc: bscImg.src },
-  { id: mainnet.id, name: "Ethereum", iconSrc: ethImg.src }
+  { id: goerli.id, name: "Goerli", iconSrc: ethImg.src, isMainnet: false },
+  { id: bscTestnet.id, name: "BSC Testnet", iconSrc: bscImg.src, isMainnet: false },
+  { id: bsc.id, name: "BSC", iconSrc: bscImg.src, isMainnet: true },
+  { id: mainnet.id, name: "Ethereum", iconSrc: ethImg.src, isMainnet: true }
 ]
 
 export const SUPPORTED_WALLETS = [

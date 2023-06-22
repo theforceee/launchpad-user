@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { Chain, SUPPORTED_CHAINS, Wallet } from "@/common/constants/networks"
+import { Chain, IS_MAINNET, SUPPORTED_CHAINS, Wallet } from "@/common/constants/networks"
 import { Modal, ModalProps } from "@components/Base/Modal"
 import { useEffect, useState } from "react"
 import { useConnect } from "wagmi"
@@ -22,7 +22,8 @@ type ConnectWalletDialog = {
 }
 
 const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
-  const [selectedChain, setSelectedChain] = useState<Chain>(SUPPORTED_CHAINS[0])
+  const validChains = SUPPORTED_CHAINS.filter((chain) => chain.isMainnet === IS_MAINNET)
+  const [selectedChain, setSelectedChain] = useState<Chain>(validChains[0])
   const [tosAccepted, setTosAccepted] = useState(false)
   const { connect, connectors, pendingConnector, error, isSuccess } = useConnect({
     connector: new InjectedConnector()
@@ -43,9 +44,13 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
       <Modal.Body className="max-w-[360px]">
         <div className="mb-6 flex justify-start text-white">
           <label className="text-left text-14/18">
-            <Checkbox name="policy" onChange={() => setTosAccepted((accept) => !accept)} /> I read
-            and accept the <a className="font-semibold text-clr-blue-60">Terms of Service</a> and{" "}
-            <a className="font-semibold text-clr-blue-60">Privacy Policy</a>
+            <Checkbox
+              className="mr-1"
+              name="policy"
+              onChange={() => setTosAccepted((accept) => !accept)}
+            />{" "}
+            I read and accept the <a className="font-semibold text-clr-blue-60">Terms of Service</a>{" "}
+            and <a className="font-semibold text-clr-blue-60">Privacy Policy</a>
           </label>
         </div>
 
@@ -55,7 +60,7 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
               Choose Network
             </div>
             <div className="grid w-full grid-cols-2 gap-2 text-white">
-              {SUPPORTED_CHAINS.map((chain) => (
+              {validChains.map((chain) => (
                 <button
                   key={chain.id}
                   disabled={!tosAccepted}
@@ -119,7 +124,9 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
           )}
         </div>
 
-        {error && <div className="mt-2 text-14/18 text-red-600">{error.message}</div>}
+        {error && (
+          <div className="mt-2 text-14/18 text-red-600">{error.message?.split(".")[0]}</div>
+        )}
       </Modal.Body>
     </Modal>
   )
