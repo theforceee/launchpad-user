@@ -1,93 +1,69 @@
-import { Dialog, Transition } from "@headlessui/react"
+import { Modal, ModalProps } from "@components/Base/Modal"
+import { VALID_CHAINS } from "@constants/networks"
 import clsx from "clsx"
-import { Fragment } from "react"
+import { useEffect } from "react"
 import { useNetwork, useSwitchNetwork } from "wagmi"
+import Image from "next/image"
+import { toast } from "react-toastify"
+import { Spinner } from "@components/Base/Spinner"
 
-type SwitchNetworkDialogProps = {
-  show: boolean
-  handleClose: () => void
-}
-
-const SwitchNetworkDialog = (props: SwitchNetworkDialogProps) => {
-  const { show, handleClose } = props
+export const SwitchNetworkDialog = ({ modalRef }: ModalProps) => {
   const { chain: currentChain } = useNetwork()
-  const { chains, isLoading, pendingChainId, switchNetworkAsync } = useSwitchNetwork()
+  const { isLoading, switchNetworkAsync, error, isSuccess } = useSwitchNetwork()
+
+  useEffect(() => {
+    if (!isSuccess) return
+
+    toast.success("Switch network successfully!")
+    modalRef.close()
+  }, [isSuccess])
 
   const handleSwitchNetwork = async (newWorkId: number) => {
     try {
       switchNetworkAsync && (await switchNetworkAsync(newWorkId))
-      handleClose()
-    } catch (error) {
-      console.log("ERR handleSwitchNetwork:", error)
-    }
+    } catch {}
   }
 
   return (
-    <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleClose}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
+    <Modal>
+      <Modal.Header className="mb-6 text-center font-poppins text-28/36 font-semibold text-white">
+        Switch Network
+      </Modal.Header>
 
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+      <Modal.Body className="max-w-[360px]">
+        <div className="grid w-full grid-cols-2 gap-2 text-white">
+          {VALID_CHAINS.map((chain) => (
+            <button
+              disabled={isLoading || chain.id === currentChain?.id}
+              key={chain.id}
+              onClick={() => handleSwitchNetwork(chain.id)}
+              className={clsx(
+                "flex w-full flex-col items-center justify-center gap-2 rounded-[12px] bg-clr-purple-50 py-4 px-2 text-12/16 duration-200",
+                "from-[#9887F2] to-clr-purple-80 hover:bg-gradient-to-r",
+                {
+                  "bg-gradient-to-r ": chain.id === currentChain?.id
+                }
+              )}
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  Switch Network
-                </Dialog.Title>
-                <div className="mt-2 flex flex-wrap gap-3">
-                  {chains.map(
-                    (chain) =>
-                      chain.id !== currentChain?.id && (
-                        <button
-                          disabled={isLoading}
-                          key={chain.id}
-                          onClick={() => handleSwitchNetwork(chain.id)}
-                          className={clsx(
-                            "h-10 rounded-lg border-2 bg-yellow-700 px-5 text-white",
-                            !isLoading && "hover:border-black"
-                          )}
-                        >
-                          {chain.name}
-                          {isLoading && pendingChainId === chain.id && " (switching)"}
-                        </button>
-                      )
-                  )}
-                </div>
+              <Image src={chain.iconSrc} alt="" width={32} height={32} /> {chain.name}
+            </button>
+          ))}
+        </div>
 
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="text-sm inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={handleClose}
-                  >
-                    Got it, thanks!
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
+        {error && (
+          <div className="mt-2 text-14/18 text-red-600">{error.message?.split(".")[0]}</div>
+        )}
+      </Modal.Body>
+
+      {!error && isLoading && (
+        <div className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+          <div className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-clr-purple-70 opacity-80" />
+          <div className="relative flex flex-col items-center justify-center gap-2 text-14/18 text-white">
+            <Spinner />
+            Switching
           </div>
         </div>
-      </Dialog>
-    </Transition>
+      )}
+    </Modal>
   )
 }
-
-export default SwitchNetworkDialog

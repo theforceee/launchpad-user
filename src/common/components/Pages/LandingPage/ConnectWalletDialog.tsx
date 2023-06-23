@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { Chain, IS_MAINNET, SUPPORTED_CHAINS, Wallet } from "@/common/constants/networks"
+import { Chain, VALID_CHAINS, Wallet } from "@/common/constants/networks"
 import { Modal, ModalProps } from "@components/Base/Modal"
 import { useEffect, useState } from "react"
 import { useConnect } from "wagmi"
@@ -21,9 +21,8 @@ type ConnectWalletDialog = {
   onConnectWallet: (wallet: Wallet) => Promise<void>
 }
 
-const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
-  const validChains = SUPPORTED_CHAINS.filter((chain) => chain.isMainnet === IS_MAINNET)
-  const [selectedChain, setSelectedChain] = useState<Chain>(validChains[0])
+export const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
+  const [selectedChain, setSelectedChain] = useState<Chain>(VALID_CHAINS[0])
   const [tosAccepted, setTosAccepted] = useState(false)
   const { connect, connectors, pendingConnector, error, isSuccess } = useConnect({
     connector: new InjectedConnector()
@@ -60,7 +59,7 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
               Choose Network
             </div>
             <div className="grid w-full grid-cols-2 gap-2 text-white">
-              {validChains.map((chain) => (
+              {VALID_CHAINS.map((chain) => (
                 <button
                   key={chain.id}
                   disabled={!tosAccepted}
@@ -131,5 +130,3 @@ const ConnectWalletDialog = ({ modalRef }: ModalProps) => {
     </Modal>
   )
 }
-
-export default ConnectWalletDialog

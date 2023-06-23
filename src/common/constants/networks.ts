@@ -22,6 +22,8 @@ export const SUPPORTED_CHAINS: Chain[] = [
   { id: mainnet.id, name: "Ethereum", iconSrc: ethImg.src, isMainnet: true }
 ]
 
+export const VALID_CHAINS = SUPPORTED_CHAINS.filter((chain) => chain.isMainnet === IS_MAINNET)
+
 export const SUPPORTED_WALLETS = [
   { id: "metamask", name: "Metamask" },
   { id: "walletconnect", name: "WalletConnect" }

@@ -1,6 +1,6 @@
 import { openModal } from "@components/Base/Modal"
-import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
-import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
+import { ConnectWalletDialog } from "@components/Pages/LandingPage/ConnectWalletDialog"
+import { SwitchNetworkDialog } from "@components/Pages/LandingPage/SwitchNetworkDialog"
 import { URLS } from "@constants/index"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
@@ -67,9 +67,12 @@ const HeaderDefaultLayout = () => {
   const { chain } = useNetwork()
   const { login, logout, user, isSigningIn } = useId()
   const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
-  const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
 
   const { blazeBalance, nativeBalanceData, usdtBalance } = useUserAssets()
+
+  const openNetworkDialog = () => {
+    openModal(SwitchNetworkDialog)
+  }
 
   const openConnectWallet = () => {
     openModal(ConnectWalletDialog)
@@ -138,7 +141,7 @@ const HeaderDefaultLayout = () => {
               )}
               <div
                 className="flex cursor-pointer items-center text-[#0091FF]"
-                onClick={() => setOpenNetworkDialog(true)}
+                onClick={openNetworkDialog}
               >
                 <div className="mr-2 h-2 w-2 rounded-full bg-green-400"></div>
                 <span className="">{chain?.name + " Network Connected"}</span>
@@ -270,11 +273,6 @@ const HeaderDefaultLayout = () => {
       </nav>
 
       {renderHeaderMobile()}
-
-      <SwitchNetworkDialog
-        handleClose={() => setOpenNetworkDialog(false)}
-        show={openNetworkDialog}
-      />
     </>
   )
 }

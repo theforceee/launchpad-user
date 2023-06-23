@@ -1,17 +1,17 @@
 import clsx from "clsx"
-import { useState } from "react"
-import { useAccount, useDisconnect, useEnsName, useNetwork } from "wagmi"
-import ConnectWalletDialog from "./ConnectWalletDialog"
-import SwitchNetworkDialog from "./SwitchNetworkDialog"
+import { useAccount, useEnsName, useNetwork } from "wagmi"
+import { ConnectWalletDialog } from "./ConnectWalletDialog"
+import { SwitchNetworkDialog } from "./SwitchNetworkDialog"
 import { openModal } from "@components/Base/Modal"
 
 const LandingPage = () => {
   const { address, isConnected, connector } = useAccount()
   const { data: ensName } = useEnsName({ address })
-  const { disconnect } = useDisconnect()
   const { chain } = useNetwork()
 
-  const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
+  const openSwithNetwork = () => {
+    openModal(SwitchNetworkDialog)
+  }
 
   const openConnectWalletModal = () => {
     openModal(ConnectWalletDialog)
@@ -27,15 +27,9 @@ const LandingPage = () => {
             <div>Current Chain: {chain?.name}</div>
             <button
               className="h-10 rounded-lg bg-green-700 px-5 text-white"
-              onClick={() => setOpenNetworkDialog(true)}
+              onClick={openSwithNetwork}
             >
               Switch network
-            </button>
-            <button
-              onClick={() => disconnect()}
-              className="ml-3 h-10 rounded-lg bg-red-700 px-5 text-white"
-            >
-              Disconnect
             </button>
           </div>
         ) : (
@@ -44,11 +38,6 @@ const LandingPage = () => {
           </button>
         )}
       </div>
-
-      <SwitchNetworkDialog
-        handleClose={() => setOpenNetworkDialog(false)}
-        show={openNetworkDialog}
-      />
     </div>
   )
 }

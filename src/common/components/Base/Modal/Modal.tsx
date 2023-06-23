@@ -48,6 +48,7 @@ export function Modal({ children, hasCloseBtn = true, className }: ModalProps) {
           <div
             className={clsx(
               "relative min-w-[300px] max-w-[90vw] rounded-[20px] bg-clr-purple-60 p-5 pt-10 shadow-sm md:p-[30px] md:pt-[40px]",
+              "overflow-hidden",
               className
             )}
           >
