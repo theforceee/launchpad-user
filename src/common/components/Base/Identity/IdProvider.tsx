@@ -22,8 +22,6 @@ type IdContextValues = {
 type User = {
   id: number
   wallet_address: string
-  tier?: number | undefined
-  position?: number | undefined
 }
 
 export const IdContext = createContext<IdContextValues>({} as IdContextValues)
@@ -44,41 +42,25 @@ export function IdProvider({ children }: PropsWithChildren) {
 
   const fetchUserInfo = useCallback(async () => {
     const userInfoRes = await get("info")
-    const userData = userInfoRes.data
-    setUser((prevUser) => ({
-      ...prevUser,
-      id: userData?.id,
-      wallet_address: userData?.wallet_address
-    }))
+    setUser(userInfoRes.data)
   }, [])
-
-  const fetchUserStakedInfo = useCallback(async () => {
-    const stakedRes = await get("staked-info", { account: address })
-    const stakedData = stakedRes.data
-    setUser((prevUser: any) => ({
-      ...prevUser,
-      tier: +stakedData?.tier?.tier,
-      position: +stakedData?.userPosition
-    }))
-  }, [address])
 
   const logout = useCallback(() => {
     clearAccountToken()
     disconnect()
     setUser(null)
-  }, [disconnect])
+  }, [address])
 
   useEffect(() => {
-    const userdata = getUserData()
-    if (userdata?.wallet === address) {
+    const uesrdata = getUserData()
+    if (uesrdata?.wallet === address) {
       fetchUserInfo()
-      fetchUserStakedInfo()
       return
     }
 
     clearAccountToken()
     setUser(null)
-  }, [address, fetchUserInfo, fetchUserStakedInfo])
+  }, [address])
 
   const login = useCallback(async () => {
     if (!address) return
@@ -119,13 +101,12 @@ export function IdProvider({ children }: PropsWithChildren) {
       saveUserData(address, userToken)
 
       await fetchUserInfo()
-      await fetchUserStakedInfo()
     } catch (err: any) {
       toast.error("Fail to login: " + err?.message || err)
     } finally {
       setIsSigningIn(false)
     }
-  }, [address, chain?.id, signMessageAsync, fetchUserInfo, fetchUserStakedInfo])
+  }, [chain, address])
 
   return (
     <IdContext.Provider
