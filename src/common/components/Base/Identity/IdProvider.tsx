@@ -100,7 +100,7 @@ export function IdProvider({ children }: PropsWithChildren) {
       const userToken = loginRes.data?.token?.token
       saveUserData(address, userToken)
 
-      fetchUserInfo()
+      await fetchUserInfo()
     } catch (err: any) {
       toast.error("Fail to login: " + err?.message || err)
     } finally {
