@@ -1,4 +1,4 @@
-import { clearAccountToken, getAccountToken } from "@utils/index"
+import { clearAccountToken, getUserData } from "@components/Base/Identity"
 
 interface RequestOptions {
   body?: Record<string, unknown>
@@ -11,8 +11,8 @@ export const request = async (url: string, method: string, options?: RequestOpti
     "Content-Type": "application/json"
   })
 
-  if (!!options?.account) {
-    const token = getAccountToken(options.account)
+  if (!!options?.account && getUserData()?.token) {
+    const token = getUserData()?.token
     headers.append("Authorization", `Bearer ${token}`)
   }
 
@@ -31,7 +31,7 @@ export const request = async (url: string, method: string, options?: RequestOpti
 
   // Unauthorized
   if (response.status === 401) {
-    clearAccountToken(options?.account)
+    clearAccountToken()
     // sign again
   }
 

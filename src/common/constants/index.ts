@@ -7,8 +7,6 @@ export const BLAZE_TOKEN_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_
 export const BLAZE_TOKEN_DECIMALS: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_BLAZE_DECIMALS || ""
 export const STAKING_CONTRACT: any = process.env.NEXT_PUBLIC_SMART_CONTRACT_STAKING || ""
 
-export const KEY_CACHE = "user"
-
 export const WALLET_CONNECT_PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
 
 export const DEFAULT_NFT_LOGO = defaultNftLogo.src

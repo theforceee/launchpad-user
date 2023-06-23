@@ -1,8 +1,8 @@
 import { get, post } from "@/common/request"
 import Countdown from "@components/Base/Countdown"
+import { useId } from "@components/Base/Identity"
 import { confirm } from "@components/Base/Modal"
 import { URLS } from "@constants/index"
-import { AppContext } from "@contexts/AppContext"
 import iconLock from "@images/icon-lock.png"
 import { PoolStatus, getDateFromUnix, getPoolDetailStatus } from "@utils/getPoolDetailStatus"
 import { formatCurrency } from "@utils/index"
@@ -18,7 +18,7 @@ const selectAmountClass =
 const BuyTokenForm = (props: { poolDetail: any }) => {
   const { poolDetail } = props
   const { isConnected, address: connectedAccount } = useAccount()
-  const { isWrongChain, isUserSigned } = useContext(AppContext)
+  const { user } = useId()
   const userAlreadyKYC = true
   const [isApplied, setIsApplied] = useState<boolean>(false)
   const [refetch, setRefetch] = useState<boolean>(false)
@@ -75,7 +75,7 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
             </>
           )
         case PoolStatus.WHITELIST:
-          if (isConnected && isUserSigned && !userAlreadyKYC)
+          if (isConnected && user && !userAlreadyKYC)
             return (
               <div className="flex flex-col items-center">
                 <span className="font-semibold">KYC REQUIRED</span>
@@ -99,7 +99,7 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
                   KYC REQUIRED
                 </div>
               )}
-              {isApplied && isUserSigned ? (
+              {isApplied && user ? (
                 <div className="mt-5 flex rounded bg-[#00E1504D] py-2 px-10 text-[#73E480]">
                   WHITELISTED
                 </div>

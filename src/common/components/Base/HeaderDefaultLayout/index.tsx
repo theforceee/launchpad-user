@@ -1,24 +1,21 @@
-import { get, post } from "@/common/request"
 import { openModal } from "@components/Base/Modal"
 import ConnectWalletDialog from "@components/Pages/LandingPage/ConnectWalletDialog"
 import SwitchNetworkDialog from "@components/Pages/LandingPage/SwitchNetworkDialog"
 import { URLS } from "@constants/index"
-import { AppContext } from "@contexts/AppContext"
 import iconSearch from "@images/icon-search.svg"
 import iconWallet from "@images/icon-wallet.png"
 import logoFull from "@images/logo-full.png"
 import { Button, Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react"
-import { displayWalletAddress, formatCurrency, setAccountToken } from "@utils/index"
+import { displayWalletAddress, formatCurrency } from "@utils/index"
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { HTMLAttributeAnchorTarget, useContext, useEffect, useState } from "react"
-import { toast } from "react-toastify"
-import { SiweMessage } from "siwe"
-import { useAccount, useDisconnect, useNetwork, useSignMessage } from "wagmi"
+import { HTMLAttributeAnchorTarget, useState } from "react"
+import { useAccount, useNetwork } from "wagmi"
 import styles from "./header.module.scss"
 import useUserAssets from "@hooks/useUserAssets"
+import { useId } from "../Identity"
 
 type RouteTypes = {
   label: string
@@ -68,15 +65,7 @@ const HeaderDefaultLayout = () => {
   const router = useRouter()
   const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
-  const { isUserSigned } = useContext(AppContext)
-  const { disconnect } = useDisconnect()
-  const { signMessageAsync } = useSignMessage({
-    onError(error) {
-      toast.error("Fail to sign in: " + error.message)
-    }
-  })
-
-  const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false)
+  const { login, logout, user, isSigningIn } = useId()
   const [openHeaderMobile, setOpenHeaderMobile] = useState<boolean>(false)
   const [openNetworkDialog, setOpenNetworkDialog] = useState<boolean>(false)
 
@@ -90,54 +79,11 @@ const HeaderDefaultLayout = () => {
     setOpenHeaderMobile((prevState) => !prevState)
   }
 
-  const handleSignIn = async () => {
-    setLoadingSignIn(true)
-    try {
-      const nonceRes = await get("nonce")
-      const nonce = nonceRes?.data?.nonce
-
-      const message = new SiweMessage({
-        domain: window.location.host,
-        address,
-        statement: "Sign in with Ethereum to the app.",
-        uri: window.location.origin,
-        version: "1",
-        chainId: chain?.id,
-        nonce,
-        issuedAt: new Date().toISOString()
-      })
-
-      const signature = await signMessageAsync({
-        message: message.prepareMessage()
-      })
-
-      const loginRes = await post("login", {
-        body: {
-          message,
-          signature
-        }
-      })
-      setLoadingSignIn(false)
-
-      if (!loginRes || loginRes.status !== 200) {
-        toast.error("Fail to login: " + loginRes.message)
-        return
-      }
-
-      const userToken = loginRes.data?.token?.token
-      setAccountToken(address, userToken)
-      window.location.reload()
-    } catch (error) {
-      console.log("Fail to login", error)
-      setLoadingSignIn(false)
-    }
-  }
-
   const renderHeaderMobile = () => {
     if (!openHeaderMobile) return <></>
 
     return (
-      <div className="fixed top-0 left-0 z-50 flex h-screen w-full flex-col overflow-y-auto bg-[#04060C] p-5 pb-8">
+      <div className="fixed top-0 left-0 z-50 flex h-screen w-full flex-col overflow-y-auto bg-clr-purple-60 p-5 pb-8">
         <div className="flex justify-between">
           {/* <Image src={logo} alt="" />
           <Image
@@ -181,13 +127,13 @@ const HeaderDefaultLayout = () => {
         >
           {isConnected ? (
             <>
-              {!isUserSigned && (
+              {!user && (
                 <button
-                  onClick={handleSignIn}
-                  disabled={loadingSignIn}
+                  onClick={login}
+                  disabled={isSigningIn}
                   className="btnGradientOrange btnSmall mb-3 w-full"
                 >
-                  <span>{loadingSignIn ? "Signing In" : "Sign In"}</span>
+                  <span>{isSigningIn ? "Signing In" : "Sign In"}</span>
                 </button>
               )}
               <div
@@ -245,7 +191,7 @@ const HeaderDefaultLayout = () => {
               ))}
               <div
                 className="mt-5 cursor-pointer border-none duration-200 hover:text-blazeOrange"
-                onClick={() => disconnect()}
+                onClick={logout}
               >
                 Log Out
               </div>

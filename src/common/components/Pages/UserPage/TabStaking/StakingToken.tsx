@@ -67,15 +67,11 @@ const StakingToken = () => {
     ;(async () => {
       if (!connectedAccount) return
       const resStaked = await get("staked-info", { account: connectedAccount })
-      console.log("resStaked", resStaked)
+
       if (!resStaked || !resStaked.data || resStaked.status !== 200) return
       setUserRanking(resStaked.data.userPosition)
     })()
   }, [connectedAccount])
-
-  useEffect(() => {
-    console.log("StakingToken", userAllowance, tokenStaked, tokenPendingWithdraw)
-  }, [tokenPendingWithdraw, tokenStaked, userAllowance])
 
   const disabledClaimPending = useMemo(
     () =>
