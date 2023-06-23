@@ -18,11 +18,11 @@ const UpcomingPools = () => {
     return realTags.join(",")
   }, [selectedTags])
 
-  const { data: resPools, mutate, loading } = useFetch<any>(`/pool?status=ENDED?tag=${tagQuery}`)
+  const { data: resPools, mutate, loading } = useFetch<any>(`/pool/upcoming?tags=${tagQuery}`)
 
   useEffect(() => {
     if (!resPools || resPools.status !== 200) return
-    const poolData = resPools.data?.data || []
+    const poolData = resPools.data || []
 
     const allTags = getAllTags(poolData)
     setTags(allTags)
