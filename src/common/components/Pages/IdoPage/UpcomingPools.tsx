@@ -34,7 +34,7 @@ const UpcomingPools = () => {
       mutate()
     }, 2000)
     return () => clearTimeout(timer)
-  }, [mutate, selectedTags])
+  }, [mutate, tagQuery])
 
   const handleSelectTag = (tagValue: any) => {
     let newTags = [...selectedTags]
