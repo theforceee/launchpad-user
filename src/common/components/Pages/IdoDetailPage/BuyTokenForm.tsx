@@ -7,7 +7,7 @@ import iconLock from "@images/icon-lock.png"
 import { PoolStatus, getDateFromUnix, getPoolDetailStatus } from "@utils/getPoolDetailStatus"
 import { formatCurrency } from "@utils/index"
 import Image from "next/image"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { NumericFormat } from "react-number-format"
 import { toast } from "react-toastify"
 import { useAccount } from "wagmi"
@@ -20,6 +20,7 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
   const { isConnected, address: connectedAccount } = useAccount()
   const { user } = useId()
   const userAlreadyKYC = true
+
   const [isApplied, setIsApplied] = useState<boolean>(false)
   const [refetch, setRefetch] = useState<boolean>(false)
 

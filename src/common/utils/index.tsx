@@ -1,4 +1,4 @@
-import { BLAZE_TOKEN_DECIMALS } from "@constants/index"
+import { BLAZE_TOKEN_DECIMALS, TIERS, Tiers } from "@constants/index"
 import { ethers } from "ethers"
 
 export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
@@ -23,6 +23,17 @@ export const getRankingSuffix = (index: number | undefined) => {
       return "rd"
     default:
       return "th"
+  }
+}
+
+export const getTierColor = (tier: Tiers) => {
+  switch (tier) {
+    case TIERS.FIREDRAKE:
+      return "text-[#D94C5D]"
+    case TIERS.PHOENIX:
+    case TIERS.TRAILBLAZER:
+    default:
+      return "text-blazeOrange"
   }
 }
 

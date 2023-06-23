@@ -1,6 +1,6 @@
 import moment from "moment"
 import { Step, Stepper, Tab, Tabs, TabsHeader } from "@material-tailwind/react"
-import { formatCurrency } from "@utils/index"
+import { formatCurrency, getTierColor } from "@utils/index"
 import BigNumber from "bignumber.js"
 import clsx from "clsx"
 import Image from "next/image"
@@ -17,6 +17,8 @@ import iconTelegram from "@images/icon-telegram.svg"
 import iconTwitter from "@images/icon-twitter.svg"
 import iconUSDT from "@images/icon-usdt.png"
 import { PoolStatus, getPoolDetailStatus, poolStatus } from "@utils/getPoolDetailStatus"
+import { USER_TIER_MAPPING } from "@constants/index"
+import { useUserStakedInfo } from "@hooks/useUserStakedInfo"
 
 const TABS = {
   PROJECT_INFO: "1",
@@ -75,6 +77,7 @@ type IdoDetailPageProps = {
 }
 const IdoDetailPage = (props: IdoDetailPageProps) => {
   const { poolDetail, loading } = props
+  const { userTier } = useUserStakedInfo()
 
   const [activeStep, setActiveStep] = useState<poolStatus>(PoolStatus.BEFORE_WHITELIST)
   const [activeTab, setActiveTab] = useState<(typeof TABS)[keyof typeof TABS]>(TABS.PROJECT_INFO)
@@ -287,7 +290,17 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
           </div>
         </div>
 
-        <BuyTokenForm poolDetail={poolDetail} />
+        <div className="flex flex-col">
+          <BuyTokenForm poolDetail={poolDetail} />
+
+          <div className="mt-3 flex h-[72px] items-center justify-center rounded-[20px] bg-[#151532] text-18/24 font-semibold">
+            <span>You are</span>
+            <span className={clsx("mx-1", getTierColor(userTier?.value))}>
+              {userTier?.label || "-"}
+            </span>
+            <span>tier!</span>
+          </div>
+        </div>
       </div>
     </div>
   )

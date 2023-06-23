@@ -14,6 +14,7 @@ export const DEFAULT_NFT_LOGO = defaultNftLogo.src
 import iconFiredrake from "@images/profile/tier-firedrake.png"
 import iconPhoenix from "@images/profile/tier-phoenix.png"
 import iconTrailblazer from "@images/profile/tier-trailblazer.png"
+import { StaticImageData } from "next/image"
 
 type HeadDefaultTypes = {
   image: string
@@ -59,17 +60,27 @@ export enum TIERS {
   PHOENIX = 1,
   TRAILBLAZER = 2
 }
+export type Tiers = Extract<TIERS, TIERS.FIREDRAKE | TIERS.PHOENIX | TIERS.TRAILBLAZER>
 
-export const USER_TIER_MAPPING: any = {
+export type UserTierTypes = {
+  label: string
+  icon: StaticImageData
+  value: Tiers
+}
+
+export const USER_TIER_MAPPING: { [key in Tiers]: UserTierTypes } = {
   [TIERS.FIREDRAKE]: {
+    value: TIERS.FIREDRAKE,
     label: "Firedrake",
     icon: iconFiredrake
   },
   [TIERS.PHOENIX]: {
+    value: TIERS.PHOENIX,
     label: "Phoenix",
     icon: iconPhoenix
   },
   [TIERS.TRAILBLAZER]: {
+    value: TIERS.TRAILBLAZER,
     label: "Trailblazer",
     icon: iconTrailblazer
   }

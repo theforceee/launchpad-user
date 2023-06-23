@@ -8,7 +8,7 @@ import iconFiredrake from "@images/profile/tier-firedrake.png"
 import iconPhoenix from "@images/profile/tier-phoenix.png"
 import iconTrailblazer from "@images/profile/tier-trailblazer.png"
 import { Tooltip } from "@material-tailwind/react"
-import { convertBigIntToNumber, formatCurrency, getRankingSuffix } from "@utils/index"
+import { convertBigIntToNumber, formatCurrency, getRankingSuffix, getTierColor } from "@utils/index"
 import Image, { StaticImageData } from "next/image"
 import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import { NumericFormat } from "react-number-format"
@@ -17,6 +17,7 @@ import UnstakeDialog from "./UnstakeDialog"
 import { get } from "@/common/request"
 import clsx from "clsx"
 import { USER_TIER_MAPPING } from "@constants/index"
+import { useUserStakedInfo } from "@hooks/useUserStakedInfo"
 
 export const SEPARATOR = ","
 type TierTypes = {
@@ -59,20 +60,10 @@ const StakingToken = () => {
     tokenPendingWithdraw && new Date(+BigInt(tokenPendingWithdraw[1]).toString() * 1000),
     true
   )
+  const { userPosition, userTier } = useUserStakedInfo()
 
-  const [userStakedInfo, setUserStakedInfo] = useState<any>()
   const [openUnstakeDialog, setOpenUnstakeDialog] = useState<boolean>(false)
   const [inputAmount, setInputAmount] = useState<string>("")
-
-  useEffect(() => {
-    ;(async () => {
-      if (!connectedAccount) return
-      const resStaked = await get("staked-info", { account: connectedAccount })
-
-      if (!resStaked || !resStaked.data || resStaked.status !== 200) return
-      setUserStakedInfo(resStaked.data)
-    })()
-  }, [connectedAccount])
 
   const disabledClaimPending = useMemo(
     () =>
@@ -248,9 +239,9 @@ const StakingToken = () => {
               </Tooltip>
             </div>
             <div className="flex items-end">
-              <span className="text-28/36 font-bold">{userStakedInfo?.userPosition || "-"}</span>
+              <span className="text-28/36 font-bold">{userPosition}</span>
               <span className="ml-1 text-18/24 font-semibold">
-                {getRankingSuffix(userStakedInfo?.userPosition)}
+                {getRankingSuffix(userPosition)}
               </span>
             </div>
           </div>
@@ -269,14 +260,7 @@ const StakingToken = () => {
                         key={index}
                       >
                         <Image alt="" src={icon} className="h-4 w-4" />
-                        <span
-                          className={clsx(
-                            "ml-1",
-                            index === 0 ? "text-[#D94C5D]" : "text-blazeOrange"
-                          )}
-                        >
-                          {label}
-                        </span>
+                        <span className={clsx("ml-1", getTierColor(index))}>{label}</span>
                         <span className="ml-auto">{desc}</span>
                       </div>
                     ))}
@@ -287,12 +271,8 @@ const StakingToken = () => {
               </Tooltip>
             </div>
             <div className="flex">
-              {userStakedInfo?.tier?.tier ? (
-                <Image
-                  alt=""
-                  src={USER_TIER_MAPPING[userStakedInfo?.tier?.tier]?.icon ?? iconTrailblazer}
-                  className="h-8 w-8"
-                />
+              {userTier ? (
+                <Image alt="" src={userTier?.icon ?? iconTrailblazer} className="h-8 w-8" />
               ) : (
                 "-"
               )}
