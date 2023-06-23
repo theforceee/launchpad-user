@@ -19,10 +19,6 @@ const ConfirmDialog = ({ modalRef, data }: ModalProps<ConfirmDialogData>) => {
       modalRef.close()
     } finally {
       setIsLoading(false)
-      setIsLoading(false)
-      modalRef.close()
-      setIsLoading(false)
-      modalRef.close()
     }
   }
 
