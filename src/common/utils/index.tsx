@@ -60,3 +60,16 @@ export const convertNumberToBigInt = (
   if (!number) return 0
   return BigInt(number * 10 ** decimals).toString()
 }
+
+// get all tags and remove duplicates, add tag "all"
+export const getAllTags = (poolData: any) => {
+  if (!poolData) return []
+  let poolTags = poolData
+    .map((pool: any) => (pool.tags ? pool.tags.split(",") : []))
+    .flat()
+    .map((tag: any) => tag.trim())
+
+  const uniqueTags: any = poolTags ? [...new Set(poolTags)].filter((tag) => tag !== "") : []
+  const allTags = ["all"].concat(uniqueTags)
+  return allTags
+}
