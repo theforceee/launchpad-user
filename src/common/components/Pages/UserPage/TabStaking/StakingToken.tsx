@@ -16,6 +16,7 @@ import { useAccount } from "wagmi"
 import UnstakeDialog from "./UnstakeDialog"
 import { get } from "@/common/request"
 import clsx from "clsx"
+import { USER_TIER_MAPPING } from "@constants/index"
 
 export const SEPARATOR = ","
 type TierTypes = {
@@ -59,7 +60,7 @@ const StakingToken = () => {
     true
   )
 
-  const [userRanking, setUserRanking] = useState<number>()
+  const [userStakedInfo, setUserStakedInfo] = useState<any>()
   const [openUnstakeDialog, setOpenUnstakeDialog] = useState<boolean>(false)
   const [inputAmount, setInputAmount] = useState<string>("")
 
@@ -69,7 +70,7 @@ const StakingToken = () => {
       const resStaked = await get("staked-info", { account: connectedAccount })
 
       if (!resStaked || !resStaked.data || resStaked.status !== 200) return
-      setUserRanking(resStaked.data.userPosition)
+      setUserStakedInfo(resStaked.data)
     })()
   }, [connectedAccount])
 
@@ -247,8 +248,10 @@ const StakingToken = () => {
               </Tooltip>
             </div>
             <div className="flex items-end">
-              <span className="text-28/36 font-bold">{userRanking || ""}</span>
-              <span className="ml-1 text-18/24 font-semibold">{getRankingSuffix(userRanking)}</span>
+              <span className="text-28/36 font-bold">{userStakedInfo?.userPosition || "-"}</span>
+              <span className="ml-1 text-18/24 font-semibold">
+                {getRankingSuffix(userStakedInfo?.userPosition)}
+              </span>
             </div>
           </div>
 
@@ -284,7 +287,15 @@ const StakingToken = () => {
               </Tooltip>
             </div>
             <div className="flex">
-              <Image alt="" src={iconFiredrake} className="h-8 w-8" />
+              {userStakedInfo?.tier?.tier ? (
+                <Image
+                  alt=""
+                  src={USER_TIER_MAPPING[userStakedInfo?.tier?.tier]?.icon ?? iconTrailblazer}
+                  className="h-8 w-8"
+                />
+              ) : (
+                "-"
+              )}
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
 }
 
 export const getRankingSuffix = (index: number | undefined) => {
-  if (typeof index !== "number") return "N/A"
+  if (typeof index !== "number") return ""
 
   switch (index) {
     case 1:

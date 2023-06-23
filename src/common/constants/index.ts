@@ -11,6 +11,10 @@ export const WALLET_CONNECT_PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_
 
 export const DEFAULT_NFT_LOGO = defaultNftLogo.src
 
+import iconFiredrake from "@images/profile/tier-firedrake.png"
+import iconPhoenix from "@images/profile/tier-phoenix.png"
+import iconTrailblazer from "@images/profile/tier-trailblazer.png"
+
 type HeadDefaultTypes = {
   image: string
   title: string
@@ -48,4 +52,25 @@ export const currencies = {
 export const NETWORK_AVAILABLE = {
   ETH: "ETH",
   BSC: "BSC"
+}
+
+export enum TIERS {
+  FIREDRAKE = 0,
+  PHOENIX = 1,
+  TRAILBLAZER = 2
+}
+
+export const USER_TIER_MAPPING: any = {
+  [TIERS.FIREDRAKE]: {
+    label: "Firedrake",
+    icon: iconFiredrake
+  },
+  [TIERS.PHOENIX]: {
+    label: "Phoenix",
+    icon: iconPhoenix
+  },
+  [TIERS.TRAILBLAZER]: {
+    label: "Trailblazer",
+    icon: iconTrailblazer
+  }
 }
