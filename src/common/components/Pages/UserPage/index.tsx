@@ -22,11 +22,11 @@ type UserTabTypes = {
   Element: any
 }
 const HASHES = {
-  PROFILE: "profile",
-  POOLS: "pools",
-  STAKING: "staking",
-  KYC: "kyc",
-  FAVORITE: "favorite"
+  PROFILE: "#profile",
+  POOLS: "#pools",
+  STAKING: "#staking",
+  KYC: "#kyc",
+  FAVORITE: "#favorite"
 }
 
 const data: Array<UserTabTypes> = [
@@ -64,9 +64,20 @@ const data: Array<UserTabTypes> = [
 
 const UserPage = () => {
   const router = useRouter()
-  const queryTab = router.query.tab as string
-  const activeTab = Object.values(HASHES).includes(queryTab) ? queryTab : HASHES.STAKING
-  console.log("activeTab", activeTab)
+  const [activeTab, setActiveTab] = useState<string>()
+
+  useEffect(() => {
+    const hash = router.asPath.split("#")[1]
+    if (!hash) {
+      router.push(HASHES.PROFILE).catch()
+      setActiveTab(HASHES.PROFILE)
+      return
+    }
+
+    setActiveTab("#" + hash)
+  }, [router])
+
+  if (!activeTab) return <></>
 
   return (
     <div className="blazePage section">
@@ -83,7 +94,7 @@ const UserPage = () => {
                 <Tab
                   key={hash}
                   value={hash}
-                  onClick={() => router.push(`/profile?tab=${hash}`)}
+                  onClick={() => router.push(hash)}
                   className={"w-[180px] font-semibold text-white "}
                 >
                   <div className="flex items-center justify-center">
@@ -96,7 +107,6 @@ const UserPage = () => {
             <TabsBody className="mx-auto mt-3 max-w-[1200px] rounded-[20px] bg-[#151532]">
               {data.map(({ hash, Element }) => (
                 <TabPanel key={hash} value={hash}>
-                  {hash} - {activeTab}
                   <Element />
                 </TabPanel>
               ))}
