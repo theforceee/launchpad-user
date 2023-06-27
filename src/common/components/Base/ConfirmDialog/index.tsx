@@ -25,7 +25,7 @@ const ConfirmDialog = ({ modalRef, data }: ModalProps<ConfirmDialogData>) => {
   return (
     <Modal>
       <Modal.Body>
-        <div className="mt-2 flex flex-wrap gap-3">{title ?? "Are you sure?"}</div>
+        <div className="mt-2 flex flex-wrap text-white">{title ?? "Are you sure?"}</div>
         {content && <div className="mt-2 flex flex-wrap gap-3">{content}</div>}
 
         <div className="mt-4">

@@ -1,14 +1,26 @@
-import moment from "moment"
+import { get } from "@/common/request"
+import { useUserStakedInfo } from "@hooks/useUserStakedInfo"
 import { Step, Stepper, Tab, Tabs, TabsHeader } from "@material-tailwind/react"
-import { formatCurrency, getTierColor } from "@utils/index"
+import {
+  PoolStatus,
+  StepTypes,
+  getPoolDetailStatus,
+  getPoolTimelineStatus,
+  poolStatus,
+  timelineSteps
+} from "@utils/getPoolDetailStatus"
+import { formatCurrency } from "@utils/index"
 import BigNumber from "bignumber.js"
 import clsx from "clsx"
+import moment from "moment"
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
+import { useAccount } from "wagmi"
 import BuyTokenForm from "./BuyTokenForm"
 import ClaimEmissions from "./ClaimEmissions"
-import styles from "./idoDetail.module.scss"
 import { EmissionTypes } from "./EmissionTable"
+import UserInfoBanner from "./UserInfoBanner"
+import styles from "./idoDetail.module.scss"
 
 import fakeLogo from "@images/fake-project-logo.png"
 import iconDiscord from "@images/icon-discord.svg"
@@ -16,9 +28,6 @@ import iconStar from "@images/icon-star-white.svg"
 import iconTelegram from "@images/icon-telegram.svg"
 import iconTwitter from "@images/icon-twitter.svg"
 import iconUSDT from "@images/icon-usdt.png"
-import { PoolStatus, getPoolDetailStatus, poolStatus } from "@utils/getPoolDetailStatus"
-import { USER_TIER_MAPPING } from "@constants/index"
-import { useUserStakedInfo } from "@hooks/useUserStakedInfo"
 
 const TABS = {
   PROJECT_INFO: "1",
@@ -30,54 +39,15 @@ const PROJECT_TABS = {
   TOKENOMICS: "tokenomics"
 }
 
-type StepTypes = {
-  name: string
-  subName?: string
-  value: poolStatus
-}
-const timelineSteps: Array<StepTypes> = [
-  {
-    name: "WHITELIST",
-    subName: "",
-    value: PoolStatus.WHITELIST
-  },
-  {
-    name: "PRIVATE",
-    subName: "(WL)",
-    value: PoolStatus.PRIVATE_WL
-  },
-  {
-    name: "PRIVATE",
-    subName: "(FCFS)",
-    value: PoolStatus.PRIVATE_FCFS
-  },
-  {
-    name: "PUBLIC",
-    subName: "(WL)",
-    value: PoolStatus.PUBLIC_WL
-  },
-  {
-    name: "PUBLIC",
-    subName: "(FCFS)",
-    value: PoolStatus.PUBLIC_FCFS
-  },
-  {
-    name: "CLAIM",
-    value: PoolStatus.CLAIM
-  },
-  {
-    name: "CLOSED",
-    value: PoolStatus.CLOSED
-  }
-]
-
 type IdoDetailPageProps = {
   poolDetail: any
   loading?: boolean
 }
 const IdoDetailPage = (props: IdoDetailPageProps) => {
   const { poolDetail, loading } = props
+  const { address: connectedAccount } = useAccount()
   const { userTier } = useUserStakedInfo()
+  const poolStatus = useMemo(() => getPoolDetailStatus(poolDetail), [poolDetail])
 
   const [activeStep, setActiveStep] = useState<poolStatus>(PoolStatus.BEFORE_WHITELIST)
   const [activeTab, setActiveTab] = useState<(typeof TABS)[keyof typeof TABS]>(TABS.PROJECT_INFO)
@@ -88,9 +58,20 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
   const [emissions, setEmissions] = useState<Array<EmissionTypes>>([])
 
   useEffect(() => {
+    ;(async () => {
+      if (!connectedAccount || !poolDetail) return
+
+      const resAlloc = await get(`pool/${poolDetail?.slug}/allocation`, {
+        account: connectedAccount
+      })
+      console.log("res alloc", resAlloc)
+      if (!resAlloc || !resAlloc.data) return
+    })()
+  }, [connectedAccount, poolDetail])
+
+  useEffect(() => {
     if (!poolDetail) return
-    // console.log("IdoDetailPage", poolDetail, loading)
-    const status = getPoolDetailStatus(poolDetail)
+    const status = getPoolTimelineStatus(poolDetail)
     console.log("IdoDetailPage", status, poolDetail)
     setActiveStep(status)
 
@@ -171,7 +152,9 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
                 <div className="h-4 w-4">
                   <Image src={iconUSDT} alt="" className="shrink-0" />
                 </div>
-                <span className="ml-[6px] text-[#00A63B]">USDT</span>
+                <span className="ml-[6px] text-[#00A63B]">
+                  {[poolDetail?.accepted_currency || "N/A"]}
+                </span>
               </div>
             </div>
           </div>
@@ -291,15 +274,13 @@ const IdoDetailPage = (props: IdoDetailPageProps) => {
         </div>
 
         <div className="flex flex-col">
-          <BuyTokenForm poolDetail={poolDetail} />
+          <BuyTokenForm poolDetail={poolDetail} poolStatus={poolStatus} />
 
-          <div className="mt-3 flex h-[72px] items-center justify-center rounded-[20px] bg-[#151532] text-18/24 font-semibold">
-            <span>You are</span>
-            <span className={clsx("mx-1", getTierColor(userTier?.value))}>
-              {userTier?.label || "-"}
-            </span>
-            <span>tier!</span>
-          </div>
+          <UserInfoBanner
+            connectedAccount={connectedAccount}
+            poolStatus={poolStatus}
+            userTier={userTier}
+          />
         </div>
       </div>
     </div>

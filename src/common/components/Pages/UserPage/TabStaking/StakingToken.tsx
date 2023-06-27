@@ -222,7 +222,11 @@ const StakingToken = () => {
               </span>
               <div>
                 <button
-                  disabled={disabledClaimPending}
+                  disabled={
+                    disabledClaimPending ||
+                    !tokenPendingWithdraw ||
+                    tokenPendingWithdraw[0] === BigInt(0)
+                  }
                   className="btnGradientPurple btnSmall mt-3 w-full px-4"
                 >
                   <span>Claim All</span>

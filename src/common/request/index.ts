@@ -24,9 +24,8 @@ export const request = async (url: string, method: string, options?: RequestOpti
   })
 
   if (!response.ok) {
-    // throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-    console.log(`HTTP ${response.status} - ${response.statusText}`)
-    return response
+    console.log("ERROR response", response)
+    return response.json()
   }
 
   // Unauthorized

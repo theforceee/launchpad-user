@@ -27,7 +27,7 @@ export const getRankingSuffix = (index: number | undefined) => {
   }
 }
 
-export const getTierColor = (tier: Tiers) => {
+export const getTierColor = (tier: Tiers | undefined) => {
   switch (tier) {
     case TIERS.FIREDRAKE:
       return "text-[#D94C5D]"
