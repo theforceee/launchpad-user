@@ -1,0 +1,19 @@
+.pretty-scrollbar {
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
+    width: 12px;
+    border-radius: 12px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+
+  &:hover::-webkit-scrollbar {
+    background: var(--ds-clr-purple-50);
+    background-clip: padding-box;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: var(--ds-clr-purple-80);
+  }
+  }
+  

@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import TabFavorite from "./TabFavorite"
 import TabKyc from "./TabKyc"
-import TabPools from "./TabPools"
+import { TabPools } from "./TabPools"
 import TabProfile from "./TabProfile"
 import TabStaking from "./TabStaking"
 import styles from "./user.module.scss"
@@ -80,7 +80,7 @@ const UserPage = () => {
   if (!activeTab) return <></>
 
   return (
-    <div className="blazePage section">
+    <div className="container">
       <div className="flex w-full pb-20 text-white">
         <div className={styles.userNav}>
           <Tabs value={activeTab}>
