@@ -14,6 +14,7 @@ import { StakableNftItem } from "./StakableNftItem"
 import { PendingWithdrawNftItem } from "./PendingWithdrawNftItem"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import { NftData } from "./typing"
+import { useId } from "@components/Base/Identity"
 
 export function CompatibleNftsSlider({
   nftName,
@@ -32,7 +33,8 @@ export function CompatibleNftsSlider({
   selectedNfts: NftData[]
   selectedWithdrableNfts: PendingWithdrawNft[]
 }) {
-  const { address: connectedAccount } = useAccount()
+  const { user } = useId()
+  const connectedAccount = user?.wallet_address
   const { pendingERC721Withdrawals, refetch } = useGetPendingERC721Withdrawals(
     connectedAccount,
     nftAddress

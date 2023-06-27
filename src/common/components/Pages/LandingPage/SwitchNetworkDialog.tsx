@@ -16,7 +16,7 @@ export const SwitchNetworkDialog = ({ modalRef }: ModalProps) => {
 
     toast.success("Switch network successfully!")
     modalRef.close()
-  }, [isSuccess])
+  }, [isSuccess, modalRef])
 
   const handleSwitchNetwork = async (newWorkId: number) => {
     try {

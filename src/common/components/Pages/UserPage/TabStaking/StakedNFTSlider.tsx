@@ -10,6 +10,7 @@ import { Address, useAccount } from "wagmi"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
 import { StakedNft } from "./typing"
+import { useId } from "@components/Base/Identity"
 
 export function StakedNFTSlider({
   name,
@@ -22,8 +23,9 @@ export function StakedNFTSlider({
   onSelectNft: (stakedNft: StakedNft) => void
   chosenNfts: StakedNft[]
 }) {
+  const { user } = useId()
+  const connectedAccount = user?.wallet_address
   const { stakingNftSubject } = useStakingNftContext()
-  const { address: connectedAccount } = useAccount()
   const { nftIds, refetch } = useGetErc721Stakings(connectedAccount, nftAddr)
   const [swiper, setSwiper] = useState<SwiperClass | null>(null)
   const [activeIdx, setActiveIdx] = useState(0)

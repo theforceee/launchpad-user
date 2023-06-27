@@ -21,7 +21,7 @@ type IdContextValues = {
 
 type User = {
   id: number
-  wallet_address: string
+  wallet_address: Address
 }
 
 export const IdContext = createContext<IdContextValues>({} as IdContextValues)
@@ -31,39 +31,28 @@ export const useId = () => useContext<IdContextValues>(IdContext)
 export function IdProvider({ children }: PropsWithChildren) {
   const [isSigningIn, setIsSigningIn] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
   const { chain } = useNetwork()
   const { disconnect } = useDisconnect()
-  const { signMessageAsync } = useSignMessage({
-    onError(error) {
-      toast.error("Fail to sign in: " + error.message)
-    }
-  })
+  const { signMessageAsync } = useSignMessage()
 
   const fetchUserInfo = useCallback(async () => {
     const userInfoRes = await get("info")
     setUser(userInfoRes.data)
   }, [])
 
+  const clearUser = useCallback(async () => {
+    clearAccountToken()
+    setUser(null)
+  }, [])
+
   const logout = useCallback(() => {
-    clearAccountToken()
+    clearUser()
     disconnect()
-    setUser(null)
-  }, [address])
-
-  useEffect(() => {
-    const uesrdata = getUserData()
-    if (uesrdata?.wallet === address) {
-      fetchUserInfo()
-      return
-    }
-
-    clearAccountToken()
-    setUser(null)
-  }, [address])
+  }, [disconnect, clearUser])
 
   const login = useCallback(async () => {
-    if (!address) return
+    if (!address || !chain) return
 
     try {
       setIsSigningIn(true)
@@ -93,7 +82,7 @@ export function IdProvider({ children }: PropsWithChildren) {
       })
 
       if (!loginRes || loginRes.status !== 200) {
-        toast.error("Fail to login: " + loginRes.message)
+        toast.error("Failed to sign in: " + loginRes.message)
         return
       }
 
@@ -102,11 +91,43 @@ export function IdProvider({ children }: PropsWithChildren) {
 
       await fetchUserInfo()
     } catch (err: any) {
-      toast.error("Fail to login: " + err?.message || err)
+      toast.error("Failed to sign in: " + err?.message || err)
     } finally {
       setIsSigningIn(false)
     }
   }, [chain, address])
+
+  useEffect(() => {
+    if (!isConnected) return
+
+    const isWalletLocked = !address
+    if (isWalletLocked) {
+      clearUser()
+      return
+    }
+
+    const userData = getUserData()
+    if (!userData) {
+      return
+    }
+
+    if (userData.wallet !== address) {
+      logout()
+      return
+    }
+
+    fetchUserInfo()
+  }, [isConnected, address, logout, clearUser])
+
+  // Show sign-in dialog after connecting wallet
+  useEffect(() => {
+    if (!isConnected || !address) return
+
+    const userData = getUserData()
+    if (!userData) {
+      setTimeout(() => login(), 1000)
+    }
+  }, [isConnected, address, login])
 
   return (
     <IdContext.Provider

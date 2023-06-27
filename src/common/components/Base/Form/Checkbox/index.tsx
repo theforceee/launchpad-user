@@ -15,7 +15,7 @@ export function Checkbox({ name, value, className, onChange }: CheckboxProps) {
   return (
     <div
       className={clsx(
-        "relative inline-block h-[14px] w-[14px] translate-y-[2px] overflow-hidden rounded-[2px]",
+        "relative inline-block h-[16px] w-[16px] translate-y-[3px] overflow-hidden rounded-[2px]",
         "outline-1 outline-offset-2 focus-within:outline",
         className
       )}
@@ -28,7 +28,7 @@ export function Checkbox({ name, value, className, onChange }: CheckboxProps) {
         type="checkbox"
         value={value}
         name={name}
-        className="h-[14px] w-[14px]"
+        className="h-[16px] w-[16px]"
       />
       <div className="pointer-events-none absolute -top-1 -right-1 -bottom-1 -left-1 flex items-center justify-center rounded-[4px] bg-clr-purple-70">
         {checked && <TickIcon className="text-clr-purple-80" />}

@@ -8,17 +8,19 @@ import clsx from "clsx"
 import Image from "next/image"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
-import { Address, useAccount } from "wagmi"
 import { CompatibleNftsSlider } from "./CompatibleNftsSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
 import { PendingWithdrawNft } from "@hooks/useGetPendingERC721Withdrawals"
 import { useWithdrawMultipleErc721 } from "@hooks/useWithdrawMultipleERC721"
 import { NftData } from "./typing"
+import { useId } from "@components/Base/Identity"
 
 export function CompatibleNFTs() {
+  const { user } = useId()
+  const connectedAccount = user?.wallet_address
   const { stakingNftSubject } = useStakingNftContext()
-  const { address: connectedAccount } = useAccount()
+
   const [pioneerNfts, setPioneerNfts] = useState<NftData[]>([])
   const [sheriffNfts, setSheriffNfts] = useState<NftData[]>([])
 
@@ -117,8 +119,14 @@ export function CompatibleNFTs() {
   }, [])
 
   useEffect(() => {
+    if (!user) {
+      setPioneerNfts([])
+      setSheriffNfts([])
+      return
+    }
+
     fetchNfts()
-  }, [fetchNfts])
+  }, [fetchNfts, user])
 
   useEffect(() => {
     if (stakeMultipleERC721Status !== "success") {
@@ -152,6 +160,7 @@ export function CompatibleNFTs() {
     setSelectedWithdrableNfts([])
     fetchNfts()
     stakingNftSubject.next(NftStakingEvent.NFT_WITHDRAWED)
+    toast.success("Claim NFT(s) successfully")
   }, [withdrawMultipleERC721Status, stakingNftSubject])
 
   const handleStakeNft = () => {

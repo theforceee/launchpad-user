@@ -30,7 +30,7 @@ export function PendingWithdrawNftItem({
       }),
     1000
   )
-  const isWithdrawable = true //endTime.getTime() < new Date().getTime()
+  const isWithdrawable = endTime.getTime() < new Date().getTime()
 
   const { address: connectedAccount } = useAccount()
   const { withdrawMultipleERC721, isWithdrawing } = useWithdrawMultipleErc721(connectedAccount)
@@ -43,9 +43,9 @@ export function PendingWithdrawNftItem({
       onClick={() => handleSelectWithdrableNft(nft)}
       type="button"
       disabled={!isWithdrawable || isWithdrawing}
-      className="relative flex flex-col"
+      className="relative flex flex-col overflow-hidden"
     >
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <Image
           src={DEFAULT_NFT_LOGO}
           alt={""}

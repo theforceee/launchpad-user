@@ -11,10 +11,12 @@ import { StakedNFTSlider } from "./StakedNFTSlider"
 import { NftStakingEvent, useStakingNftContext } from "./StakingNftContext"
 import styles from "./tabStaking.module.scss"
 import { StakedNft } from "./typing"
+import { useId } from "@components/Base/Identity"
 
 export function StakedNfts() {
+  const { user } = useId()
+  const connectedAccount = user?.wallet_address
   const { stakingNftSubject } = useStakingNftContext()
-  const { address: connectedAccount } = useAccount()
   const { unstakeMultipleERC721, loadingUnstake, unstakeMultipleERC721Status } =
     useUnstakeMultipleERC721(connectedAccount)
   const [chosenStakedNfts, setChosenStakedNfts] = useState<StakedNft[]>([])
