@@ -2,20 +2,25 @@ import ERC20_ABI from "@abi/Erc20.json"
 import { BLAZE_TOKEN_CONTRACT, STAKING_CONTRACT } from "@constants/index"
 import { AppContext } from "@contexts/AppContext"
 import { getErrorMessage } from "@utils/getErrorMessage"
-import { convertNumberToBigInt } from "@utils/index"
 import { useCallback, useContext, useEffect } from "react"
 import { toast } from "react-toastify"
-import { useContractWrite, useWaitForTransaction } from "wagmi"
+import { useAccount, useContractWrite, useWaitForTransaction } from "wagmi"
 
-const useTokenApprove = (connectedAccount: `0x${string}` | undefined) => {
+export const MAX_INT = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+
+const useTokenApprove = (
+  token: `0x${string}` | undefined = BLAZE_TOKEN_CONTRACT,
+  spender: `0x${string}` | undefined = STAKING_CONTRACT
+) => {
   const { isWrongChain } = useContext(AppContext)
+  const { address: connectedAccount } = useAccount()
 
   const {
     write,
     data: dataApprove,
     isLoading: loadingApprove
   } = useContractWrite({
-    address: BLAZE_TOKEN_CONTRACT,
+    address: token,
     abi: ERC20_ABI,
     functionName: "approve",
     account: connectedAccount,
@@ -31,24 +36,20 @@ const useTokenApprove = (connectedAccount: `0x${string}` | undefined) => {
 
   useEffect(() => {
     if (dataHash?.status === "success") {
-      toast.success("SUCCESS: token have been staked")
-      setTimeout(() => window.location.reload(), 2000)
+      toast.success("SUCCESS: token have been approved")
     }
     if (dataHash?.status === "reverted") {
-      console.log("staking error", dataHash)
+      console.log("approving error", dataHash)
       toast.error("FAIL: execution reverted")
     }
   }, [dataHash])
 
-  const approve = useCallback(
-    async (amount: string) => {
-      if (isWrongChain) return
-      write?.({
-        args: [STAKING_CONTRACT, convertNumberToBigInt(+amount)]
-      })
-    },
-    [isWrongChain, write]
-  )
+  const approve = useCallback(async () => {
+    if (isWrongChain) return
+    write?.({
+      args: [spender, MAX_INT]
+    })
+  }, [isWrongChain, spender, write])
 
   return { approve, loadingApprove: loadingHash || loadingApprove }
 }

@@ -1,4 +1,5 @@
 import { BLAZE_TOKEN_DECIMALS, TIERS, Tiers } from "@constants/index"
+import BigNumber from "bignumber.js"
 import { ethers } from "ethers"
 
 export const formatCurrency = (n: any, maxLengthOfDecimal = 2) => {
@@ -61,7 +62,7 @@ export const convertBigIntToNumber = (
   decimals = BLAZE_TOKEN_DECIMALS
 ) => {
   if (!bign) return 0
-  return (BigInt(bign).toString() as any) / 10 ** decimals
+  return new BigNumber(BigInt(bign).toString()).div(10 ** decimals).toNumber()
 }
 
 export const convertNumberToBigInt = (
