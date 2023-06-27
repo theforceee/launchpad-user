@@ -7,15 +7,18 @@ const useUserAssets = () => {
   const { address } = useAccount()
 
   const { data: ethBalanceData } = useBalance({
+    enabled: !!address,
     address
   })
 
   const { data: blazeBalanceData } = useBalance({
+    enabled: !!address,
     address,
     token: BLAZE_TOKEN_CONTRACT
   })
 
   const { data: usdtBalanceData } = useBalance({
+    enabled: !!address,
     address,
     token: MAPPING_USDT_BY_NETWORK_ID[chainId]
   })

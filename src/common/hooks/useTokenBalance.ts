@@ -1,17 +1,17 @@
-import { BLAZE_TOKEN_CONTRACT } from "@constants/index"
-import { ETH_NETWORK_ID } from "@constants/networks"
 import { AppContext } from "@contexts/AppContext"
 import { useContext } from "react"
 import { useBalance } from "wagmi"
 
-const useTokenBalance = (connectedAccount: `0x${string}` | undefined) => {
+const useTokenBalance = (
+  tokenAddress: `0x${string}` | undefined,
+  userAddress: `0x${string}` | undefined
+) => {
   const { isWrongChain } = useContext(AppContext)
 
   const { data: userBalance, isLoading } = useBalance({
-    address: connectedAccount,
-    token: BLAZE_TOKEN_CONTRACT,
-    chainId: +ETH_NETWORK_ID,
-    enabled: !!connectedAccount && isWrongChain,
+    enabled: !!userAddress && isWrongChain,
+    address: userAddress,
+    token: tokenAddress,
     onError(error) {
       console.log("Error to fetch balance", error)
     }

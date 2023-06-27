@@ -53,7 +53,7 @@ const StakingToken = () => {
     connectedAccount,
     STAKING_CONTRACT
   )
-  const { userBalance, loadingBalance } = useTokenBalance(connectedAccount)
+  const { userBalance, loadingBalance } = useTokenBalance(BLAZE_TOKEN_CONTRACT, connectedAccount)
   const { approve, loadingApprove } = useTokenApprove()
   const {
     stakeToken,
