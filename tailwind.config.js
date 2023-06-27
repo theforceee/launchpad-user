@@ -21,6 +21,12 @@ module.exports = withMT({
       "2xl": "1536px",
       main: "1440px"
     },
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+      },
+    },
     colors: {
       main: "#000122",
       blazeOrange: "#FF9633",

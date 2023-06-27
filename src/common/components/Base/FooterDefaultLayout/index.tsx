@@ -42,8 +42,8 @@ const FooterDefaultLayout = () => {
 
   return (
     <div className={clsx(styles.bgFooter, "w-full bg-black text-white")}>
-      <div className="mx-auto flex h-[300px] max-w-screen-main justify-between !pt-20">
-        <div className="ml-40 flex max-w-[400px] flex-col">
+      <div className="container flex max-w-screen-main flex-col justify-between gap-8 py-8 md:flex-row md:py-20">
+        <div className="flex flex-col md:max-w-[400px]">
           <span className="text-28/36 font-bold">Stay Connected</span>
           <span className="mt-3 text-white/60">
             Join our mailing list to keep your finger on the pulse of the market.
@@ -66,20 +66,27 @@ const FooterDefaultLayout = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="flex flex-col pr-40">
+          <div className="flex flex-col">
             <span className="text-28/36 font-bold">Engage The Community</span>
             <span className="mt-3 text-white/60">Join our vibrant web3 community.</span>
           </div>
-          <div className="mt-1 flex items-center space-x-5">
-            {blazeSocials.map(({ iconUri, uri }: BlazeSocialTypes, index: number) => (
-              <a href={uri} key={index} target="_blank">
-                <Image src={iconUri} alt="" />
+
+          <div className="mt-1 flex flex-col items-center gap-4 md:flex-row">
+            <div className="flex items-center gap-4">
+              {blazeSocials.map(({ iconUri, uri }: BlazeSocialTypes, index: number) => (
+                <a href={uri} key={index} target="_blank">
+                  <Image src={iconUri} alt="" />
+                </a>
+              ))}
+              <a href="#" className="btnBorderGradient btnSmall !h-[38px] !max-w-none px-8">
+                <span>Help Center</span>
               </a>
-            ))}
-            <a href="#" className="btnBorderGradient btnSmall !h-[38px] !max-w-none px-8">
-              <span>Help Center</span>
-            </a>
-            <Image src={poweredBy} alt="" />
+            </div>
+
+            <div className="flex flex-col items-center gap-2 lg:flex-row">
+              <div>Powered by</div>
+              <Image src={poweredBy} alt="" />
+            </div>
           </div>
         </div>
       </div>
