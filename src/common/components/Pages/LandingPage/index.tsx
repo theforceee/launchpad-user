@@ -19,7 +19,7 @@ const LandingPage = () => {
 
   return (
     <div className={clsx("bg-gray-300 py-28 text-black")}>
-      <div className="section mx-auto flex gap-5">
+      <div className="container flex gap-5">
         {isConnected ? (
           <div>
             <div>{ensName ? `${ensName} (${address})` : address}</div>

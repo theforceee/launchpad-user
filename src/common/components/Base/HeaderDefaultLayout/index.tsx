@@ -97,7 +97,7 @@ const HeaderDefaultLayout = () => {
     <>
       <nav
         className={clsx(
-          "absolute left-1/2 mt-3 flex h-[72px] w-full max-w-screen-main -translate-x-1/2 px-6"
+          "container absolute left-1/2 mt-3 flex h-[72px] w-full -translate-x-1/2"
           // "md:px-[120px]",
           // "xs:px-[60px]",
           // "pl-5 pr-6"
@@ -106,7 +106,7 @@ const HeaderDefaultLayout = () => {
         <div
           className={clsx(
             styles.headerShadow,
-            "flex w-full items-center justify-between rounded-xl bg-main/70 pl-10 text-white"
+            "flex w-full items-center justify-between rounded-xl bg-main/70 text-white"
           )}
         >
           <div className="flex w-full flex-1 items-center pr-10">

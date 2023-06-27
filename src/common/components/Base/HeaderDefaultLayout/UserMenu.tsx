@@ -51,7 +51,7 @@ export function UserMenu() {
 
   if (address && !user) {
     return (
-      <div className="pr-10" onClick={login}>
+      <div onClick={login}>
         <Image alt="" src={iconWallet} className="cursor-pointer" />
       </div>
     )
@@ -60,7 +60,7 @@ export function UserMenu() {
   return (
     <Popover placement="bottom-end">
       <PopoverHandler>
-        <div className="pr-10">
+        <div>
           <Image alt="" src={iconWallet} className="cursor-pointer" />
         </div>
       </PopoverHandler>

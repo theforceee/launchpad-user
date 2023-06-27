@@ -42,7 +42,7 @@ const FooterDefaultLayout = () => {
 
   return (
     <div className={clsx(styles.bgFooter, "w-full bg-black text-white")}>
-      <div className="container flex max-w-screen-main flex-col justify-between gap-8 py-8 md:flex-row md:py-20">
+      <div className="container flex flex-col justify-between gap-8 py-8 md:flex-row md:py-20">
         <div className="flex flex-col md:max-w-[400px]">
           <span className="text-28/36 font-bold">Stay Connected</span>
           <span className="mt-3 text-white/60">

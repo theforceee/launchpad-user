@@ -69,22 +69,24 @@ const CompletedPools = () => {
   }
 
   return (
-    <div className="section flex w-full flex-col !py-10">
-      <div className="flex items-center justify-between text-white">
-        <span className="text-28/36 font-bold">Complete IDOs</span>
-        <div className="flex space-x-1">
-          {tags.map((item: any, index: number) => (
-            <div
-              className={clsx(
-                "flex cursor-pointer rounded-lg px-5 py-2 capitalize text-white",
-                selectedTags.includes(item) ? "bg-[#504FBE]" : "bg-[#151532]"
-              )}
-              key={index}
-              onClick={() => handleSelectTag(item)}
-            >
-              {item}
-            </div>
-          ))}
+    <div className="container flex w-full flex-col !py-10">
+      <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
+        <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
+          <span className="text-28/36 font-bold">Complete IDOs</span>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((item: any, index: number) => (
+              <div
+                key={index}
+                className={clsx(
+                  "flex cursor-pointer rounded-lg px-5 py-2 capitalize text-white",
+                  selectedTags.includes(item) ? "bg-[#504FBE]" : "bg-[#151532]"
+                )}
+                onClick={() => handleSelectTag(item)}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="btnGradientOrange btnMedium !w-fit !px-8">
@@ -94,7 +96,10 @@ const CompletedPools = () => {
 
       <div className={clsx("mt-5 flex flex-col space-y-2")}>
         {pools.map((pool: any, index: number) => (
-          <div className="flex rounded-xl bg-[#151532] py-[14px] px-5" key={index}>
+          <div
+            className="flex flex-col gap-4 rounded-xl bg-[#151532] py-[14px] px-5 sm:flex-row"
+            key={index}
+          >
             <div className="flex w-[312px] items-center">
               <div className="flex h-[60px] w-[60px]">
                 <Image src={fakeLogo} alt="" className="object-contain" />
@@ -118,7 +123,7 @@ const CompletedPools = () => {
               </div>
             </div>
 
-            <div className="ml-8 grid flex-1 grid-cols-4 gap-8 text-white">
+            <div className="grid flex-1 grid-cols-2 gap-8 text-white md:grid-cols-4">
               <div className="flex flex-col justify-center">
                 <span className="text-12/16 font-semibold text-textGray">{`TOTAL RAISED`}</span>
                 <span className="mt-1">{formatCurrency(getTotalRaise(pool))}</span>
@@ -139,7 +144,7 @@ const CompletedPools = () => {
 
             <a
               href={`${URLS.IDO}/${pool?.slug}`}
-              className="my-auto mr-3 ml-8 flex h-fit rounded-md border border-white px-10 py-[10px] text-14/18 font-semibold text-white"
+              className="my-auto flex h-fit justify-center rounded-md border border-white px-10 py-[10px] text-14/18 font-semibold text-white"
             >
               View
             </a>

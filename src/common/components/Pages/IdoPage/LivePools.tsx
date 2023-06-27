@@ -3,7 +3,6 @@ import useFetch from "@hooks/useFetch"
 import { getAllTags } from "@utils/index"
 import clsx from "clsx"
 import { useEffect, useMemo, useState } from "react"
-import styles from "./ido.module.scss"
 
 const UpcomingPools = () => {
   const [pools, setPools] = useState<any[]>([])
@@ -44,10 +43,10 @@ const UpcomingPools = () => {
   }
 
   return (
-    <div className="section flex w-full flex-col !py-10">
-      <div className="flex items-center justify-between text-white">
+    <div className="container flex w-full flex-col !py-10">
+      <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
         <span className="text-28/36 font-bold">Live</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap gap-2">
           {tags.map((item: any, index: number) => (
             <div
               className={clsx(
@@ -65,7 +64,7 @@ const UpcomingPools = () => {
         <div className=""></div>
       </div>
 
-      <div className={clsx(styles.list, "mt-5")}>
+      <div className="mt-5 grid grid-cols-1 gap-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {pools.map((item: any, index: number) => (
           <BaseCard cardData={item} key={index} />
         ))}

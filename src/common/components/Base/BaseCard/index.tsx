@@ -61,7 +61,7 @@ const BaseCard = (props: CardProps) => {
 
   return (
     <div className={clsx(styles.cardHover, "relative flex")}>
-      <div className={clsx(styles.hoverContent, "z-20 flex bg-[#333350]/90")}>
+      <div className={clsx(styles.hoverContent, "absolute z-20 flex bg-[#333350]/90")}>
         <a href={`${URLS.IDO}/${cardData?.slug}`} className="btnGradientOrange btnMedium !w-8/12">
           <span>View Project</span>
         </a>
@@ -85,7 +85,7 @@ const BaseCard = (props: CardProps) => {
         </div>
       </div>
 
-      <div className={clsx(styles.cardContent, "absolute z-10 flex flex-col")}>
+      <div className={clsx(styles.cardContent, "z-10 flex w-full flex-col")}>
         <div className="flex flex-col items-center p-3">
           <div className="relative w-full">
             <div className="absolute top-3 left-3 rounded-[20px] bg-[#CCF9DC] px-4 py-1 font-bold text-[#00A63B]">
