@@ -3,6 +3,9 @@ import Countdown from "@components/Base/Countdown"
 import { useId } from "@components/Base/Identity"
 import { confirm } from "@components/Base/Modal"
 import { URLS } from "@constants/index"
+import { MAPPING_CURRENCY_ADDRESS, NETWORK_AVAILABLE } from "@constants/networks"
+import useTokenBalance from "@hooks/useTokenBalance"
+import useTokenDetail from "@hooks/useTokenDetail"
 import iconLock from "@images/icon-lock.png"
 import { PoolStatus, getDateFromUnix, getPoolDetailStatus } from "@utils/getPoolDetailStatus"
 import { formatCurrency } from "@utils/index"
@@ -24,11 +27,20 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
   const [isApplied, setIsApplied] = useState<boolean>(false)
   const [refetch, setRefetch] = useState<boolean>(false)
 
+  // const { } = useTokenDetail()
   const poolStatus = useMemo(() => getPoolDetailStatus(poolDetail), [poolDetail])
+
+  const [poolCurrencyAddress, setPoolCurrencyAddress] = useState<`0x${string}`>()
+  const { userBalance, loadingBalance } = useTokenBalance(poolCurrencyAddress, connectedAccount, 97)
 
   useEffect(() => {
     ;(async () => {
       if (!connectedAccount || !poolDetail) return
+      const currencyAddress = (MAPPING_CURRENCY_ADDRESS as any)[poolDetail.token?.network][
+        poolDetail.accepted_currency
+      ]
+      setPoolCurrencyAddress(currencyAddress)
+
       const resSub = await get(`pool/${poolDetail?.slug}/submission`, {
         account: connectedAccount
       })
@@ -165,7 +177,12 @@ const BuyTokenForm = (props: { poolDetail: any }) => {
           </div>
         </div>
 
-        <div className="mt-2 w-full pl-5 text-left text-[#9999A7]">Balance: 10,000 USDT</div>
+        <div className="mt-2 w-full pl-5 text-left text-[#9999A7]">
+          <span>Balance: </span>
+          <span>{`${formatCurrency(userBalance, 2)} ${
+            poolDetail?.accepted_currency || "N/A"
+          }`}</span>
+        </div>
         <div className="text-18/32 font-bold">=</div>
         <div className="flex w-full justify-between rounded-xl bg-[#000024] px-5 py-4 font-semibold">
           <span className="">{formatCurrency(10000000)}</span>

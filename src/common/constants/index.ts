@@ -44,15 +44,9 @@ export const headDefault: HeadDefaultTypes = {
 }
 
 export const currencies = {
-  NATIVE: "NATIVE",
   BUSD: "BUSD",
   USDC: "USDC",
   USDT: "USDT"
-}
-
-export const NETWORK_AVAILABLE = {
-  ETH: "ETH",
-  BSC: "BSC"
 }
 
 export enum TIERS {
