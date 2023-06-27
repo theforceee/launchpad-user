@@ -46,7 +46,7 @@ const UpcomingPools = () => {
     <div className="container flex w-full flex-col !py-10">
       <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
         <span className="text-28/36 font-bold">Upcoming IDOs</span>
-        <div className="flex flex-wrap gap-2">
+          <div className="flex flex-1 flex-wrap justify-center gap-2">
           {tags.map((item: any, index: number) => (
             <div
               className={clsx(

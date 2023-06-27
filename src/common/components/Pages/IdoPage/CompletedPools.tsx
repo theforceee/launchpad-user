@@ -73,7 +73,7 @@ const CompletedPools = () => {
       <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
         <div className="flex flex-1 flex-col items-center gap-4 text-white md:flex-row">
           <span className="text-28/36 font-bold">Complete IDOs</span>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-1 flex-wrap justify-center gap-2">
             {tags.map((item: any, index: number) => (
               <div
                 key={index}
