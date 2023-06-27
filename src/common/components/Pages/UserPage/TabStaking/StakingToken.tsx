@@ -16,8 +16,10 @@ import { useAccount } from "wagmi"
 import UnstakeDialog from "./UnstakeDialog"
 import { get } from "@/common/request"
 import clsx from "clsx"
-import { USER_TIER_MAPPING } from "@constants/index"
+import { BLAZE_TOKEN_CONTRACT, STAKING_CONTRACT, USER_TIER_MAPPING } from "@constants/index"
 import { useUserStakedInfo } from "@hooks/useUserStakedInfo"
+import useTokenDetail from "@hooks/useTokenDetail"
+import { ETH_NETWORK_ID } from "@constants/networks"
 
 export const SEPARATOR = ","
 type TierTypes = {
@@ -45,9 +47,14 @@ const tiers: Array<TierTypes> = [
 
 const StakingToken = () => {
   const { address: connectedAccount } = useAccount()
-  const { userAllowance } = useTokenAllowance(connectedAccount)
+  const { tokenDetail } = useTokenDetail(BLAZE_TOKEN_CONTRACT, +ETH_NETWORK_ID)
+  const { userAllowance, refetch: refetchAllowance } = useTokenAllowance(
+    tokenDetail,
+    connectedAccount,
+    STAKING_CONTRACT
+  )
   const { userBalance, loadingBalance } = useTokenBalance(connectedAccount)
-  const { approve, loadingApprove } = useTokenApprove(connectedAccount)
+  const { approve, loadingApprove } = useTokenApprove()
   const {
     stakeToken,
     loadingStake,
@@ -64,6 +71,12 @@ const StakingToken = () => {
 
   const [openUnstakeDialog, setOpenUnstakeDialog] = useState<boolean>(false)
   const [inputAmount, setInputAmount] = useState<string>("")
+
+  // refetch allowance after approve
+  useEffect(() => {
+    if (loadingApprove) return
+    refetchAllowance()
+  }, [loadingApprove, refetchAllowance])
 
   const disabledClaimPending = useMemo(
     () =>
@@ -82,7 +95,7 @@ const StakingToken = () => {
   }
 
   const handleApprove = () => {
-    approve(inputAmount)
+    approve()
   }
 
   const handleStake = () => {
@@ -286,6 +299,7 @@ const StakingToken = () => {
         unstakeToken={unstakeToken}
         handleClose={() => setOpenUnstakeDialog(false)}
         tokenStaked={tokenStaked}
+        tokenDetail={tokenDetail}
         loadingUnstake={loadingUnstake}
       />
     </>
