@@ -6,6 +6,7 @@ import clsx from "clsx"
 import Image from "next/image"
 import { ChangeEvent, useContext, useEffect, useState } from "react"
 import { SEPARATOR } from "./StakingToken"
+import { TokenDetailTypes } from "@hooks/useTokenDetail"
 
 export type UnstakeDialogProps = {
   open: boolean
@@ -13,6 +14,7 @@ export type UnstakeDialogProps = {
   unstakeToken: any
   tokenStaked: number
   loadingUnstake: boolean
+  tokenDetail: TokenDetailTypes | undefined
 }
 type OptionTypes = {
   label: string
@@ -37,8 +39,14 @@ const options: Array<OptionTypes> = [
   }
 ]
 export default function UnstakeDialog(props: UnstakeDialogProps) {
-  const { open, handleClose, unstakeToken, tokenStaked: maxUnstakeAmount, loadingUnstake } = props
-  const { tokenDetail } = useContext(AppContext)
+  const {
+    open,
+    handleClose,
+    unstakeToken,
+    tokenStaked: maxUnstakeAmount,
+    loadingUnstake,
+    tokenDetail
+  } = props
   const [inputAmount, setInputAmount] = useState<string>("")
   const [selectedOption, setSelectedOption] = useState<number>(0)
 
